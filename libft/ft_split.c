@@ -1,3 +1,5 @@
+#include <stlib.h>
+
 int	ft_sep(char s, char c)
 {
 	if (s == c)
