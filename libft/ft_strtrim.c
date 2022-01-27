@@ -1,9 +1,15 @@
-int	check_set(char c, char const *set, int i)
+int	check_set(char c, char const *set)
 {
-	if (set[i] == c)
-		return (1);
-	else
-		return (0);
+	int	x;
+
+	x = 0;
+	while (set[x])
+	{
+		if (set[x] == c)
+			return (1);
+		x++;
+	}
+	return (0);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
@@ -15,21 +21,24 @@ char	*ft_strtrim(char const *s1, char const *set)
 	int		c;
 
 	i = 0;
-	len = ft_strlen(s1);
-	while (check_set(s1[i], set, i) == 1)
+	len = ft_strlen(s1) - 1;
+	while (check_set(s1[i], set) == 1)
 		i++;
-	while (check_set(s1[len], set, len) == 1)
+	if (i >= ft_strlen(s1) - 1)
+		return (NULL);
+	while (check_set(s1[len], set) == 1)
 		len--;
 	size = len - i;
-	tab = (char)malloc(sizeof(char) * size);
+	tab = (char)malloc(sizeof(char) * size + 2);
 	if (!tab)
 		return(NULL);
 	c = 0;
-	while (i < len)
+	while (i <= len)
 	{
 		tab[c] = s1[i];
 		c++;
 		i++;
 	}
+	tab[c] = '\0';
 	return (tab);
 }
