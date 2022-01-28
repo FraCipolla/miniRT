@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 17:36:18 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/28 19:10:30 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,24 @@ void	put_nbr(char *tab, int n, int size)
 
 char	*ft_itoa(int n)
 {
-	int		i;
 	int		size;
 	char	*tab;
 	long int    nbr;
 
     nbr = (long int)n;
-	i = 0;
 	if (nbr < 0)
 		size = find_size(nbr) + 1;
 	else
 		size = find_size(nbr);
-	tab = malloc(sizeof(char) * size + 1);
+	tab = (char*)malloc(sizeof(char) * size + 1);
 	if (!tab)
 		return (NULL);
 	tab[size] = '\0';
+	if (n == 0)
+	{
+		tab[0] = 48;
+		return (tab);
+	}
 	if (nbr < 0)
 	{
 		tab[0] = '-';

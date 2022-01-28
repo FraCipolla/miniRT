@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 17:36:18 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/28 18:16:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	conv_src = (char *)src;
 	conv_dst = (char *)dst;
 	i = 0;
-	while (i < len)
-	{
-		conv_dst[i] = conv_src[i];
-		i++;
-	}
+	if (conv_dst > conv_src)
+		while (len-- > 0)
+			conv_dst[len] = conv_src[len];
+	else
+		while (i < len)
+		{
+			conv_dst[i] = conv_src[i];
+			i++;
+		}
 	return (dst);
 }
