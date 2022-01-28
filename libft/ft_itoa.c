@@ -16,24 +16,11 @@ int	find_size(int n)
 	return (c);
 }
 
-char	put_nbr(char *tab, int n)
+void	put_nbr(char *tab, int n, int size)
 {
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		if (n < 0)
-			tab[i] = '-';
-		if (n <= 9)
-			tab[i] = n + '0';
-		if (n > 9)
-		{
-			put_nbr (tab, n / 10)
-			put_nbr (tab, n % 10)
-		}
-	i++;
-	}
+	if (n > 9)
+	    put_nbr (tab, n / 10, size -1);
+	tab[size] = (n % 10 + '0');
 }
 
 char	*ft_itoa(int n)
@@ -50,5 +37,12 @@ char	*ft_itoa(int n)
 	tab = malloc(sizeof(char) * size + 1);
 	if (!tab)
 		return (NULL);
-	
+	tab[size] = '\0';
+	if (n < 0)
+	{
+		tab[0] = '-';
+		n *= -1;
+	}
+	put_nbr(tab, n, size -1);
+	return (tab);
 }
