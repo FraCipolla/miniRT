@@ -1,4 +1,4 @@
-#include <stlib.h>
+#include "ft_libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {	

@@ -1,4 +1,4 @@
-#include <stlib.h>
+#include "ft_libft.h"
 
 int	ft_sep(char s, char c)
 {
