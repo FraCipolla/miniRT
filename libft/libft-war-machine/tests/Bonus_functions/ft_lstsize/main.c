@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmartin <lmartin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/09 14:26:18 by lmartin           #+#    #+#             */
-/*   Updated: 2020/11/24 15:52:17 by arpascal         ###   ########lyon.fr   */
+/*   Created: 2019/10/09 14:26:40 by lmartin           #+#    #+#             */
+/*   Updated: 2021/02/04 07:55:42 by lmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,25 @@ t_list	*ft_lstnewone(void *content)
 	elem = (t_list *)malloc(sizeof(t_list));
 	if (!elem)
 		return (NULL);
-	elem->content = content;
+	if (!content)
+		elem->content = NULL;
+	else
+		elem->content = content;
 	elem->next = NULL;
 	return (elem);
 }
 
 int main(int argc, const char *argv[])
 {
-	int			i;
-	char		*content;
-	t_list		*val;
 	t_list		*elem;
 	t_list		*elem2;
 	t_list		*elem3;
 	t_list		*elem4;
-
-	char		str [] = "lorem";
-	char		str2 [] = "ipsum";
-	char		str3 [] = "dolor";
-	char		str4 [] = "sit";
+	char		c;
+	char		*str = strdup("lorem");
+	char		*str2 = strdup("ipsum");
+	char		*str3 = strdup("dolor");
+	char		*str4 = strdup("sit");
 
 	elem = ft_lstnewone(str);
 	elem2 = ft_lstnewone(str2);
@@ -54,23 +54,16 @@ int main(int argc, const char *argv[])
 		elem->next = elem2;
 		elem2->next = elem3;
 		elem3->next = elem4;
-		val = ft_lstlast(elem);
-		i = 0;
-		content = val->content;
-		while (content[i])
-			write(1, &(content[i++]), 1);
+		c = ft_lstsize(elem) + 48;
+		write(1, &c, 1);
 		write(1, "\n", 1);
 		elem->next = NULL;
-		val = ft_lstlast(elem);
-		content = val->content;
-		i = 0;
-		while (content[i])
-			write(1, &(content[i++]), 1);
+		c = ft_lstsize(elem) + 48;
+		write(1, &c, 1);
 		write(1, "\n", 1);
 		elem = NULL;
-		val = ft_lstlast(elem);
-		if (val == NULL)
-			write(1, "NULL", 4);
+		c = ft_lstsize(elem) + 48;
+		write(1, &c, 1);
 		write(1, "\n", 1);
 	}
 	return (0);

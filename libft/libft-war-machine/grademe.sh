@@ -6,7 +6,7 @@
 #    By: jtoty <jtoty@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/23 18:26:01 by jtoty             #+#    #+#              #
-#    Updated: 2019/11/14 02:08:20 by mle-floc         ###   ########.fr        #
+#    Updated: 2021/02/04 07:07:10 by lmartin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,17 +18,14 @@ PATH_TEST="$(cd "$(dirname "$0")" && pwd -P)"
 #exec 6>&2 2>/dev/null
 exec 2> /dev/null
 
-source ${PATH_TEST}/srcs/variables.sh
-printf "\x1b[31mOrder will win!\x1b[0m\n";
-printf "\x1b[34mNo one can beat the order\x1b[0m\n"
-
+source "${PATH_TEST}"/srcs/variables.sh
 
 for arg in ${@}
 do
 	case "${arg}" in
-		"--help")			man ${PATH_TEST}/srcs/help.1
+		"--help")			man "${PATH_TEST}"/srcs/help.1
 							exit ;;
-		"-h")				man ${PATH_TEST}/srcs/help.1
+		"-h")				man "${PATH_TEST}"/srcs/help.1
 							exit ;;
 		"-d")				DIRECTORY=1 ;;
 		"-s")				OPT_NO_SEARCH=1 ;;
@@ -87,7 +84,7 @@ do
 						while (( p < ${nb_func} ))
 						do
 							func_name=$(echo ${part}[$p])
-							if [ "$(echo ${arg} | grep -ow $(echo ${!func_name} | cut -d . -f 1))" != "" ]
+							if [ "$(echo ${arg} | sed 's/_bonus//g' | grep -ow $(echo ${!func_name} | cut -d . -f 1 | sed 's/_bonus//g'))" != "" ]
 							then
 								(( ${part}_activation[$p]=1 ))
 								#(( ${opt_part}=1 ))
@@ -107,30 +104,30 @@ do
 	esac
 done
 
-source ${PATH_TEST}/srcs/colors.sh
-source ${PATH_TEST}/srcs/check_cheat.sh
-source ${PATH_TEST}/srcs/check_compilation.sh
-source ${PATH_TEST}/srcs/check_file.sh
-source ${PATH_TEST}/srcs/check_norme.sh
-source ${PATH_TEST}/srcs/compil_lib.sh
-source ${PATH_TEST}/srcs/diff_test.sh
-source ${PATH_TEST}/srcs/test_function.sh
-source ${PATH_TEST}/srcs/check_update.sh
+source "${PATH_TEST}"/srcs/colors.sh
+source "${PATH_TEST}"/srcs/check_cheat.sh
+source "${PATH_TEST}"/srcs/check_compilation.sh
+source "${PATH_TEST}"/srcs/check_file.sh
+source "${PATH_TEST}"/srcs/check_norme.sh
+source "${PATH_TEST}"/srcs/compil_lib.sh
+source "${PATH_TEST}"/srcs/diff_test.sh
+source "${PATH_TEST}"/srcs/test_function.sh
+source "${PATH_TEST}"/srcs/check_update.sh
 
-cd ${PATH_TEST}
+cd "${PATH_TEST}"
 
 if [ ${OPT_NO_UPDATE} -eq 0 ]
 then
 	func_check_update
 fi
 
-if [ ! -e ${PATH_TEST}/my_config.sh ]
+if [ ! -e "${PATH_TEST}"/my_config.sh ]
 then
 	printf "${BOLD}my_config.sh${DEFAULT} file is not found.\n"
 	printf "Creating file...\n"
-	if [ -e ${PATH_TEST}/srcs/config_template.sh ]
+	if [ -e "${PATH_TEST}"/srcs/config_template.sh ]
 	then
-		cp ${PATH_TEST}/srcs/config_template.sh ${PATH_TEST}/my_config.sh
+		cp "${PATH_TEST}"/srcs/config_template.sh "${PATH_TEST}"/my_config.sh
 		printf "File created with success in ${BOLD}${PURPLE}${PATH_TEST}\n${DEFAULT}"
 		printf "${RED}${UNDERLINE}Edit my_config.sh file${DEFAULT} with the path of your libft project and launch script.\n"
 	else
@@ -140,23 +137,23 @@ then
 	exit
 fi
 
-source ${PATH_TEST}/my_config.sh
+source "${PATH_TEST}"/my_config.sh
 
 if [ ${CUSTOM_DIRECTORY} -eq 1 ]
 then
-	if [ -d ${PATH_TEST}/dirlibft ]
+	if [ -d "${PATH_TEST}"/dirlibft ]
 	then
-		rm -rf ${PATH_TEST}/dirlibft
+		rm -rf "${PATH_TEST}"/dirlibft
 	fi
 	printf "Copying files...\nPlease wait a moment.\n"
-	mkdir ${PATH_TEST}/dirlibft
-	mkdir ${PATH_TEST}/dirlibft/${SRC_DIR}
-	mkdir ${PATH_TEST}/dirlibft/${HEADER_DIR}
-	cp ${PATH_LIBFT}/* ${PATH_TEST}/dirlibft
-	cp ${PATH_LIBFT}/${SRC_DIR}/*.c ${PATH_TEST}/dirlibft/${SRC_DIR}
-	cp ${PATH_LIBFT}/${HEADER_DIR}/*.h ${PATH_TEST}/dirlibft/${HEADER_DIR}
+	mkdir "${PATH_TEST}"/dirlibft
+	mkdir "${PATH_TEST}"/dirlibft/${SRC_DIR}
+	mkdir "${PATH_TEST}"/dirlibft/${HEADER_DIR}
+	cp "${PATH_LIBFT}"/* "${PATH_TEST}"/dirlibft
+	cp "${PATH_LIBFT}"/${SRC_DIR}/*.c "${PATH_TEST}"/dirlibft/${SRC_DIR}
+	cp "${PATH_LIBFT}"/${HEADER_DIR}/*.h "${PATH_TEST}"/dirlibft/${HEADER_DIR}
 	#find ${PATH_LIBFT} -type f -name "*.[ch]" -print | xargs cp -t ${PATH_TEST}/dirlibft
-	PATH_LIBFT=${PATH_TEST}/dirlibft
+	PATH_LIBFT="${PATH_TEST}"/dirlibft
 #	sleep 1000
 fi
 
@@ -193,31 +190,31 @@ done
 
 init_deepthought()
 {
-	if [ -e ${PATH_DEEPTHOUGHT}/deepthought ]
+	if [ -e "${PATH_DEEPTHOUGHT}"/deepthought ]
 	then
-		rm -f ${PATH_DEEPTHOUGHT}/deepthought
+		rm -f "${PATH_DEEPTHOUGHT}"/deepthought
 	fi
 	text="= Host-specific information "
-	printf "${text}" >> ${PATH_DEEPTHOUGHT}/deepthought
-	printf "%.s=" $(seq 1 $(( 80 - ${#text} ))) >> ${PATH_DEEPTHOUGHT}/deepthought
-	printf "\n$> hostname; uname -msr\n" >> ${PATH_DEEPTHOUGHT}/deepthought
-	hostname >> ${PATH_DEEPTHOUGHT}/deepthought
-	uname -msr >> ${PATH_DEEPTHOUGHT}/deepthought
-	printf "$> date\n" >> ${PATH_DEEPTHOUGHT}/deepthought
-	date >> ${PATH_DEEPTHOUGHT}/deepthought
-	printf "$> gcc --version\n" >> ${PATH_DEEPTHOUGHT}/deepthought
-	gcc --version >> ${PATH_DEEPTHOUGHT}/deepthought
-	printf "$> clang --version\n" >> ${PATH_DEEPTHOUGHT}/deepthought
-	clang --version >> ${PATH_DEEPTHOUGHT}/deepthought
+	printf "${text}" >> "${PATH_DEEPTHOUGHT}"/deepthought
+	printf "%.s=" $(seq 1 $(( 80 - ${#text} ))) >> "${PATH_DEEPTHOUGHT}"/deepthought
+	printf "\n$> hostname; uname -msr\n" >> "${PATH_DEEPTHOUGHT}"/deepthought
+	hostname >> "${PATH_DEEPTHOUGHT}"/deepthought
+	uname -msr >> "${PATH_DEEPTHOUGHT}"/deepthought
+	printf "$> date\n" >> "${PATH_DEEPTHOUGHT}"/deepthought
+	date >> "${PATH_DEEPTHOUGHT}"/deepthought
+	printf "$> gcc --version\n" >> "${PATH_DEEPTHOUGHT}"/deepthought
+	gcc --version >> "${PATH_DEEPTHOUGHT}"/deepthought
+	printf "$> clang --version\n" >> "${PATH_DEEPTHOUGHT}"/deepthought
+	clang --version >> "${PATH_DEEPTHOUGHT}"/deepthought
 }
 
 clear
 init_deepthought
 
-if [ -e ${PATH_LIBFT}/Makefile ]
+if [ -e "${PATH_LIBFT}/Makefile" ]
 then
 	MAKEFILE_VAR="Makefile"
-elif [ -e ${PATH_LIBFT}/makefile ]
+elif [ -e "${PATH_LIBFT}/makefile" ]
 then
 	MAKEFILE_VAR="makefile"
 else
@@ -243,27 +240,12 @@ do
 	fi
 done
 
-for part in ${tab_all_part[*]}
-do
-	activate_part=$(echo ACTIVATE_${part} | tr '[:lower:]' '[:upper:]' | rev | cut -c 6- | rev)
-	if [ ${!activate_part} -eq 1 ]
-	then
-		text="The Order Will Win ! No one can beat the order"
-		printf "${COLOR_TITLE}"
-		printf "%.s${CHAR_LENGTH}" $(seq 1 ${TITLE_LENGTH})
-		printf "\n${CHAR_WIDTH}\033[$(( (${TITLE_LENGTH} - ${#text}) / 2 ))G${text}\033[${TITLE_LENGTH}G${CHAR_WIDTH}\n"
-		printf "%.s${CHAR_LENGTH}" $(seq 1 ${TITLE_LENGTH})
-		printf "\n${DEFAULT}"
-		break
-	fi
-done
-
-if [ -e ${PATH_LIBFT}/${HEADER_DIR}/libft.h ]
+if [ -e "${PATH_LIBFT}/${HEADER_DIR}/libft.h" ]
 then
-	cp ${PATH_LIBFT}/${HEADER_DIR}/libft.h ${PATH_TEST}
+	cp "${PATH_LIBFT}/${HEADER_DIR}/libft.h" "${PATH_TEST}"
 fi
 
-printf "#include \"libft.h\"\n\nint\tmain(void)\n{\n\treturn (0);\n}" > ${PATH_TEST}/main_check_cheating.c
+printf "#include \"libft.h\"\n\nint\tmain(void)\n{\n\treturn (0);\n}" > "${PATH_TEST}"/main_check_cheating.c
 
 for part in ${tab_all_part[*]}
 do
@@ -271,33 +253,33 @@ do
 	if [ ${!activate_part} -eq 1 ]
 	then
 		text="= ${part}tions "
-		printf "\n${text}" >> ${PATH_DEEPTHOUGHT}/deepthought
-		printf "%.s=" $(seq 1 $(( 80 - ${#text} ))) >> ${PATH_DEEPTHOUGHT}/deepthought
-		printf "\n" >> ${PATH_DEEPTHOUGHT}/deepthought
+		printf "\n${text}" >> "${PATH_DEEPTHOUGHT}"/deepthought
+		printf "%.s=" $(seq 1 $(( 80 - ${#text} ))) >> "${PATH_DEEPTHOUGHT}"/deepthought
+		printf "\n" >> "${PATH_DEEPTHOUGHT}"/deepthought
 		test_function $(echo ${part}[*])
 	fi
 done
 
-if [ -e ${PATH_TEST}/a.out ]
+if [ -e "${PATH_TEST}"/a.out ]
 then
-	rm ${PATH_TEST}/a.out
+	rm "${PATH_TEST}"/a.out
 fi
 
-if [ -e ${PATH_TEST}/libft.h ]
+if [ -e "${PATH_TEST}"/libft.h ]
 then
-	rm ${PATH_TEST}/libft.h
+	rm "${PATH_TEST}"/libft.h
 fi
 
-if [ -e ${PATH_TEST}/main_check_cheating.c ]
+if [ -e "${PATH_TEST}"/main_check_cheating.c ]
 then
-	rm ${PATH_TEST}/main_check_cheating.c
+	rm "${PATH_TEST}"/main_check_cheating.c
 fi
 
 if [ ${DIRECTORY} -eq 1 ]
 then
-	if [ -d ${PATH_TEST}/dirlibft ]
+	if [ -d "${PATH_TEST}"/dirlibft ]
 	then
-		rm -rf ${PATH_TEST}/dirlibft
+		rm -rf "${PATH_TEST}"/dirlibft
 	fi
 fi
 
@@ -306,9 +288,9 @@ then
 	printf "Abort : ${RED}A${DEFAULT} Bus error : ${RED}B${DEFAULT} Segmentation fault : ${RED}S${DEFAULT} Timeout : ${RED}T${DEFAULT} Nothing turned in : ${RED}NTI${DEFAULT}\n"
 	printf "\n"
 fi
-printf "A deepthought file has been generated in ${COLOR_DEEPTHOUGHT_PATH}${PATH_DEEPTHOUGHT}\n\n${DEFAULT}"
-make --no-print-directory -C ${PATH_LIBFT} fclean > /dev/null
+printf "A deepthought file has been generated in ${COLOR_DEEPTHOUGHT_PATH}\"${PATH_DEEPTHOUGHT}\"\n\n${DEFAULT}"
+make --no-print-directory -C "${PATH_LIBFT}" fclean > /dev/null
 
 # nuke_it_all
-find ${PATH_TEST} -name 'user_output_test*' -delete
-rm -rf ${PATH_TEST}/dirlibft/
+find "${PATH_TEST}" -name 'user_output_test*' -delete
+rm -rf "${PATH_TEST}"/dirlibft/

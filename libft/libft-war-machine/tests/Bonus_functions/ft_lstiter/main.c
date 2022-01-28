@@ -5,26 +5,43 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jtoty <jtoty@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/28 15:15:51 by jtoty             #+#    #+#             */
-/*   Updated: 2020/11/24 16:14:07 by arpascal         ###   ########lyon.fr   */
+/*   Created: 2017/02/28 15:16:05 by jtoty             #+#    #+#             */
+/*   Updated: 2021/02/04 07:56:19 by lmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "../../../libft.h"
 #include <unistd.h>
+#include "../../../libft.h"
 #include <string.h>
 #include <stdio.h>
-#include <string.h>
+
+void	ft_modify_list_with_d(void *elem)
+{
+	int		len;
+	char		*content;
+
+	len = 0;
+	content = (char *)elem;
+	while (content[len])
+	{
+		content[len++] = 'd';
+	}
+}
 
 void	ft_print_result(t_list *elem)
 {
-	printf("%s\n", elem->content);
-}
+	int		len;
 
-void	ft_del(void *content)
-{
-	printf("free: %s\n", content);
+	while (elem)
+	{
+		len = 0;
+		while (((char *)elem->content)[len])
+			len++;
+		write(1, elem->content, len);
+		write(1, "\n", 1);
+		elem = elem->next;
+	}
 }
 
 t_list	*ft_lstnewone(void *content)
@@ -34,7 +51,10 @@ t_list	*ft_lstnewone(void *content)
 	elem = (t_list *)malloc(sizeof(t_list));
 	if (!elem)
 		return (NULL);
-	elem->content = content;
+	if (!content)
+		elem->content = NULL;
+	else
+		elem->content = content;
 	elem->next = NULL;
 	return (elem);
 }
@@ -45,10 +65,10 @@ int main(int argc, const char *argv[])
 	t_list		*elem2;
 	t_list		*elem3;
 	t_list		*elem4;
-	char		str [] = "lorem";
-	char		str2 [] = "ipsum";
-	char		str3 [] = "dolor";
-	char		str4 [] = "sit";
+	char		*str = strdup("lorem");
+	char		*str2 = strdup("ipsum");
+	char		*str3 = strdup("dolor");
+	char		*str4 = strdup("sit");
 
 	elem = ft_lstnewone(str);
 	elem2 = ft_lstnewone(str2);
@@ -62,10 +82,8 @@ int main(int argc, const char *argv[])
 	elem3->next = elem4;
 	if (atoi(argv[1]) == 1)
 	{
-		ft_lstdelone(elem3, &ft_del);
+		ft_lstiter(elem, &ft_modify_list_with_d);
 		ft_print_result(elem);
-		ft_print_result(elem2);
-		ft_print_result(elem4);
 	}
 	return (0);
 }
