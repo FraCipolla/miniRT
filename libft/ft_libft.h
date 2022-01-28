@@ -3,6 +3,8 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <strings.h>
+# include <stddef.h>
 
 typedef struct	s_list
 {
