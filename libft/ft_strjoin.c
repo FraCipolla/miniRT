@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:47 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 17:36:18 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/28 23:05:30 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	c = 0;
-	tab = (char*)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)));
+	tab = (char*)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!tab)
 		return (NULL);
 	while (s1[i])
@@ -34,5 +34,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 		c++;
 	}
+	tab[i] = 0;
 	return (tab);
 }

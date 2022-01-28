@@ -6,20 +6,22 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 21:15:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/28 23:30:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	find_size(int n)
+int	find_size(long int n)
 {
 	int	c;
 
 	c = 0;
+	if (n == 0)
+		return (1);
 	if (n < 0)
 		n *= -1;
-	while (n > 0)
+	while (n != 0)
 	{
 		n /= 10;
 		c++;
@@ -49,9 +51,9 @@ char	*ft_itoa(int n)
 	if (!tab)
 		return (NULL);
 	tab[size] = '\0';
-	if (n == 0)
+	if (nbr == 0)
 	{
-		tab[0] = 48;
+		tab[0] = '0';
 		return (tab);
 	}
 	if (nbr < 0)

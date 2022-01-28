@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 17:50:07 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/28 22:41:01 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,5 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (0);
 	while (s1[i] == s2[i] && i < n - 1)
 		i++;
-	return (s1[i] - s2[i]);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
