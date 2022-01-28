@@ -42,7 +42,7 @@ git clone https://github.com/jtoty/Libftest
 ### Configuration
 
 If you run the script for the first time, it will automatically create
-`my_config.sh` file and ask you to edit it with the path of your libftb
+`my_config.sh` file and ask you to edit it with the path of your libft
 project.
 You can also choose the colors that will be used and the path where the
 deepthought file will be created.
