@@ -1,5 +1,4 @@
-#include <stlib.h>
-#include <unistd.h>
+#include <stdlib.h>
 
 int	find_size(int n)
 {
@@ -28,21 +27,23 @@ char	*ft_itoa(int n)
 	int		i;
 	int		size;
 	char	*tab;
+	long int    nbr;
 
+    nbr = (long int)n;
 	i = 0;
-	if (n < 0)
-		size = find_size(n) + 1;
+	if (nbr < 0)
+		size = find_size(nbr) + 1;
 	else
-		size = find_size(n);
+		size = find_size(nbr);
 	tab = malloc(sizeof(char) * size + 1);
 	if (!tab)
 		return (NULL);
 	tab[size] = '\0';
-	if (n < 0)
+	if (nbr < 0)
 	{
 		tab[0] = '-';
-		n *= -1;
+		nbr *= -1;
 	}
-	put_nbr(tab, n, size -1);
+	put_nbr(tab, nbr, size -1);
 	return (tab);
 }
