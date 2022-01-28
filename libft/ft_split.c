@@ -76,6 +76,6 @@ char	**ft_split(char const *s, char c)
 		s += i;
 		x++;	
 	}
-	dst[size] = '\0';
+	dst[size] = 0;
 	return (dst);
 }
