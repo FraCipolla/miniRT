@@ -4,7 +4,7 @@ void	*memchr(const void *s, int c, size_t n)
 {
 	unsigned char	x;
 	char 			*str;
-	int				i;
+	size_t			i;
 
 	i = 0;
 	str = (char *)s;
@@ -12,7 +12,7 @@ void	*memchr(const void *s, int c, size_t n)
 	while (str[i] && i < n)
 	{
 		if (str[i] == x)
-		return (str[i]);
+		return (&str[i]);
 		i++;
 	}
 	return (NULL);

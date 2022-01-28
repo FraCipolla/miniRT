@@ -16,9 +16,9 @@ int	check_set(char c, char const *set)
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	int		i;
+	unsigned int		i;
 	int		size;
-	int 	len;
+	unsigned int 	len;
 	char	*tab;
 	int		c;
 
@@ -31,7 +31,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (check_set(s1[len], set) == 1)
 		len--;
 	size = len - i;
-	tab = (char)malloc(sizeof(char) * size + 2);
+	tab = (char*)malloc(sizeof(char) * size + 2);
 	if (!tab)
 		return(NULL);
 	c = 0;

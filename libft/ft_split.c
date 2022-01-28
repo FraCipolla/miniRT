@@ -7,7 +7,7 @@ int	ft_sep(char s, char c)
 	return (0);
 }
 
-int	ft_len(char *s, char c)
+int	ft_len(const char *s, char c)
 {
 	int	i;
 
@@ -17,12 +17,13 @@ int	ft_len(char *s, char c)
 	return (i);
 }
 
-int	ft_find_size(char *s, char c)
+int	ft_find_size(const char *s, char c)
 {
 	int	i;
-	int	c;
+	int	x;
 
 	c = 0;
+	x = 0;
 	while (*s)
 	{
 		if (ft_sep (*s, c) == 1)
@@ -30,12 +31,12 @@ int	ft_find_size(char *s, char c)
 		i = ft_len(s, c);
 		s += i;
 		if (i)
-			c++;
+			x++;
 	}
-	return (c);
+	return (x);
 }
 
-char	*ft_malloc_strcpy(char *s, int n)
+char	*ft_malloc_strcpy(const char *s, int n)
 {
 	char *dst;
 	int		i;
@@ -72,7 +73,7 @@ char	**ft_split(char const *s, char c)
 			s++;
 		i = ft_len(s, c);
 		dst[x] = ft_malloc_strcpy(s, i);
-		str += i;
+		s += i;
 		x++;	
 	}
 	dst[size] = '\0';

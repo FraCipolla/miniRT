@@ -2,11 +2,11 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char const		*tab;
+	char			*tab;
 	unsigned int	i;
 
 	i = 0;
-	tab = (char)malloc(sizeof(char) * len));
+	tab = (char*)malloc(sizeof(char) * len);
 	if (!tab)
 		return(NULL);
 	while(i <= len)

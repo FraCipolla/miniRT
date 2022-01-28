@@ -8,5 +8,5 @@ void	ft_putendl_fd(char *s, int fd)
 	while (s[i])
 		i++;
 write (fd, &s, i);
-write (fd, '\n', 1);
+write (fd, "\n", 1);
 }

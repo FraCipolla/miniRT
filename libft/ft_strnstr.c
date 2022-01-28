@@ -1,18 +1,8 @@
 #include "ft_libft.h"
 
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
 char	*ft_strstr(const char *haystack, const char *needle, size_t len)
 {
-	int	i;
+	size_t	i;
 	int	j;
 	int	a;
 
@@ -20,7 +10,7 @@ char	*ft_strstr(const char *haystack, const char *needle, size_t len)
 	j = 0;
 	a = ft_strlen(needle);
 	if (a == 0)
-		return (haystack);
+		return ((char*)haystack);
 	while (haystack[i] != '\0' && i < len)
 	{
 		while (haystack[i] != needle[j] && haystack[i] != '\0' && i < len)
@@ -31,7 +21,7 @@ char	*ft_strstr(const char *haystack, const char *needle, size_t len)
 			j++;
 		}
 		if (j == a)
-			return (haystack + i - j);
+			return ((char*)haystack + i - j);
 		else
 			j = 0;
 	}

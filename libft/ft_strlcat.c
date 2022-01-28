@@ -2,8 +2,8 @@
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	int	i;
-	int	j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	j = 0;
@@ -15,7 +15,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 		i++;
 		j++;
 	}
-	if (dstsize < dst)
 	dst[dstsize] = '\0';
-	return (dst);
+	return ((size_t)dst);
 }

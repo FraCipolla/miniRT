@@ -2,8 +2,8 @@
 
 void	*ft_memset(void *b, int c, size_t len)
 {
-	int		n;
-	char	*str;
+	size_t		n;
+	char		*str;
 
 	n = 0;
 	str = (char *)b;
