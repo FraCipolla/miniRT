@@ -1,4 +1,4 @@
-#include "ft_libft.h"
+#include "libft.h"
 
 int	check_set(char c, char const *set)
 {

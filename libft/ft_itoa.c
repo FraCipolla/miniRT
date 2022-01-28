@@ -1,4 +1,4 @@
-#include "ft_libft.h"
+#include "libft.h"
 
 int	find_size(int n)
 {
