@@ -3,7 +3,7 @@ $> hostname; uname -msr
 e3r1p3.42roma.it
 Darwin 18.7.0 x86_64
 $> date
-Sat Jan 29 17:08:04 CET 2022
+Sat Jan 29 17:21:23 CET 2022
 $> gcc --version
 Apple clang version 11.0.0 (clang-1100.0.33.17)
 Target: x86_64-apple-darwin18.7.0
@@ -96,190 +96,189 @@ ranlib libft.a
 
 $> make bonus
 gcc -c -I libft.h -Wall -Wextra -Werror ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c
-ft_lstadd_back.c:1:21: error: unknown type name 't_list'
+ft_lstadd_back.c:13:21: error: unknown type name 't_list'
 void    ft_lstadd_back(t_list **lst, t_list *new)
                        ^
-ft_lstadd_back.c:1:35: error: unknown type name 't_list'
+ft_lstadd_back.c:13:35: error: unknown type name 't_list'
 void    ft_lstadd_back(t_list **lst, t_list *new)
                                      ^
-ft_lstadd_back.c:3:2: error: use of undeclared identifier 't_list'
+ft_lstadd_back.c:15:2: error: use of undeclared identifier 't_list'
         t_list  *temp;
         ^
-ft_lstadd_back.c:3:10: error: use of undeclared identifier 'temp'
+ft_lstadd_back.c:15:10: error: use of undeclared identifier 'temp'
         t_list  *temp;
                  ^
-ft_lstadd_back.c:7:16: error: use of undeclared identifier 'NULL'
-                        if (*lst == NULL)
-                                    ^
-ft_lstadd_back.c:11:5: error: use of undeclared identifier 'temp'
+ft_lstadd_back.c:19:15: error: use of undeclared identifier 'NULL'
+                if (*lst == NULL)
+                            ^
+ft_lstadd_back.c:23:5: error: use of undeclared identifier 'temp'
                                 temp = ft_lstlast(*(lst));
                                 ^
-ft_lstadd_back.c:11:12: error: implicit declaration of function 'ft_lstlast' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+ft_lstadd_back.c:23:12: error: implicit declaration of function 'ft_lstlast' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
                                 temp = ft_lstlast(*(lst));
                                        ^
-ft_lstadd_back.c:12:5: error: use of undeclared identifier 'temp'
+ft_lstadd_back.c:24:5: error: use of undeclared identifier 'temp'
                                 temp -> next = new;
                                 ^
 8 errors generated.
-ft_lstadd_front.c:1:22: error: unknown type name 't_list'
+ft_lstadd_front.c:13:22: error: unknown type name 't_list'
 void    ft_lstadd_front(t_list **lst, t_list *new)
                         ^
-ft_lstadd_front.c:1:36: error: unknown type name 't_list'
+ft_lstadd_front.c:13:36: error: unknown type name 't_list'
 void    ft_lstadd_front(t_list **lst, t_list *new)
                                       ^
 2 errors generated.
-ft_lstclear.c:1:18: error: unknown type name 't_list'
+ft_lstclear.c:13:18: error: unknown type name 't_list'
 void    ft_lstclear(t_list **lst, void (*del)(void*))
                     ^
-ft_lstclear.c:3:2: error: use of undeclared identifier 't_list'
-        t_list *tmp;
+ft_lstclear.c:15:2: error: use of undeclared identifier 't_list'
+        t_list  *tmp;
         ^
-ft_lstclear.c:3:10: error: use of undeclared identifier 'tmp'
-        t_list *tmp;
-                ^
-ft_lstclear.c:9:4: error: use of undeclared identifier 'tmp'
-                        tmp = (*lst) -> next;
+ft_lstclear.c:15:10: error: use of undeclared identifier 'tmp'
+        t_list  *tmp;
+                 ^
+ft_lstclear.c:21:4: error: use of undeclared identifier 'tmp'
+                        tmp = (*lst)-> next;
                         ^
-ft_lstclear.c:10:4: error: implicit declaration of function 'ft_lstdelone' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+ft_lstclear.c:22:4: error: implicit declaration of function 'ft_lstdelone' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
                         ft_lstdelone(*lst, del);
                         ^
-ft_lstclear.c:11:4: error: implicit declaration of function 'free' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+ft_lstclear.c:23:4: error: implicit declaration of function 'free' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
                         free(lst);
                         ^
-ft_lstclear.c:12:13: error: use of undeclared identifier 'temp'
+ft_lstclear.c:24:13: error: use of undeclared identifier 'temp'
                         (*lst) = temp;
                                  ^
 7 errors generated.
-ft_lstdelone.c:1:19: error: unknown type name 't_list'
+ft_lstdelone.c:13:19: error: unknown type name 't_list'
 void    ft_lstdelone(t_list *lst, void (*del)(void*))
                      ^
-ft_lstdelone.c:4:2: error: implicit declaration of function 'free' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+ft_lstdelone.c:16:2: error: implicit declaration of function 'free' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
         free(lst);
         ^
-ft_lstdelone.c:5:8: error: use of undeclared identifier 'NULL'
+ft_lstdelone.c:17:8: error: use of undeclared identifier 'NULL'
         lst = NULL;
               ^
 3 errors generated.
-ft_lstiter.c:1:17: error: unknown type name 't_list'
+ft_lstiter.c:13:17: error: unknown type name 't_list'
 void    ft_lstiter(t_list *lst, void (*f)(void *))
                    ^
 1 error generated.
-ft_lstlast.c:1:1: error: unknown type name 't_list'
+ft_lstlast.c:13:1: error: unknown type name 't_list'
 t_list  *ft_lstlast(t_list *lst)
 ^
-ft_lstlast.c:1:20: error: unknown type name 't_list'
+ft_lstlast.c:13:20: error: unknown type name 't_list'
 t_list  *ft_lstlast(t_list *lst)
                     ^
-ft_lstlast.c:3:2: error: use of undeclared identifier 't_list'
+ft_lstlast.c:15:2: error: use of undeclared identifier 't_list'
         t_list  *temp;
         ^
-ft_lstlast.c:3:10: error: use of undeclared identifier 'temp'
+ft_lstlast.c:15:10: error: use of undeclared identifier 'temp'
         t_list  *temp;
                  ^
-ft_lstlast.c:5:2: error: use of undeclared identifier 'temp'
+ft_lstlast.c:17:2: error: use of undeclared identifier 'temp'
         temp = lst;
         ^
-ft_lstlast.c:6:9: error: use of undeclared identifier 'temp'
+ft_lstlast.c:18:9: error: use of undeclared identifier 'temp'
         while (temp -> next != '\0')
                ^
-ft_lstlast.c:7:3: error: use of undeclared identifier 'temp'
+ft_lstlast.c:19:3: error: use of undeclared identifier 'temp'
                 temp = temp -> next;
                 ^
-ft_lstlast.c:7:10: error: use of undeclared identifier 'temp'
+ft_lstlast.c:19:10: error: use of undeclared identifier 'temp'
                 temp = temp -> next;
                        ^
-ft_lstlast.c:8:10: error: use of undeclared identifier 'temp'
+ft_lstlast.c:20:10: error: use of undeclared identifier 'temp'
         return (temp);
                 ^
 9 errors generated.
-ft_lstmap.c:1:1: error: unknown type name 't_list'
+ft_lstmap.c:13:1: error: unknown type name 't_list'
 t_list  *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 ^
-ft_lstmap.c:1:19: error: unknown type name 't_list'
+ft_lstmap.c:13:19: error: unknown type name 't_list'
 t_list  *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
                    ^
 2 errors generated.
-ft_lstnew.c:1:1: error: unknown type name 't_list'
+ft_lstnew.c:13:1: error: unknown type name 't_list'
 t_list  *ft_lstnew(void *content)
 ^
-ft_lstnew.c:3:2: error: use of undeclared identifier 't_list'
+ft_lstnew.c:15:2: error: use of undeclared identifier 't_list'
         t_list  *node;
         ^
-ft_lstnew.c:3:10: error: use of undeclared identifier 'node'
+ft_lstnew.c:15:10: error: use of undeclared identifier 'node'
         t_list  *node;
                  ^
-ft_lstnew.c:5:2: error: use of undeclared identifier 'node'
+ft_lstnew.c:17:2: error: use of undeclared identifier 'node'
         node = malloc(sizeof(t_list));
         ^
-ft_lstnew.c:5:9: error: implicitly declaring library function 'malloc' with type 'void *(unsigned long)' [-Werror,-Wimplicit-function-declaration]
+ft_lstnew.c:17:9: error: implicitly declaring library function 'malloc' with type 'void *(unsigned long)' [-Werror,-Wimplicit-function-declaration]
         node = malloc(sizeof(t_list));
                ^
-ft_lstnew.c:5:9: note: include the header <stdlib.h> or explicitly provide a declaration for 'malloc'
-ft_lstnew.c:5:23: error: use of undeclared identifier 't_list'
+ft_lstnew.c:17:9: note: include the header <stdlib.h> or explicitly provide a declaration for 'malloc'
+ft_lstnew.c:17:23: error: use of undeclared identifier 't_list'
         node = malloc(sizeof(t_list));
                              ^
-ft_lstnew.c:6:7: error: use of undeclared identifier 'node'
+ft_lstnew.c:18:7: error: use of undeclared identifier 'node'
         if (!node)
              ^
-ft_lstnew.c:7:11: error: use of undeclared identifier 'NULL'
+ft_lstnew.c:19:11: error: use of undeclared identifier 'NULL'
                 return (NULL);
                         ^
-ft_lstnew.c:8:2: error: use of undeclared identifier 'node'
-        node-> content = content;
+ft_lstnew.c:20:2: error: use of undeclared identifier 'node'
+        node -> content = content;
         ^
-ft_lstnew.c:9:2: error: use of undeclared identifier 'node'
-        node-> next = NULL;
+ft_lstnew.c:21:2: error: use of undeclared identifier 'node'
+        node -> next = NULL;
         ^
-ft_lstnew.c:9:16: error: use of undeclared identifier 'NULL'
-        node-> next = NULL;
-                      ^
-ft_lstnew.c:10:10: error: use of undeclared identifier 'node'
+ft_lstnew.c:21:17: error: use of undeclared identifier 'NULL'
+        node -> next = NULL;
+                       ^
+ft_lstnew.c:22:10: error: use of undeclared identifier 'node'
         return (node);
                 ^
 12 errors generated.
-ft_lstsize.c:1:16: error: unknown type name 't_list'
+ft_lstsize.c:13:16: error: unknown type name 't_list'
 int     ft_lstsize(t_list *lst)
                    ^
-ft_lstsize.c:4:2: error: use of undeclared identifier 't_list'
-        t_list *temp;
+ft_lstsize.c:16:2: error: use of undeclared identifier 't_list'
+        t_list  *temp;
         ^
-ft_lstsize.c:4:10: error: use of undeclared identifier 'temp'
-        t_list *temp;
-                ^
-ft_lstsize.c:7:2: error: use of undeclared identifier 'temp'
+ft_lstsize.c:16:10: error: use of undeclared identifier 'temp'
+        t_list  *temp;
+                 ^
+ft_lstsize.c:19:2: error: use of undeclared identifier 'temp'
         temp = lst;
         ^
-ft_lstsize.c:8:9: error: use of undeclared identifier 'temp'
+ft_lstsize.c:20:9: error: use of undeclared identifier 'temp'
         while (temp -> next != NULL)
                ^
-ft_lstsize.c:8:25: error: use of undeclared identifier 'NULL'
+ft_lstsize.c:20:25: error: use of undeclared identifier 'NULL'
         while (temp -> next != NULL)
                                ^
-ft_lstsize.c:11:3: error: use of undeclared identifier 'temp'
+ft_lstsize.c:23:3: error: use of undeclared identifier 'temp'
                 temp = temp -> next;
                 ^
-ft_lstsize.c:11:10: error: use of undeclared identifier 'temp'
+ft_lstsize.c:23:10: error: use of undeclared identifier 'temp'
                 temp = temp -> next;
                        ^
-ft_lstsize.c:13:6: error: use of undeclared identifier 'temp'
+ft_lstsize.c:25:6: error: use of undeclared identifier 'temp'
         if (temp -> next == null)
             ^
-ft_lstsize.c:13:22: error: use of undeclared identifier 'null'
+ft_lstsize.c:25:22: error: use of undeclared identifier 'null'
         if (temp -> next == null)
                             ^
 10 errors generated.
 make: *** [bonus] Error 1
 
 $> ls -la libft.a
--rw-r--r--  1 mcipolla  2021_rome  33400 Jan 29 17:08 /Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft/libft.a
+-rw-r--r--  1 mcipolla  2021_rome  33400 Jan 29 17:21 /Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft/libft.a
 
 = Part1_functions ==============================================================
 
 = ft_memset.c ==================================================================
 $> norminette ft_memset.c | grep -E '(Error|Warning)'
 ..//ft_memset.c: Error!
-Error: EMPTY_LINE_FUNCTION  (line:  26, col:   1):	Empty line in function
-Error: BRACE_SHOULD_EOL     (line:  29, col:   1):	Expected newline after brace
+Error: BRACE_SHOULD_EOL     (line:  28, col:   1):	Expected newline after brace
 Norme check failed
 $> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_memset.c main.c libft.a -o user_exe
 
@@ -307,8 +306,6 @@ Diff OK :D
 = ft_bzero.c ===================================================================
 $> norminette ft_bzero.c | grep -E '(Error|Warning)'
 ..//ft_bzero.c: Error!
-Error: SPACE_REPLACE_TAB    (line:  17, col:  18):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  18, col:  21):	Misaligned variable declaration
 Error: BRACE_SHOULD_EOL     (line:  24, col:   1):	Expected newline after brace
 Norme check failed
 $> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_bzero.c main.c libft.a -o user_exe
@@ -363,8 +360,7 @@ Diff OK :D
 = ft_memmove.c =================================================================
 $> norminette ft_memmove.c | grep -E '(Error|Warning)'
 ..//ft_memmove.c: Error!
-Error: MULT_IN_SINGLE_INSTR (line:  29, col:   1):	Multiple instructions in single line control structure
-Error: BRACE_SHOULD_EOL     (line:  34, col:   1):	Expected newline after brace
+Error: BRACE_SHOULD_EOL     (line:  36, col:   1):	Expected newline after brace
 Norme check failed
 $> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_memmove.c main.c libft.a -o user_exe
 
@@ -397,8 +393,6 @@ Diff OK :D
 = ft_memchr.c ==================================================================
 $> norminette ft_memchr.c | grep -E '(Error|Warning)'
 ..//ft_memchr.c: Error!
-Error: MIXED_SPACE_TAB      (line:  18, col:  18):	Mixed spaces and tabs
-Error: SPACE_REPLACE_TAB    (line:  18, col:  18):	Found space when expecting tab
 Error: BRACE_SHOULD_EOL     (line:  34, col:   1):	Expected newline after brace
 Norme check failed
 $> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_memchr.c main.c libft.a -o user_exe
@@ -437,8 +431,6 @@ Diff OK :D
 = ft_memcmp.c ==================================================================
 $> norminette ft_memcmp.c | grep -E '(Error|Warning)'
 ..//ft_memcmp.c: Error!
-Error: SPACE_AFTER_KW       (line:  21, col:  25):	Missing space after keyword
-Error: SPACE_AFTER_KW       (line:  22, col:  25):	Missing space after keyword
 Error: BRACE_SHOULD_EOL     (line:  29, col:   1):	Expected newline after brace
 Norme check failed
 $> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_memcmp.c main.c libft.a -o user_exe
@@ -492,8 +484,7 @@ Diff OK :D
 = ft_strlen.c ==================================================================
 $> norminette ft_strlen.c | grep -E '(Error|Warning)'
 ..//ft_strlen.c: Error!
-Error: EMPTY_LINE_FUNCTION  (line:  23, col:   1):	Empty line in function
-Error: BRACE_SHOULD_EOL     (line:  24, col:   1):	Expected newline after brace
+Error: BRACE_SHOULD_EOL     (line:  23, col:   1):	Expected newline after brace
 Norme check failed
 $> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strlen.c main.c libft.a -o user_exe
 
@@ -531,9 +522,6 @@ Diff OK :D
 = ft_strdup.c ==================================================================
 $> norminette ft_strdup.c | grep -E '(Error|Warning)'
 ..//ft_strdup.c: Error!
-Error: SPACE_REPLACE_TAB    (line:  18, col:   9):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  18, col:  10):	Misaligned variable declaration
-Error: SPACE_AFTER_KW       (line:  23, col:  12):	Missing space after keyword
 Error: BRACE_SHOULD_EOL     (line:  34, col:   1):	Expected newline after brace
 Norme check failed
 $> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strdup.c main.c libft.a -o user_exe
@@ -547,1436 +535,9 @@ Diff OK :D
 = ft_strlcat.c =================================================================
 $> norminette ft_strlcat.c | grep -E '(Error|Warning)'
 ..//ft_strlcat.c: Error!
-Error: TOO_MANY_TAB         (line:  27, col:   1):	Extra tabs for indent level
-Error: TOO_MANY_TAB         (line:  29, col:   1):	Extra tabs for indent level
-Error: TOO_MANY_TAB         (line:  33, col:   1):	Extra tabs for indent level
-Error: TOO_MANY_TAB         (line:  35, col:   1):	Extra tabs for indent level
-Error: TAB_INSTEAD_SPC      (line:  37, col:  27):	Found tab when expecting space
 Error: BRACE_SHOULD_EOL     (line:  39, col:   1):	Expected newline after brace
 Norme check failed
 $> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strlcat.c main.c libft.a -o user_exe
 
 = Test 1 ===================================================
 $> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-= Test 8 ===================================================
-$> ./user_exe 08
-$> diff -U 3 user_output_test08 test08.output
-
-Diff OK :D
-= Test 9 ===================================================
-$> ./user_exe 09
-$> diff -U 3 user_output_test09 test09.output
-
-Diff OK :D
-
-= ft_strlcpy.c =================================================================
-$> norminette ft_strlcpy.c | grep -E '(Error|Warning)'
-..//ft_strlcpy.c: Error!
-Error: SPACE_REPLACE_TAB    (line:  18, col:  11):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  18, col:  12):	Misaligned variable declaration
-Error: TOO_MANY_TAB         (line:  23, col:   1):	Extra tabs for indent level
-Error: TOO_MANY_TAB         (line:  24, col:   1):	Extra tabs for indent level
-Error: TOO_MANY_TAB         (line:  25, col:   1):	Extra tabs for indent level
-Error: TOO_MANY_TAB         (line:  28, col:   1):	Extra tabs for indent level
-Error: TOO_MANY_TAB         (line:  30, col:   1):	Extra tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  32, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strlcpy.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-
-= ft_strchr.c ==================================================================
-$> norminette ft_strchr.c | grep -E '(Error|Warning)'
-..//ft_strchr.c: Error!
-Error: SPACE_REPLACE_TAB    (line:  17, col:   9):	Found space when expecting tab
-Error: SPACE_REPLACE_TAB    (line:  18, col:   8):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  18, col:   9):	Misaligned variable declaration
-Error: SPACE_REPLACE_TAB    (line:  19, col:   9):	Found space when expecting tab
-Error: SPACE_AFTER_KW       (line:  23, col:  12):	Missing space after keyword
-Error: TOO_FEW_TAB          (line:  29, col:   1):	Missing tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  33, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strchr.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-
-= ft_strrchr.c =================================================================
-$> norminette ft_strrchr.c | grep -E '(Error|Warning)'
-..//ft_strrchr.c: Error!
-Error: SPACE_AFTER_KW       (line:  23, col:  12):	Missing space after keyword
-Error: TOO_FEW_TAB          (line:  29, col:   1):	Missing tabs for indent level
-Error: TAB_INSTEAD_SPC      (line:  32, col:  19):	Found tab when expecting space
-Error: BRACE_SHOULD_EOL     (line:  33, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strrchr.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-= Test 8 ===================================================
-$> ./user_exe 08
-$> diff -U 3 user_output_test08 test08.output
-
-Diff OK :D
-
-= ft_strnstr.c =================================================================
-$> norminette ft_strnstr.c | grep -E '(Error|Warning)'
-..//ft_strnstr.c: Error!
-Error: MISALIGNED_VAR_DECL  (line:  18, col:   9):	Misaligned variable declaration
-Error: MISALIGNED_VAR_DECL  (line:  19, col:   9):	Misaligned variable declaration
-Error: SPACE_AFTER_KW       (line:  25, col:  18):	Missing space after keyword
-Error: SPACE_AFTER_KW       (line:  36, col:  22):	Missing space after keyword
-Error: BRACE_SHOULD_EOL     (line:  41, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strnstr.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-= Test 8 ===================================================
-$> ./user_exe 08
-$> diff -U 3 user_output_test08 test08.output
-
-Diff OK :D
-= Test 9 ===================================================
-$> ./user_exe 09
-$> diff -U 3 user_output_test09 test09.output
-
-Diff OK :D
-= Test 10 ==================================================
-$> ./user_exe 10
-$> diff -U 3 user_output_test10 test10.output
-
-Diff OK :D
-
-= ft_strncmp.c =================================================================
-$> norminette ft_strncmp.c | grep -E '(Error|Warning)'
-..//ft_strncmp.c: Error!
-Error: SPACE_REPLACE_TAB    (line:  17, col:  11):	Found space when expecting tab
-Error: BRACE_SHOULD_EOL     (line:  25, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strncmp.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-= Test 8 ===================================================
-$> ./user_exe 08
-$> diff -U 3 user_output_test08 test08.output
-
-Diff OK :D
-= Test 9 ===================================================
-$> ./user_exe 09
-$> diff -U 3 user_output_test09 test09.output
-
-Diff OK :D
-= Test 10 ==================================================
-$> ./user_exe 10
-$> diff -U 3 user_output_test10 test10.output
-
-Diff OK :D
-= Test 11 ==================================================
-$> ./user_exe 11
-$> diff -U 3 user_output_test11 test11.output
-
-Diff OK :D
-
-= ft_atoi.c ====================================================================
-$> norminette ft_atoi.c | grep -E '(Error|Warning)'
-..//ft_atoi.c: Error!
-Error: BRACE_SHOULD_EOL     (line:  38, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_atoi.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-= Test 8 ===================================================
-$> ./user_exe 08
-$> diff -U 3 user_output_test08 test08.output
-
-Diff OK :D
-= Test 9 ===================================================
-$> ./user_exe 09
-$> diff -U 3 user_output_test09 test09.output
-
-Diff OK :D
-= Test 10 ==================================================
-$> ./user_exe 10
-$> diff -U 3 user_output_test10 test10.output
-
-Diff OK :D
-= Test 11 ==================================================
-$> ./user_exe 11
-$> diff -U 3 user_output_test11 test11.output
-
-Diff OK :D
-= Test 12 ==================================================
-$> ./user_exe 12
-$> diff -U 3 user_output_test12 test12.output
-
-Diff OK :D
-= Test 13 ==================================================
-$> ./user_exe 13
-$> diff -U 3 user_output_test13 test13.output
-
-Diff OK :D
-= Test 14 ==================================================
-$> ./user_exe 14
-$> diff -U 3 user_output_test14 test14.output
-
-Diff OK :D
-= Test 15 ==================================================
-$> ./user_exe 15
-$> diff -U 3 user_output_test15 test15.output
-
-Diff OK :D
-= Test 16 ==================================================
-$> ./user_exe 16
-$> diff -U 3 user_output_test16 test16.output
-
-Diff OK :D
-= Test 17 ==================================================
-$> ./user_exe 17
-$> diff -U 3 user_output_test17 test17.output
-
-Diff OK :D
-= Test 18 ==================================================
-$> ./user_exe 18
-$> diff -U 3 user_output_test18 test18.output
-
-Diff OK :D
-= Test 19 ==================================================
-$> ./user_exe 19
-$> diff -U 3 user_output_test19 test19.output
-
-Diff OK :D
-
-= ft_isalpha.c =================================================================
-$> norminette ft_isalpha.c | grep -E '(Error|Warning)'
-..//ft_isalpha.c: Error!
-Error: BRACE_SHOULD_EOL     (line:  21, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_isalpha.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-
-= ft_isdigit.c =================================================================
-$> norminette ft_isdigit.c | grep -E '(Error|Warning)'
-..//ft_isdigit.c: Error!
-Error: SPC_BFR_OPERATOR     (line:  17, col:  22):	missing space before operator
-Error: TOO_FEW_TAB          (line:  18, col:   1):	Missing tabs for indent level
-Error: TOO_FEW_TAB          (line:  20, col:   1):	Missing tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  21, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_isdigit.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-
-= ft_isalnum.c =================================================================
-$> norminette ft_isalnum.c | grep -E '(Error|Warning)'
-..//ft_isalnum.c: Error!
-Error: LINE_TOO_LONG        (line:  17, col:  82):	line too long
-Error: TOO_FEW_TAB          (line:  18, col:   1):	Missing tabs for indent level
-Error: TOO_FEW_TAB          (line:  20, col:   1):	Missing tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  21, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_isalnum.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-
-= ft_isascii.c =================================================================
-$> norminette ft_isascii.c | grep -E '(Error|Warning)'
-..//ft_isascii.c: Error!
-Error: TOO_FEW_TAB          (line:  18, col:   1):	Missing tabs for indent level
-Error: TOO_FEW_TAB          (line:  20, col:   1):	Missing tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  21, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_isascii.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-= Test 8 ===================================================
-$> ./user_exe 08
-$> diff -U 3 user_output_test08 test08.output
-
-Diff OK :D
-
-= ft_isprint.c =================================================================
-$> norminette ft_isprint.c | grep -E '(Error|Warning)'
-..//ft_isprint.c: Error!
-Error: BRACE_SHOULD_EOL     (line:  21, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_isprint.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-
-= ft_toupper.c =================================================================
-$> norminette ft_toupper.c | grep -E '(Error|Warning)'
-..//ft_toupper.c: Error!
-Error: TOO_FEW_TAB          (line:  18, col:   1):	Missing tabs for indent level
-Error: TOO_FEW_TAB          (line:  20, col:   1):	Missing tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  21, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_toupper.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-
-= ft_tolower.c =================================================================
-$> norminette ft_tolower.c | grep -E '(Error|Warning)'
-..//ft_tolower.c: Error!
-Error: TOO_FEW_TAB          (line:  18, col:   1):	Missing tabs for indent level
-Error: TOO_FEW_TAB          (line:  20, col:   1):	Missing tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  21, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_tolower.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-
-= Part2_functions ==============================================================
-
-= ft_strmapi.c =================================================================
-$> norminette ft_strmapi.c | grep -E '(Error|Warning)'
-..//ft_strmapi.c: Error!
-Error: BRACE_SHOULD_EOL     (line:  34, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strmapi.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-
-= ft_substr.c ==================================================================
-$> norminette ft_substr.c | grep -E '(Error|Warning)'
-..//ft_substr.c: Error!
-Error: MISALIGNED_VAR_DECL  (line:  18, col:  21):	Misaligned variable declaration
-Error: MISALIGNED_VAR_DECL  (line:  19, col:  21):	Misaligned variable declaration
-Error: SPACE_AFTER_KW       (line:  23, col:  12):	Missing space after keyword
-Error: SPACE_AFTER_KW       (line:  25, col:   9):	Missing space after keyword
-Error: SPC_BFR_PAR          (line:  25, col:  15):	Missing space before parenthesis (brace/bracket)
-Error: SPACE_AFTER_KW       (line:  26, col:   5):	Missing space after keyword
-Error: SPC_BFR_PAR          (line:  26, col:  10):	Missing space before parenthesis (brace/bracket)
-Error: BRACE_SHOULD_EOL     (line:  37, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_substr.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-
-= ft_strjoin.c =================================================================
-$> norminette ft_strjoin.c | grep -E '(Error|Warning)'
-..//ft_strjoin.c: Error!
-Error: SPACE_REPLACE_TAB    (line:  17, col:   9):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  18, col:  13):	Misaligned variable declaration
-Error: MISALIGNED_VAR_DECL  (line:  19, col:  13):	Misaligned variable declaration
-Error: SPACE_AFTER_KW       (line:  23, col:  12):	Missing space after keyword
-Error: BRACE_SHOULD_EOL     (line:  39, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strjoin.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-
-= ft_strtrim.c =================================================================
-$> norminette ft_strtrim.c | grep -E '(Error|Warning)'
-..//ft_strtrim.c: Error!
-Error: MISALIGNED_VAR_DECL  (line:  32, col:  13):	Misaligned variable declaration
-Error: MIXED_SPACE_TAB      (line:  33, col:  17):	Mixed spaces and tabs
-Error: SPACE_REPLACE_TAB    (line:  33, col:  17):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  33, col:  21):	Misaligned variable declaration
-Error: MISALIGNED_VAR_DECL  (line:  34, col:  13):	Misaligned variable declaration
-Error: MISALIGNED_VAR_DECL  (line:  35, col:  13):	Misaligned variable declaration
-Error: SPACE_AFTER_KW       (line:  43, col:  16):	Missing space after keyword
-Error: SPACE_AFTER_KW       (line:  52, col:  12):	Missing space after keyword
-Error: SPACE_AFTER_KW       (line:  54, col:   9):	Missing space after keyword
-Error: SPC_BFR_PAR          (line:  54, col:  15):	Missing space before parenthesis (brace/bracket)
-Error: BRACE_SHOULD_EOL     (line:  64, col:   1):	Expected newline after brace
-Error: TOO_MANY_LINES       (line:  64, col:   1):	Function has more than 25 lines
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_strtrim.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-
-= ft_split.c ===================================================================
-$> norminette ft_split.c | grep -E '(Error|Warning)'
-..//ft_split.c: Error!
-Error: SPACE_REPLACE_TAB    (line:  53, col:   9):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  54, col:  13):	Misaligned variable declaration
-Error: SPACE_REPLACE_TAB    (line:  73, col:   9):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  73, col:  10):	Misaligned variable declaration
-Error: TAB_INSTEAD_SPC      (line:  89, col:  13):	Found tab when expecting space
-Error: BRACE_SHOULD_EOL     (line:  93, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_split.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-
-= ft_itoa.c ====================================================================
-$> norminette ft_itoa.c | grep -E '(Error|Warning)'
-..//ft_itoa.c: Error!
-Error: MIXED_SPACE_TAB      (line:  35, col:   1):	Mixed spaces and tabs
-Error: TOO_FEW_TAB          (line:  35, col:   1):	Missing tabs for indent level
-Error: CONSECUTIVE_SPC      (line:  35, col:   5):	Two or more consecutives spaces
-Error: CONSECUTIVE_SPC      (line:  43, col:  13):	Two or more consecutives spaces
-Error: SPACE_REPLACE_TAB    (line:  43, col:  13):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  43, col:  17):	Misaligned variable declaration
-Error: SPACE_REPLACE_TAB    (line:  45, col:   5):	Found space when expecting tab
-Error: BRACE_SHOULD_EOL     (line:  66, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_itoa.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-= Test 8 ===================================================
-$> ./user_exe 08
-$> diff -U 3 user_output_test08 test08.output
-
-Diff OK :D
-= Test 9 ===================================================
-$> ./user_exe 09
-$> diff -U 3 user_output_test09 test09.output
-
-Diff OK :D
-= Test 10 ==================================================
-$> ./user_exe 10
-$> diff -U 3 user_output_test10 test10.output
-
-Diff OK :D
-
-= ft_striteri.c ================================================================
-$> norminette ft_striteri.c | grep -E '(Error|Warning)'
-..//ft_striteri.c: Error!
-Error: BRACE_SHOULD_EOL     (line:  27, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_striteri.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-
-= ft_putchar_fd.c ==============================================================
-$> norminette ft_putchar_fd.c | grep -E '(Error|Warning)'
-..//ft_putchar_fd.c: Error!
-Error: BRACE_SHOULD_EOL     (line:  18, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_putchar_fd.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-
-= ft_putstr_fd.c ===============================================================
-$> norminette ft_putstr_fd.c | grep -E '(Error|Warning)'
-..//ft_putstr_fd.c: Error!
-Error: BRACE_SHOULD_EOL     (line:  25, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_putstr_fd.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-
-= ft_putendl_fd.c ==============================================================
-$> norminette ft_putendl_fd.c | grep -E '(Error|Warning)'
-..//ft_putendl_fd.c: Error!
-Error: TOO_FEW_TAB          (line:  25, col:   1):	Missing tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  26, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_putendl_fd.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-
-= ft_putnbr_fd.c ===============================================================
-$> norminette ft_putnbr_fd.c | grep -E '(Error|Warning)'
-..//ft_putnbr_fd.c: Error!
-Error: TOO_FEW_TAB          (line:  35, col:   1):	Missing tabs for indent level
-Error: TOO_FEW_TAB          (line:  36, col:   1):	Missing tabs for indent level
-Error: BRACE_SHOULD_EOL     (line:  38, col:   1):	Expected newline after brace
-Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_putnbr_fd.c main.c libft.a -o user_exe
-
-= Test 1 ===================================================
-$> ./user_exe 01
-$> diff -U 3 user_output_test01 test01.output
-
-Diff OK :D
-= Test 2 ===================================================
-$> ./user_exe 02
-$> diff -U 3 user_output_test02 test02.output
-
-Diff OK :D
-= Test 3 ===================================================
-$> ./user_exe 03
-$> diff -U 3 user_output_test03 test03.output
-
-Diff OK :D
-= Test 4 ===================================================
-$> ./user_exe 04
-$> diff -U 3 user_output_test04 test04.output
-
-Diff OK :D
-= Test 5 ===================================================
-$> ./user_exe 05
-$> diff -U 3 user_output_test05 test05.output
-
-Diff OK :D
-= Test 6 ===================================================
-$> ./user_exe 06
-$> diff -U 3 user_output_test06 test06.output
-
-Diff OK :D
-= Test 7 ===================================================
-$> ./user_exe 07
-$> diff -U 3 user_output_test07 test07.output
-
-Diff OK :D
-= Test 8 ===================================================
-$> ./user_exe 08
-$> diff -U 3 user_output_test08 test08.output
-
-Diff OK :D
-= Test 9 ===================================================
-$> ./user_exe 09
-$> diff -U 3 user_output_test09 test09.output
-
-Diff OK :D
-
-= Bonus_functions ==============================================================
-
-= ft_lstnew_bonus.c ============================================================
-$> norminette ft_lstnew_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstnew.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:1:1: error: unknown type name 't_list'
-t_list  *ft_lstnew(void *content)
-^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:3:2: error: use of undeclared identifier 't_list'
-        t_list  *node;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:3:10: error: use of undeclared identifier 'node'
-        t_list  *node;
-                 ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:5:2: error: use of undeclared identifier 'node'
-        node = malloc(sizeof(t_list));
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:5:9: error: implicitly declaring library function 'malloc' with type 'void *(unsigned long)' [-Werror,-Wimplicit-function-declaration]
-        node = malloc(sizeof(t_list));
-               ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:5:9: note: include the header <stdlib.h> or explicitly provide a declaration for 'malloc'
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:5:23: error: use of undeclared identifier 't_list'
-        node = malloc(sizeof(t_list));
-                             ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:6:7: error: use of undeclared identifier 'node'
-        if (!node)
-             ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:7:11: error: use of undeclared identifier 'NULL'
-                return (NULL);
-                        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:8:2: error: use of undeclared identifier 'node'
-        node-> content = content;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:9:2: error: use of undeclared identifier 'node'
-        node-> next = NULL;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:9:16: error: use of undeclared identifier 'NULL'
-        node-> next = NULL;
-                      ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstnew.c:10:10: error: use of undeclared identifier 'node'
-        return (node);
-                ^
-12 errors generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstnew/main.c:49:16: error: implicit declaration of function 'ft_lstnew' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                if (!(elem = ft_lstnew(str)))
-                             ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstnew/main.c:49:14: error: incompatible integer to pointer conversion assigning to 't_list *' (aka 'struct s_list *') from 'int' [-Werror,-Wint-conversion]
-                if (!(elem = ft_lstnew(str)))
-                           ^ ~~~~~~~~~~~~~~
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstnew/main.c:71:16: error: implicit declaration of function 'ft_lstnew' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                if (!(elem = ft_lstnew(&i)))
-                             ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstnew/main.c:71:14: error: incompatible integer to pointer conversion assigning to 't_list *' (aka 'struct s_list *') from 'int' [-Werror,-Wint-conversion]
-                if (!(elem = ft_lstnew(&i)))
-                           ^ ~~~~~~~~~~~~~
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstnew/main.c:90:16: error: implicit declaration of function 'ft_lstnew' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                if (!(elem = ft_lstnew(NULL)))
-                             ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstnew/main.c:90:14: error: incompatible integer to pointer conversion assigning to 't_list *' (aka 'struct s_list *') from 'int' [-Werror,-Wint-conversion]
-                if (!(elem = ft_lstnew(NULL)))
-                           ^ ~~~~~~~~~~~~~~~
-6 errors generated.
-
-= ft_lstdelone_bonus.c =========================================================
-$> norminette ft_lstdelone_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstdelone.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstdelone.c:1:19: error: unknown type name 't_list'
-void    ft_lstdelone(t_list *lst, void (*del)(void*))
-                     ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstdelone.c:4:2: error: implicit declaration of function 'free' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-        free(lst);
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstdelone.c:5:8: error: use of undeclared identifier 'NULL'
-        lst = NULL;
-              ^
-3 errors generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstdelone/main.c:67:3: error: implicit declaration of function 'ft_lstdelone' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                ft_lstdelone(elem3, &ft_del);
-                ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstdelone/main.c:67:3: note: did you mean 'ft_lstnewone'?
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstdelone/main.c:29:9: note: 'ft_lstnewone' declared here
-t_list  *ft_lstnewone(void *content)
-         ^
-1 error generated.
-
-= ft_lstclear_bonus.c ==========================================================
-$> norminette ft_lstclear_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstclear.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstclear.c:1:18: error: unknown type name 't_list'
-void    ft_lstclear(t_list **lst, void (*del)(void*))
-                    ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstclear.c:3:2: error: use of undeclared identifier 't_list'
-        t_list *tmp;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstclear.c:3:10: error: use of undeclared identifier 'tmp'
-        t_list *tmp;
-                ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstclear.c:9:4: error: use of undeclared identifier 'tmp'
-                        tmp = (*lst) -> next;
-                        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstclear.c:10:4: error: implicit declaration of function 'ft_lstdelone' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                        ft_lstdelone(*lst, del);
-                        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstclear.c:11:4: error: implicit declaration of function 'free' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                        free(lst);
-                        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstclear.c:12:13: error: use of undeclared identifier 'temp'
-                        (*lst) = temp;
-                                 ^
-7 errors generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstclear/main.c:70:3: error: implicit declaration of function 'ft_lstclear' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                ft_lstclear(&elem3, &ft_del);
-                ^
-1 error generated.
-
-= ft_lstadd_front_bonus.c ======================================================
-$> norminette ft_lstadd_front_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstadd_front.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_front.c:1:22: error: unknown type name 't_list'
-void    ft_lstadd_front(t_list **lst, t_list *new)
-                        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_front.c:1:36: error: unknown type name 't_list'
-void    ft_lstadd_front(t_list **lst, t_list *new)
-                                      ^
-2 errors generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstadd_front/main.c:66:3: error: implicit declaration of function 'ft_lstadd_front' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                ft_lstadd_front(&begin, elem4);
-                ^
-1 error generated.
-
-= ft_lstadd_back_bonus.c =======================================================
-$> norminette ft_lstadd_back_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstadd_back.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_back.c:1:21: error: unknown type name 't_list'
-void    ft_lstadd_back(t_list **lst, t_list *new)
-                       ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_back.c:1:35: error: unknown type name 't_list'
-void    ft_lstadd_back(t_list **lst, t_list *new)
-                                     ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_back.c:3:2: error: use of undeclared identifier 't_list'
-        t_list  *temp;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_back.c:3:10: error: use of undeclared identifier 'temp'
-        t_list  *temp;
-                 ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_back.c:7:16: error: use of undeclared identifier 'NULL'
-                        if (*lst == NULL)
-                                    ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_back.c:11:5: error: use of undeclared identifier 'temp'
-                                temp = ft_lstlast(*(lst));
-                                ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_back.c:11:12: error: implicit declaration of function 'ft_lstlast' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                                temp = ft_lstlast(*(lst));
-                                       ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstadd_back.c:12:5: error: use of undeclared identifier 'temp'
-                                temp -> next = new;
-                                ^
-8 errors generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstadd_back/main.c:66:3: error: implicit declaration of function 'ft_lstadd_back' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                ft_lstadd_back(&begin, elem);
-                ^
-1 error generated.
-
-= ft_lstsize_bonus.c ===========================================================
-$> norminette ft_lstsize_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstsize.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:1:16: error: unknown type name 't_list'
-int     ft_lstsize(t_list *lst)
-                   ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:4:2: error: use of undeclared identifier 't_list'
-        t_list *temp;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:4:10: error: use of undeclared identifier 'temp'
-        t_list *temp;
-                ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:7:2: error: use of undeclared identifier 'temp'
-        temp = lst;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:8:9: error: use of undeclared identifier 'temp'
-        while (temp -> next != NULL)
-               ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:8:25: error: use of undeclared identifier 'NULL'
-        while (temp -> next != NULL)
-                               ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:11:3: error: use of undeclared identifier 'temp'
-                temp = temp -> next;
-                ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:11:10: error: use of undeclared identifier 'temp'
-                temp = temp -> next;
-                       ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:13:6: error: use of undeclared identifier 'temp'
-        if (temp -> next == null)
-            ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstsize.c:13:22: error: use of undeclared identifier 'null'
-        if (temp -> next == null)
-                            ^
-10 errors generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstsize/main.c:57:7: error: implicit declaration of function 'ft_lstsize' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                c = ft_lstsize(elem) + 48;
-                    ^
-1 error generated.
-
-= ft_lstiter_bonus.c ===========================================================
-$> norminette ft_lstiter_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstiter.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstiter.c:1:17: error: unknown type name 't_list'
-void    ft_lstiter(t_list *lst, void (*f)(void *))
-                   ^
-1 error generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstiter/main.c:85:3: error: implicit declaration of function 'ft_lstiter' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                ft_lstiter(elem, &ft_modify_list_with_d);
-                ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstiter/main.c:85:3: note: did you mean 'ft_striteri'?
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstiter/../../../libft.h:36:6: note: 'ft_striteri' declared here
-void    ft_striteri(char *s, void (*f)(unsigned int, char*));
-        ^
-1 error generated.
-
-= ft_lstmap_bonus.c ============================================================
-$> norminette ft_lstmap_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstmap.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstmap.c:1:1: error: unknown type name 't_list'
-t_list  *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
-^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstmap.c:1:19: error: unknown type name 't_list'
-t_list  *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
-                   ^
-2 errors generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstmap/main.c:89:16: error: implicit declaration of function 'ft_lstmap' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                if (!(list = ft_lstmap(elem, &ft_map, &ft_del)))
-                             ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstmap/main.c:89:14: error: incompatible integer to pointer conversion assigning to 't_list *' (aka 'struct s_list *') from 'int' [-Werror,-Wint-conversion]
-                if (!(list = ft_lstmap(elem, &ft_map, &ft_del)))
-                           ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-2 errors generated.
-
-= ft_lstlast_bonus.c ===========================================================
-$> norminette ft_lstlast_bonus.c | grep -E '(Error|Warning)'
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_lstlast.c main.c libft.a -o user_exe
-
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:1:1: error: unknown type name 't_list'
-t_list  *ft_lstlast(t_list *lst)
-^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:1:20: error: unknown type name 't_list'
-t_list  *ft_lstlast(t_list *lst)
-                    ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:3:2: error: use of undeclared identifier 't_list'
-        t_list  *temp;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:3:10: error: use of undeclared identifier 'temp'
-        t_list  *temp;
-                 ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:5:2: error: use of undeclared identifier 'temp'
-        temp = lst;
-        ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:6:9: error: use of undeclared identifier 'temp'
-        while (temp -> next != '\0')
-               ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:7:3: error: use of undeclared identifier 'temp'
-                temp = temp -> next;
-                ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:7:10: error: use of undeclared identifier 'temp'
-                temp = temp -> next;
-                       ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft//ft_lstlast.c:8:10: error: use of undeclared identifier 'temp'
-        return (temp);
-                ^
-9 errors generated.
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstlast/main.c:59:9: error: implicit declaration of function 'ft_lstlast' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                val = ft_lstlast(elem);
-                      ^
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstlast/main.c:59:7: error: incompatible integer to pointer conversion assigning to 't_list *' (aka 'struct s_list *') from 'int' [-Werror,-Wint-conversion]
-                val = ft_lstlast(elem);
-                    ^ ~~~~~~~~~~~~~~~~
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstlast/main.c:66:7: error: incompatible integer to pointer conversion assigning to 't_list *' (aka 'struct s_list *') from 'int' [-Werror,-Wint-conversion]
-                val = ft_lstlast(elem);
-                    ^ ~~~~~~~~~~~~~~~~
-/Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Bonus_functions/ft_lstlast/main.c:73:7: error: incompatible integer to pointer conversion assigning to 't_list *' (aka 'struct s_list *') from 'int' [-Werror,-Wint-conversion]
-                val = ft_lstlast(elem);
-                    ^ ~~~~~~~~~~~~~~~~
-4 errors generated.

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:20:29 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:24:03 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (check_set(s1[len], set) == 1)
 		len--;
 	size = len - i;
-	tab = (char *)malloc(sizeof(char) * size + 2);
-	if (!tab)
+	if(!(tab = (char *)malloc(sizeof(char) * size + 2));
 		return (NULL);
 	c = 0;
 	while (i <= len)
