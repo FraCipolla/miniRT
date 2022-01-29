@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 18:22:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:51:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_find_size(const char *s, char c)
 	int	i;
 	int	x;
 
-	c = 0;
+	i = 0;
 	x = 0;
 	while (*s)
 	{
