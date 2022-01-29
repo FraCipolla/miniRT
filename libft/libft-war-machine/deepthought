@@ -3,7 +3,7 @@ $> hostname; uname -msr
 e3r1p3.42roma.it
 Darwin 18.7.0 x86_64
 $> date
-Fri Jan 28 23:30:01 CET 2022
+Sat Jan 29 13:36:28 CET 2022
 $> gcc --version
 Apple clang version 11.0.0 (clang-1100.0.33.17)
 Target: x86_64-apple-darwin18.7.0
@@ -109,24 +109,18 @@ clang: error: no input files
 make: *** [bonus] Error 1
 
 $> ls -la libft.a
--rw-r--r--  1 mcipolla  2021_rome  33328 Jan 28 23:30 /Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft/libft.a
+-rw-r--r--  1 mcipolla  2021_rome  33384 Jan 29 13:36 /Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/dirlibft/libft.a
 
 = Part2_functions ==============================================================
 
-= ft_itoa.c ====================================================================
-$> norminette ft_itoa.c | grep -E '(Error|Warning)'
-..//ft_itoa.c: Error!
-Error: MIXED_SPACE_TAB      (line:  35, col:   1):	Mixed spaces and tabs
+= ft_putnbr_fd.c ===============================================================
+$> norminette ft_putnbr_fd.c | grep -E '(Error|Warning)'
+..//ft_putnbr_fd.c: Error!
 Error: TOO_FEW_TAB          (line:  35, col:   1):	Missing tabs for indent level
-Error: CONSECUTIVE_SPC      (line:  35, col:   5):	Two or more consecutives spaces
-Error: CONSECUTIVE_SPC      (line:  43, col:  13):	Two or more consecutives spaces
-Error: SPACE_REPLACE_TAB    (line:  43, col:  13):	Found space when expecting tab
-Error: MISALIGNED_VAR_DECL  (line:  43, col:  17):	Misaligned variable declaration
-Error: SPACE_REPLACE_TAB    (line:  45, col:   5):	Found space when expecting tab
-Error: SPACE_AFTER_KW       (line:  50, col:  12):	Missing space after keyword
-Error: BRACE_SHOULD_EOL     (line:  66, col:   1):	Expected newline after brace
+Error: TOO_FEW_TAB          (line:  36, col:   1):	Missing tabs for indent level
+Error: BRACE_SHOULD_EOL     (line:  38, col:   1):	Expected newline after brace
 Norme check failed
-$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_itoa.c main.c libft.a -o user_exe
+$> clang -Wextra -Wall -Werror -g3 -fsanitize=address ft_putnbr_fd.c main.c libft.a -o user_exe
 
 = Test 1 ===================================================
 $> ./user_exe 01
@@ -171,17 +165,5 @@ Diff OK :D
 = Test 9 ===================================================
 $> ./user_exe 09
 $> diff -U 3 user_output_test09 test09.output
---- /Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Part2_functions/ft_itoa/user_output_test09	2022-01-28 23:30:04.000000000 +0100$
-+++ /Users/mcipolla/Desktop/mcipolla42/libft/libft-war-machine/tests/Part2_functions/ft_itoa/test09.output	2022-01-28 21:02:01.000000000 +0100$
-@@ -1 +1 @@$
---¾¾¾¾¾¾¾¾¾($
-\ No newline at end of file$
-+-2147483648$
-\ No newline at end of file$
-
-Diff KO :(
-= Test 10 ==================================================
-$> ./user_exe 10
-$> diff -U 3 user_output_test10 test10.output
 
 Diff OK :D

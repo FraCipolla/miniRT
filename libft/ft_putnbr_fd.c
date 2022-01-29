@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:34 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 18:37:56 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:36:35 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_putnbr_fd(int n, int fd)
 			ft_putchar ('-', fd);
 			n *= -1;
 		}
-		if (n >= 9)
+		if (n > 9)
 		ft_putnbr_fd (n / 10, fd);
 	ft_putchar((n % 10) + '0', fd);
 	}
