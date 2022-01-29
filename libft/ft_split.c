@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:23:05 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 22:24:34 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	x = 0;
+	if (s == NULL)
+		return (NULL);
 	size = ft_find_size(s, c);
 	dst = malloc((size + 1) * sizeof(char *));
 	if (!dst)

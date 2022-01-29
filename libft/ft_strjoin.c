@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:47 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:23:17 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 22:26:51 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	c = 0;
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
 	tab = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!tab)
 		return (NULL);

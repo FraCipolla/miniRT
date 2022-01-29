@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 18:00:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 22:29:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 
 	i = 0;
 	len = ft_strlen(s1) - 1;
+	if (s1 == NULL)
+		return (NULL);
 	while (check_set(s1[i], set) == 1 && s1[i])
 		i++;
 	if (s1[i] == '\0')
