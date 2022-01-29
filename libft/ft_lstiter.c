@@ -6,9 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 17:15:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:22:23 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 18:36:05 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
