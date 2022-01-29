@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:27 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 17:36:18 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:16:51 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	*ft_memset(void *b, int c, size_t len)
 	{
 		str[n] = (unsigned char)c;
 		n++;
-
 	}
 	return (b);
 }

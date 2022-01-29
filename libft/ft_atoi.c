@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:34:46 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:09:07 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:10:50 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_atoi(const char *str)
 	i = 0;
 	res = 0;
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-	i++;
+		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')

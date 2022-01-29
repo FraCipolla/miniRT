@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:44 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 17:36:18 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:18:09 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 char	*ft_strdup(const char *s1)
 {
-	int	i;
-	char *tab;
+	int		i;
+	char	*tab;
 
 	i = 0;
 	while (s1[i])
 		i++;
-	tab = (char*)malloc(sizeof(char) * i + 1);
+	tab = (char *)malloc(sizeof(char) * i + 1);
 	if (!tab)
 		return (NULL);
 	i = 0;

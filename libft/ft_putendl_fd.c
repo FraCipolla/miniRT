@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 18:18:59 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:17:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ void	ft_putendl_fd(char *s, int fd)
 		write (fd, &s[i], 1);
 		i++;
 	}
-write (fd, "\n", 1);
+	write (fd, "\n", 1);
 }

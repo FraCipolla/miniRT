@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:54 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 21:25:35 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:19:13 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 size_t	ft_strlcpy(char *restrict dst, const char *restrict src, size_t dstsize)
 {
 	size_t	i;
-	size_t src_len;
+	size_t	src_len;
 
 	i = 0;
 	src_len = ft_strlen(src);
 	if (dstsize != 0)
+	{
+		while (src[i] && i < dstsize - 1)
 		{
-			while (src[i] && i < dstsize - 1)
-			{
 				dst[i] = src[i];
 				i++;
-			}
-		dst[i] = 0;
 		}
+		dst[i] = 0;
+	}
 	return (src_len);
 }

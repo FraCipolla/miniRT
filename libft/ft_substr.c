@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/28 23:02:23 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:20:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char		*tab;
+	char			*tab;
 	unsigned int	i;
 	unsigned int	j;
 
 	i = 0;
 	j = 0;
-	tab = (char*)malloc(sizeof(*s) * (len + 1));
+	tab = (char *)malloc(sizeof(*s) * (len + 1));
 	if (!tab)
-		return(NULL);
-	while(s[i])
+		return (NULL);
+	while (s[i])
 	{
 		if (i >= start && j < len)
 		{

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 13:33:56 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:20:29 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int	check_set(char c, char const *set)
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	unsigned int		i;
-	int		size;
-	unsigned int 	len;
-	char	*tab;
-	int		c;
+	unsigned int	i;
+	int				size;
+	unsigned int	len;
+	char			*tab;
+	int				c;
 
 	i = 0;
 	len = ft_strlen(s1) - 1;
@@ -40,7 +40,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		i++;
 	if (s1[i] == '\0')
 	{
-		tab = (char*)malloc(sizeof(char) * 1);
+		tab = (char *)malloc(sizeof(char) * 1);
 		if (!tab)
 			return (NULL);
 		tab[0] = 0;
@@ -49,9 +49,9 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (check_set(s1[len], set) == 1)
 		len--;
 	size = len - i;
-	tab = (char*)malloc(sizeof(char) * size + 2);
+	tab = (char *)malloc(sizeof(char) * size + 2);
 	if (!tab)
-		return(NULL);
+		return (NULL);
 	c = 0;
 	while (i <= len)
 	{

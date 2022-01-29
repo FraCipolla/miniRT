@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 13:45:54 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:14:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ int	find_size(long int n)
 void	put_nbr(char *tab, long int n, int size)
 {
 	if (n > 9)
-	    put_nbr (tab, n / 10, size -1);
+		put_nbr (tab, n / 10, size -1);
 	tab[size] = (n % 10 + '0');
 }
 
 char	*ft_itoa(int n)
 {
-	int		size;
-	char	*tab;
-	long int    nbr;
+	int			size;
+	char		*tab;
+	long int	nbr;
 
-    nbr = n;
+	nbr = n;
 	if (nbr < 0)
 		size = find_size(nbr) + 1;
 	else

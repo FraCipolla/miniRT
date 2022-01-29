@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 13:51:44 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:17:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_find_size(const char *s, char c)
 
 char	*ft_malloc_strcpy(const char *s, int n)
 {
-	char *dst;
+	char	*dst;
 	int		i;
 
 	i = 0;
@@ -68,10 +68,10 @@ char	*ft_malloc_strcpy(const char *s, int n)
 
 char	**ft_split(char const *s, char c)
 {
-	int	i;
-	int	x;
-	char **dst;
-	int	size;
+	int		i;
+	int		x;
+	char	**dst;
+	int		size;
 
 	i = 0;
 	x = 0;
@@ -86,7 +86,7 @@ char	**ft_split(char const *s, char c)
 		i = ft_len(s, c);
 		dst[x] = ft_malloc_strcpy(s, i);
 		s += i;
-		x++;	
+		x++;
 	}
 	dst[size] = 0;
 	return (dst);
