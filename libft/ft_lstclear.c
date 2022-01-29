@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/29 17:14:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 18:35:56 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 18:46:09 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 		{
 			tmp = (*lst)-> next;
 			ft_lstdelone(*lst, del);
-			free(lst);
-			(*lst) = temp;
+			(*lst) = tmp;
 		}
 	}
 }
