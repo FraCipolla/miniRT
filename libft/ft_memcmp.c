@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:22:43 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 21:53:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 
 	conv_s1 = (unsigned char *)s1;
 	conv_s2 = (unsigned char *)s2;
-	if (n == 0)
+	if (s1 == s2 || n == 0)
 		return (0);
 	i = 0;
 	while (i < n -1 && conv_s1[i] == conv_s2[i])

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:23 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:22:46 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/29 22:01:37 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	size_t	i;
 
 	i = 0;
+	if (dst == NULL && src == NULL)
+		return (NULL);
 	while (i < n)
 	{
 		*(char *)(dst + i) = *(char *)(src + i);
