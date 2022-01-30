@@ -6,51 +6,45 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/30 14:10:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/30 19:55:50 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	check_set(char c, char const *set)
+char	*ft_strncpy(char *dst, const char *src, size_t len)
 {
-	int	x;
+	size_t	c;
 
-	x = 0;
-	while (set[x])
+	c = 0;
+	while (c < len)
 	{
-		if (set[x] == c)
-			return (1);
-		x++;
+		dst[c] = src[c];
+		c++;
 	}
-	return (0);
+	return (dst);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	unsigned int	i;
-	int				size;
-	unsigned int	len;
-	char			*tab;
+	size_t	start;
+	size_t	end;
+	char	*tmp;
 
-	i = 0;
-	len = ft_strlen(s1) - 1;
-	if (s1 == NULL)
+	if (s1 == NULL || set == NULL)
 		return (NULL);
-	while (check_set(s1[i], set) == 1 && s1[i])
-		i++;
-	if (s1[i] == '\0')
-		tab = (char *)malloc(sizeof(char) * 1);
-	else
-		while (check_set(s1[len], set) == 1)
-			len--;
-	size = len - i;
-	tab = (char *)malloc(sizeof(char) * size + 2);
-	if (!tab)
+	start = 0;
+	while (s1[start] && ft_strchr(set, s1[start]))
+		start++;
+	end = ft_strlen (s1 + start);
+	if (end)
+		while (s1[end + start - 1] != 0
+			&& ft_strchr (set, s1[end + start - 1]) != 0)
+			end--;
+	tmp = malloc(sizeof(char) * end + 1);
+	if (!tmp)
 		return (NULL);
-	size = 0;
-	while (i <= len)
-		tab[size++] = s1[i++];
-	tab[size] = '\0';
-	return (tab);
+	ft_strncpy(tmp, s1 + start, end);
+	tmp[end] = '\0';
+	return (tmp);
 }
