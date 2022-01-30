@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 22:29:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/30 14:10:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 	if (s1[i] == '\0')
 		tab = (char *)malloc(sizeof(char) * 1);
 	else
-	{
 		while (check_set(s1[len], set) == 1)
 			len--;
-		size = len - i;
-		tab = (char *)malloc(sizeof(char) * size + 2);
-	}
+	size = len - i;
+	tab = (char *)malloc(sizeof(char) * size + 2);
 	if (!tab)
 		return (NULL);
 	size = 0;
