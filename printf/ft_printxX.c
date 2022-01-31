@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/01 00:15:55 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/01 00:20:16 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ void	ft_print_hex(va_list args)
 		ft_print_direv (str, len);
 		return ;
 	}
+	while (params.width - 1 > len++ && params.zero == 0)
+		ft_putchar (' ');
+	
 	while (params.width > len++)
-		ft_putchar ('0');
-	ft_putstr(str);
+			ft_putchar ('0');
+	}
+	ft_putstr(ft_itoa(args));
 }
