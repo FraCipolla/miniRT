@@ -1,0 +1,87 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printargs.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/01/31 21:56:14 by mcipolla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+void	ft_print_di(va_list args)
+{
+	int	len;
+
+	len = 0;
+	while (args != 0)
+	{
+		args /= 10;
+		len++;
+	}
+	if (params -> min == 1 && params -> dot == 0)
+	{
+		ft_print_direv (args);
+		return ;
+	}
+	while (params.width - 1 > len++ && params.plus == 1 && params.zero == 0)
+		ft_putchar (' ');
+	if (params -> plus == 1 && args >= '0'))
+	{
+		ft_putchar ('+');
+		params -> space = 0;
+		params -> width -= 1;
+	}
+	if (args < '0')
+	{
+		ft_putchar ('-');
+		args *= -1;
+		params -> space = 0;
+		params -> width -= 1;
+	}
+	while (params.width > len++)
+			ft_putchar ('0');
+	}
+	ft_putstr(ft_itoa(args));
+}
+
+void	ft_print_direv (va_list args)
+{
+	int	len;
+
+	len = 0;
+	while (args != 0)
+	{
+		args /= 10;
+		len++;
+	}
+	if (params -> plus == 1 && args >= '0'))
+	{
+		ft_putchar ('+');
+		params -> space = 0;
+		params -> width -= 1;
+	}
+	if (args < '0')
+	{
+		ft_putchar ('-');
+		args *= -1;
+		params -> space = 0;
+		params -> width -= 1;
+	}
+	ft_putstr(ft_itoa(args));
+	while (params.width > len++)
+			ft_putchar (' ');
+	params -> zero = 0;
+}
+
+void	ft_print_precision (va_list args)
+{
+	params -> precision -= params.width;
+
+	while (params.precision > 0)
+	{
+		ft_putchar('0');
+		params -> precision -= 1;
+	}
+}
