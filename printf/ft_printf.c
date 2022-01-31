@@ -6,9 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/31 23:06:57 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/31 23:53:54 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "printf.h"
 
 void	ft_putchar_pf(char c)
 {

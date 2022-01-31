@@ -6,28 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/31 20:30:33 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/31 23:54:15 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_utility(t_list *params)
-{
-	params -> min = 0;
-	params -> zero = 0;
-	params -> hash = 0;
-	params -> dot = 0;
-	params -> space = 0;
-	params -> plus = 0;
-	params -> precision = 0;
-	params -> witdh = 0;
-	params -> di = 0;
-	params -> u = 0;
-	params -> x = 0;
-	params -> X = 0;
-	params -> s = 0;
-	params -> c = 0;
-	params -> p = 0;
-}
+#include "printf.h"
 
 int	ft_check_type (char c)
 {
@@ -112,4 +95,23 @@ void	ft_find_precision (char *str)
 	while (str >= '0' && str <= '9')
 		to_atoi++ = str++;
 	params -> precision = ft_atoi(to_atoi);	
+}
+
+void	ft_utility(t_list *params)
+{
+	params -> min = 0;
+	params -> zero = 0;
+	params -> hash = 0;
+	params -> dot = 0;
+	params -> space = 0;
+	params -> plus = 0;
+	params -> precision = 0;
+	params -> witdh = 0;
+	params -> di = 0;
+	params -> u = 0;
+	params -> x = 0;
+	params -> X = 0;
+	params -> s = 0;
+	params -> c = 0;
+	params -> p = 0;
 }

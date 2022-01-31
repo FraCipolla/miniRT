@@ -1,50 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printargs.c                                     :+:      :+:    :+:   */
+/*   ft_printdi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/31 21:56:14 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/01/31 23:53:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_print_di(va_list args)
-{
-	int	len;
-
-	len = 0;
-	while (args != 0)
-	{
-		args /= 10;
-		len++;
-	}
-	if (params -> min == 1 && params -> dot == 0)
-	{
-		ft_print_direv (args);
-		return ;
-	}
-	while (params.width - 1 > len++ && params.plus == 1 && params.zero == 0)
-		ft_putchar (' ');
-	if (params -> plus == 1 && args >= '0'))
-	{
-		ft_putchar ('+');
-		params -> space = 0;
-		params -> width -= 1;
-	}
-	if (args < '0')
-	{
-		ft_putchar ('-');
-		args *= -1;
-		params -> space = 0;
-		params -> width -= 1;
-	}
-	while (params.width > len++)
-			ft_putchar ('0');
-	}
-	ft_putstr(ft_itoa(args));
-}
+#include "printf.h"
 
 void	ft_print_direv (va_list args)
 {
@@ -84,4 +50,40 @@ void	ft_print_precision (va_list args)
 		ft_putchar('0');
 		params -> precision -= 1;
 	}
+}
+
+void	ft_print_di(va_list args)
+{
+	int	len;
+
+	len = 0;
+	while (args != 0)
+	{
+		args /= 10;
+		len++;
+	}
+	if (params -> min == 1 && params -> dot == 0)
+	{
+		ft_print_direv (args);
+		return ;
+	}
+	while (params.width - 1 > len++ && params.plus == 1 && params.zero == 0)
+		ft_putchar (' ');
+	if (params -> plus == 1 && args >= '0'))
+	{
+		ft_putchar ('+');
+		params -> space = 0;
+		params -> width -= 1;
+	}
+	if (args < '0')
+	{
+		ft_putchar ('-');
+		args *= -1;
+		params -> space = 0;
+		params -> width -= 1;
+	}
+	while (params.width > len++)
+			ft_putchar ('0');
+	}
+	ft_putstr(ft_itoa(args));
 }
