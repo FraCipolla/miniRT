@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/01 11:14:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/01 14:21:50 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	ft_putstr(char *s)
 
 	i = -1;
 	while (s[++i])
-		write (1, &s[i], 1);
+		ft_putchar(s[i]));
 }
 
 void	ft_find_precision (char *str, t_list *params)
@@ -114,4 +114,5 @@ void	ft_utility(t_list *params)
 	params->s = 0;
 	params->c = 0;
 	params->p = 0;
+	params->ret = 0;
 }

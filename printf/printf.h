@@ -23,6 +23,7 @@ typedef struct s_list
 	int	s;
 	int	c;
 	int	p;
+	int	ret;
 }				t_list;
 
 int		ft_atoi(const char *str);
