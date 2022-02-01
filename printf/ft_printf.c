@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/01 11:34:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/01 11:50:47 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-void	ft_putchar_pf(char c)
+void	ft_putchar(char c)
 {
 		write (1, &c, 1);
 }
@@ -62,7 +62,7 @@ int	ft_printf(const char *format, ...)
 			ft_print_args (args, params);
 		}
 		else
-			ft_putchar_pf (format[i]);
+			ft_putchar (format[i]);
 		i++;
 	}
 }
