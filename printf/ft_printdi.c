@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/01 11:11:15 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/01 11:31:52 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_print_direv (va_list args, int len, t_list *params)
 			ft_putchar (' ');
 	}
 	else
-		ft_print_direv_dot (args,len);
+		ft_print_direv_dot (args, len, params);
 	params->zero = 0;
 }
 
@@ -86,7 +86,7 @@ void	ft_print_di(va_list args, t_list *params)
 	}
 	if (params->min == 1)
 	{
-		ft_print_direv (args, len);
+		ft_print_direv (args, len, params);
 		return ;
 	}
 	while (params->width - 1 > len++ && params->plus == 1 && params->zero == 0)
