@@ -6,11 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/01 11:35:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 15:44:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 int	find_size(long int n)
 {

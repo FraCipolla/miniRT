@@ -1,4 +1,18 @@
-void	ft_print_p(long unsigned int args, t_list params)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/02 15:45:08 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/02 16:28:14 by mcipolla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
+
+void	ft_print_p(long unsigned int args, t_list *params)
 {
 
 }

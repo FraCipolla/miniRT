@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 13:03:57 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 16:14:39 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
-void	ft_print_s(char *args, t_list params)
+void	ft_print_s(char *args, t_list *params)
 {
 	int	len;
 	int	c;
@@ -25,21 +25,21 @@ void	ft_print_s(char *args, t_list params)
 		if (params->dot == 1 && params->precision < len)
 		{
 			while(c++ < params->precision)
-				ft_putchar(args[c]);
-			while (c++ < params->witdh)
-				ft_putchar(' ', &params);
+				ft_putchar(args[c], params);
+			while (c++ < params->width)
+				ft_putchar(' ', params);
 		}
 		else
 		{
-			ft_putstr(args);
+			ft_putstr(args, params);
 			while (params->width > len++)
-				ft_putchar (' ', &params);
+				ft_putchar (' ', params);
 		}
 	}
 	else
 	{
 		while (params->width > len++)
-			ft_putchar (' ', &params);
-		ft_putstr(args, &params);
+			ft_putchar (' ', params);
+		ft_putstr(args, params);
 	}		
 }

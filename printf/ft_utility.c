@@ -6,29 +6,29 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 12:50:55 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 16:33:10 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 int	ft_check_type (char c, t_list *params)
 {
 		if (c)
 		{ 
-			if (str[c] == "d" || str[c] == "1")
+			if (c == 'd' || c == '1')
 				params->di += 1;
-			else if (str[c] == "u")
+			else if (c == 'u')
 				params->u += 1;
-			else if (str[c] == "x")
+			else if (c == 'x')
 				params->x += 1;
-			else if (str[c] == "X")
+			else if (c == 'X')
 				params->X += 1;
-			else if (str[c] == "s")
+			else if (c == 's')
 				params->s += 1;
-			else if (str[c] == "c")
+			else if (c == 'c')
 				params->c += 1;
-			else if (str[c] == "p")
+			else if (c == 'p')
 				params->p += 1;
 			return (1);
 		}
@@ -59,21 +59,22 @@ void	ft_check_params (char *str, t_list *params)
 		if (str[c] == '0' && (str[c - 1] <= '0' && str[c - 1] >= '9'))
 			{
 				params->zero += 1;
-				ft_find_width (str, &params);
+				ft_find_width (str, params);
 				break ;
 			}
 	if (params->dot == 1)
-		ft_find_precision(str, &params);
+		ft_find_precision(str, params);
 }
 
 void	ft_find_width (char *str, t_list *params)
 {
 	char	*to_atoi;
+	int		i;
 
 	to_atoi = "0";
-	str++;
-	while (str >= '0' && str <= '9')
-		to_atoi++ = str++;
+	i = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+		to_atoi[i] = str[i];
 	params->width = ft_atoi(to_atoi);	
 }
 
@@ -83,17 +84,22 @@ void	ft_putstr(char *s, t_list *params)
 
 	i = -1;
 	while (s[++i])
-		ft_putchar(s[i]), &params);
+		ft_putchar(s[i], params);
 }
 
 void	ft_find_precision (char *str, t_list *params)
 {
 	char	*to_atoi;
+	int		i;
+	int 	c;
 
-	while (str++ != '.')
-	str++;
-	while (str >= '0' && str <= '9')
-		to_atoi++ = str++;
+	i = 0;
+	c = 0;
+	while (str[i] != '.')
+		i++;
+	i++;
+	while (str[i] >= '0' && str[i] <= '9')
+		to_atoi[c] = str[i];
 	params->precision = ft_atoi(to_atoi);	
 }
 
@@ -106,7 +112,7 @@ void	ft_utility(t_list *params)
 	params->space = 0;
 	params->plus = 0;
 	params->precision = 0;
-	params->witdh = 0;
+	params->width = 0;
 	params->di = 0;
 	params->u = 0;
 	params->x = 0;
