@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:34 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:23:02 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:52:46 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar(char c, int fd)
+static void	ft_putchar(char c, int fd)
 {
 	write (fd, &c, 1);
 }

@@ -6,12 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 16:14:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 17:27:11 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
+#include <stdio.h>
 void	ft_print_s(char *args, t_list *params)
 {
 	int	len;
@@ -31,15 +31,18 @@ void	ft_print_s(char *args, t_list *params)
 		}
 		else
 		{
-			ft_putstr(args, params);
+			ft_putchar(args[len], params);
 			while (params->width > len++)
 				ft_putchar (' ', params);
 		}
 	}
 	else
 	{
-		while (params->width > len++)
+		c = -1;
+		while (params->width-- > len)
 			ft_putchar (' ', params);
-		ft_putstr(args, params);
+		while (++c < 3)
+			ft_putchar(args[c], params);
+		return ;
 	}		
 }

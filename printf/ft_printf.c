@@ -6,11 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 16:42:16 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:26:51 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 void	ft_putchar(char c, t_list *params)
 {
@@ -18,8 +19,15 @@ void	ft_putchar(char c, t_list *params)
 		params->ret += 1;
 }
 
-void	ft_print_args (va_list args, t_list *params)
+void	ft_print_args(va_list args, t_list *params)
 {
+	printf("ARG: %d\n", params->di);
+	printf("ARG: %d\n", params->u);
+	printf("ARG: %d\n", params->x);
+	printf("ARG: %d\n", params->X);
+	printf("ARG: %d\n", params->s);
+	printf("ARG: %d\n", params->c);
+	printf("ARG: %d\n", params->p);
 	if (params->di == 1)
 		ft_print_di(va_arg(args, unsigned int), params);
 	if (params->u == 1)
@@ -47,25 +55,29 @@ int	ft_printf(const char *format, ...)
 	t_list params;
 
 	va_start (args, format);
+	ft_utility(&params);
 	i = 0;
 	while (format[i])
 	{
 		if (format[i - 1] == '%')
 		{
 			c = 0;
-			while (format[i] != '\0' || format[i + 1] != '%')
+			while (format[i] != '\0' || format[i] != '%')
 			{
 				if (ft_check_type(format[i], &params) == 1)
 					break;
+				//printf("BREAK");
 				tmp[c++] = format[i++];
 			}
 			tab = malloc(sizeof(char) * c + 1);
 			tab[c + 1] = '\0';
-			ft_check_params(tmp, &params);
+			//printf("PAR.DI %d\n", params.di);
+			//printf("TAB: %s\n", tab);
+			ft_check_params(tab, &params);
 			ft_print_args (args, &params);
 			free(tab);
 		}
-		else
+		else if (format[i] != '%')
 			ft_putchar (format[i], &params);
 		i++;
 	}

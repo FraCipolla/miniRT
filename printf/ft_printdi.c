@@ -6,11 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 16:35:18 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:27:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 void	ft_print_direv_dot (long int args, int len, t_list *params)
 {
@@ -111,6 +112,7 @@ void	ft_print_di(long int args, t_list *params)
 	int	len;
 
 	len = 0;
+	printf("2: %ld", args);
 	while (args != 0)
 	{
 		args /= 10;

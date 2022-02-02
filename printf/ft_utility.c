@@ -6,17 +6,18 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 16:33:10 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:22:34 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 int	ft_check_type (char c, t_list *params)
 {
 		if (c)
 		{ 
-			if (c == 'd' || c == '1')
+			if (c == 'd' || c == 'i')
 				params->di += 1;
 			else if (c == 'u')
 				params->u += 1;
@@ -39,29 +40,37 @@ void	ft_check_params (char *str, t_list *params)
 {
 	int	c;
 
+	printf("PARAMS %s\n", str);
 	c = 0;
-	while (str[c] && str[c] != '%')
+	if (str)
 	{
-		if (str[c] == '-')
-			params->min += 1;
-		if (str[c] == '#')
-			params->hash += 1;
-		if (str[c] == '.')
-			params->dot += 1;
-		if (str[c] == ' ')
-			params->space += 1;
-		if (str[c] == '+')
-			params->plus += 1;
-		c++;
+		while (str[c] && str[c] != '%')
+		{
+			if (str[c] == '-')
+				params->min += 1;
+			if (str[c] == '#')
+				params->hash += 1;
+			if (str[c] == '.')
+				params->dot += 1;
+			if (str[c] == ' ')
+				params->space += 1;
+			if (str[c] == '+')
+				params->plus += 1;
+			c++;
+		}
 	}
 	c = 0;
-	while (str[c++] != '.')
+	while (params->dot == 1 && str[c] != '.' && str[c])
+	{
 		if (str[c] == '0' && (str[c - 1] <= '0' && str[c - 1] >= '9'))
 			{
 				params->zero += 1;
 				ft_find_width (str, params);
 				break ;
 			}
+		c++;
+	}
+	printf("END\n");
 	if (params->dot == 1)
 		ft_find_precision(str, params);
 }

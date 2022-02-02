@@ -4,8 +4,10 @@
 int main()
 {
 	int d = 5;
+	char c = 'c';
+	char *s = "str";
 
-    printf("%d", d);
+    printf("%d\n", d);
 	ft_printf("%d", d);
     return 0;
 }
