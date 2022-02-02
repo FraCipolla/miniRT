@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/01 14:21:50 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 12:50:55 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ void	ft_check_params (char *str, t_list *params)
 		if (str[c] == '0' && (str[c - 1] <= '0' && str[c - 1] >= '9'))
 			{
 				params->zero += 1;
-				ft_find_width (str);
+				ft_find_width (str, &params);
 				break ;
 			}
 	if (params->dot == 1)
-		ft_find_precision(str);
+		ft_find_precision(str, &params);
 }
 
 void	ft_find_width (char *str, t_list *params)
@@ -77,13 +77,13 @@ void	ft_find_width (char *str, t_list *params)
 	params->width = ft_atoi(to_atoi);	
 }
 
-void	ft_putstr(char *s)
+void	ft_putstr(char *s, t_list *params)
 {
 	int	i;
 
 	i = -1;
 	while (s[++i])
-		ft_putchar(s[i]));
+		ft_putchar(s[i]), &params);
 }
 
 void	ft_find_precision (char *str, t_list *params)

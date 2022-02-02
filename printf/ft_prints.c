@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/01 11:50:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 12:49:05 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ void	ft_print_s(va_list args, t_list params)
 			while(c++ < params->precision)
 				ft_putchar(args[c]);
 			while (c++ < params->witdh)
-				ft_putchar(' ');
+				ft_putchar(' ', &params);
 		}
 		else
 		{
 			ft_putstr(args);
 			while (params->width > len++)
-				ft_putchar (' ');
+				ft_putchar (' ', &params);
 		}
 	}
 	else
 	{
 		while (params->width > len++)
-			ft_putchar (' ');
-		ft_putstr(args);
+			ft_putchar (' ', &params);
+		ft_putstr(args, &params);
 	}		
 }
