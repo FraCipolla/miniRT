@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 18:27:43 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 19:19:57 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,17 @@ void	ft_print_zero(long int args, int len, t_list *params)
 	ft_putstr(ft_itoa(args), params);
 }
 
-void	ft_print_di(long int args, t_list *params)
+void	ft_print_di(int args, t_list *params)
 {
 	int	len;
+	int size;
 
 	len = 0;
-	printf("2: %ld", args);
-	while (args != 0)
+	size = args;
+	//printf("\nPRINT_DI: %d\n", args);
+	while (size != 0)
 	{
-		args /= 10;
+		size /= 10;
 		len++;
 	}
 	if (params->min == 1)
@@ -135,13 +137,14 @@ void	ft_print_di(long int args, t_list *params)
 		params->space = 0;
 		params->width -= 1;
 	}
-	if (args < '0')
+	if (args < 0)
 	{
 		ft_putchar ('-', params);
 		args *= -1;
 		params->space = 0;
 		params->width -= 1;
 	}
+	//printf("\nPRINT_DI: %d\n", args);
 	ft_putstr(ft_itoa(args), params);
 	while (params->width > len++)
 			ft_putchar ('0', params);

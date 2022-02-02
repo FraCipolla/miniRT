@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 18:22:34 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 19:21:50 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_check_params (char *str, t_list *params)
 {
 	int	c;
 
-	printf("PARAMS %s\n", str);
+	//printf("PARAMS %s\n", str);
 	c = 0;
 	if (str)
 	{
@@ -70,7 +70,7 @@ void	ft_check_params (char *str, t_list *params)
 			}
 		c++;
 	}
-	printf("END\n");
+	//printf("END\n");
 	if (params->dot == 1)
 		ft_find_precision(str, params);
 }

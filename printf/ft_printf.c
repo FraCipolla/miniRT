@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 18:26:51 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 19:20:53 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,30 @@ void	ft_putchar(char c, t_list *params)
 
 void	ft_print_args(va_list args, t_list *params)
 {
-	printf("ARG: %d\n", params->di);
+	/*printf("ARG: %d\n", params->di);
 	printf("ARG: %d\n", params->u);
 	printf("ARG: %d\n", params->x);
 	printf("ARG: %d\n", params->X);
 	printf("ARG: %d\n", params->s);
 	printf("ARG: %d\n", params->c);
 	printf("ARG: %d\n", params->p);
+	printf("ARG: %d\n", params->plus);*/
 	if (params->di == 1)
-		ft_print_di(va_arg(args, unsigned int), params);
-	if (params->u == 1)
+		ft_print_di(va_arg(args, int), params);
+	else if (params->u == 1)
 	{
 		params->plus = 0;
-		ft_print_di(va_arg(args, long int), params);
+		ft_print_di(va_arg(args, int), params);
 	}
-	if (params->x == 1 || params->X == 1)
+	else if (params->x == 1 || params->X == 1)
 		ft_print_hex(va_arg(args, unsigned int), params);
-	if (params->s == 1)
+	else if (params->s == 1)
 		ft_print_s(va_arg(args, char *), params);
-	if (params->c == 1)
+	else if (params->c == 1)
 		ft_print_c(va_arg(args, int), params);
-	if (params->p == 1)
+	else if (params->p == 1)
 		ft_print_p(va_arg(args, long unsigned int), params);
+	//printf("END_ARGS\n");
 }
 
 int	ft_printf(const char *format, ...)

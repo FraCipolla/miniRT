@@ -30,7 +30,7 @@ typedef struct s_list
 int		ft_atoi(const char *str);
 char	*ft_itoa(int n);
 void	ft_print_c(char args, t_list *params);
-void	ft_print_di(long int args, t_list *params);
+void	ft_print_di(int args, t_list *params);
 int		ft_printf(const char *format, ...);
 void	ft_print_s(char *args, t_list *params);
 void	ft_utility(t_list *params);
