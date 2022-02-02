@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 12:45:34 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 13:00:13 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,22 @@ void	ft_putchar(char c, t_list *params)
 void	ft_print_args (va_list args, t_list *params)
 {
 	if (params->di == 1)
-		ft_print_di(args, &params);
+		ft_print_di(va_arg(args, unsigned int), &params);
 	if (params->u == 1)
 	{
 		params->plus = 0;
-		ft_print_di(args, &params);
+		ft_print_di(va_arg(args, long int), &params);
 	}
 	if (params->x == 1)
-		ft_print_x(args, &params);
+		ft_print_x(va_arg(args, unsigned int), &params);
 	if (params->X == 1)
-		ft_print_X(args, &params);
+		ft_print_X(va_arg(args, unsigned int), &params);
 	if (params->s == 1)
-		ft_print_s(args, &params);
+		ft_print_s(va_arg(args, char *), &params);
 	if (params->c == 1)
-		ft_print_c(args, &params);
+		ft_print_c(va_arg(args, int), &params);
 	if (params->p == 1)
-		ft_print_p(args, &params);
+		ft_print_p(va_arg(args, long unsigned int), &params);
 }
 
 int	ft_printf(const char *format, ...)
@@ -72,5 +72,6 @@ int	ft_printf(const char *format, ...)
 			ft_putchar (format[i]);
 		i++;
 	}
+	va_end (args);
 	return (params.ret);
 }

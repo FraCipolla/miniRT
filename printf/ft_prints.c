@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 12:49:05 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 13:03:57 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-void	ft_print_s(va_list args, t_list params)
+void	ft_print_s(char *args, t_list params)
 {
 	int	len;
 	int	c;

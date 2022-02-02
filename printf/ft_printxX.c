@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 12:51:23 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 13:04:13 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-void	ft_print_hexdev (va_list args, int len, t_list *params)
+void	ft_print_hexdev (unsigned int args, int len, t_list *params)
 {
 	while (params->width > len++)
 		ft_putchar ('0', &params);
@@ -31,7 +31,7 @@ void	ft_print_precision (va_list args, t_list *params)
 	}
 }
 
-void	ft_print_hex(va_list args, t_list *params)
+void	ft_print_hex(unsigned int args, t_list *params)
 {
 	int		len;
 	char	*str;

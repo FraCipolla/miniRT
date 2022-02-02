@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 12:49:40 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/02 13:03:37 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-void	ft_print_direv_dot (va_list args, int len, t_list *params)
+void	ft_print_direv_dot (long int args, int len, t_list *params)
 {
 	if (params->plus == 1 && args >= '0'))
 	{
@@ -34,7 +34,7 @@ void	ft_print_direv_dot (va_list args, int len, t_list *params)
 		ft_putchar (' ', &params);
 }
 
-void	ft_print_direv (va_list args, int len, t_list *params)
+void	ft_print_direv (long int args, int len, t_list *params)
 {
 	if (params->dot == 0)
 	{
@@ -59,7 +59,7 @@ void	ft_print_direv (va_list args, int len, t_list *params)
 		ft_print_direv_dot (args, len, &params);
 }
 
-void	ft_print_prec(va_list args, int len, t_list params)
+void	ft_print_prec(long int args, int len, t_list params)
 {
 	if (params->min == 1)
 		ft_print_direv_dot(args, len, params);
@@ -86,7 +86,7 @@ void	ft_print_prec(va_list args, int len, t_list params)
 	}
 }
 
-void	ft_print_zero(va_list args, int len, t_list params)
+void	ft_print_zero(long int args, int len, t_list params)
 {
 	if (params->plus == 1 && args >= 0)
 	{
@@ -106,7 +106,7 @@ void	ft_print_zero(va_list args, int len, t_list params)
 	ft_putstr(ft_itoa(args), &params);
 }
 
-void	ft_print_di(va_list args, t_list *params)
+void	ft_print_di(long int args, t_list *params)
 {
 	int	len;
 
