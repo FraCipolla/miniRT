@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 19:21:50 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/04 14:24:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,9 @@ int	ft_check_type (char c, t_list *params)
 
 void	ft_check_params (char *str, t_list *params)
 {
-	int	c;
+	int		c;
 	char	*tab;
 
-	//printf("PARAMS %s\n", str);
 	c = 0;
 	tab = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	while (str[c])
@@ -75,6 +74,7 @@ void	ft_check_params (char *str, t_list *params)
 				params->space += 1;
 			if (str[c] == '+')
 				params->plus += 1;
+			tab[c] = str[c];
 			c++;
 		}
 	c = 0;
@@ -95,16 +95,8 @@ void	ft_find_width (char *str, t_list *params)
 		to_atoi[i] = str[i];
 		i++;
 	}
-	params->width = ft_atoi(to_atoi);	
-}
-
-void	ft_putstr(char *s, t_list *params)
-{
-	int	i;
-
-	i = -1;
-	while (s[++i])
-		ft_putchar(s[i], params);
+	params->width = ft_atoi(to_atoi);
+	//printf("WIDTH: %d\n", params->width);	
 }
 
 void	ft_find_precision (char *str, t_list *params)
@@ -120,8 +112,12 @@ void	ft_find_precision (char *str, t_list *params)
 		i++;
 	i++;
 	while (str[i] >= '0' && str[i] <= '9')
-		to_atoi[c++] = str[i++];
-	to_atoi[c] = '\0';
+	{
+		to_atoi[c] = str[i];
+		c++;
+		i++;
+	}
+	to_atoi[c] = 0;
 	//printf("TO_ATOI: %s\n", to_atoi);
 	params->precision = ft_atoi(to_atoi);
 	//printf("PREC: %d\n", params->precision);	

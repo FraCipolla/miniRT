@@ -27,7 +27,7 @@ typedef struct s_list
 	int	ret;
 }				t_list;
 
-int		ft_atoi(const char *str);
+int		ft_atoi(char *str);
 char	*ft_itoa(int n);
 void	ft_print_c(char args, t_list *params);
 void	ft_print_di(long int args, t_list *params);
@@ -46,6 +46,6 @@ void	ft_print_p(long unsigned int args, t_list *params);
 int		ft_check_type (char c, t_list *params);
 void    put_nbr_hex(unsigned int n, char *str, t_list *params);
 int		ft_type_val (char c);
-size_t	ft_strlen(const char *s);
+int		ft_strlen(char *s);
 
 #endif

@@ -6,18 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 19:20:53 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/04 14:23:53 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdio.h>
-
-void	ft_putchar(char c, t_list *params)
-{
-		write (1, &c, 1);
-		params->ret += 1;
-}
 
 void	ft_print_args(va_list args, t_list *params)
 {

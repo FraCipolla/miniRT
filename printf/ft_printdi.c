@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 19:19:57 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/04 14:25:03 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	ft_print_direv (long int args, int len, t_list *params)
 
 void	ft_print_prec(long int args, int len, t_list *params)
 {
-	printf("LEN: %d\n", len);
 	if (params->min == 1)
 		ft_print_direv_dot(args, len, params);
 	else
@@ -121,7 +120,6 @@ void	ft_print_di(long int args, t_list *params)
 		size /= 10;
 		len++;
 	}
-	printf("LEN: %d\n", len);
 	if (params->dot == 1)
 	{
 		ft_print_prec(args, len, params);

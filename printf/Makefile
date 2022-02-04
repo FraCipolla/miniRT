@@ -6,12 +6,12 @@
 #    By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/02 15:37:04 by mcipolla          #+#    #+#              #
-#    Updated: 2022/02/02 15:38:40 by mcipolla         ###   ########.fr        #
+#    Updated: 2022/02/04 14:09:58 by mcipolla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =  libftprintf.a
-SRCS =  ft_printc.c ft_printdi.c ft_printp.c ft_prints.c ft_printxX.c ft_printf.c ft_utility.c
+SRCS =  ft_printc.c ft_printdi.c ft_printp.c ft_prints.c ft_printxX.c ft_printf.c ft_utility.c ft_utility2.c
 OBJS =  $(SRCS:.c=.o)
 FLAGS = -Wall -Wextra -Werror
 LIBFT = libft.a

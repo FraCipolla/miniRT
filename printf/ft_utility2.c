@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_utility2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/28 17:34:46 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 15:44:12 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/02/04 14:08:55 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/04 14:24:12 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
-int	ft_atoi(const char *str)
+void	ft_putstr(char *s, t_list *params)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+		ft_putchar(s[i], params);
+}
+
+void	ft_putchar(char c, t_list *params)
+{
+		write (1, &c, 1);
+		params->ret += 1;
+}
+
+int	ft_atoi(char *str)
 {
 	int	i;
 	int	sign;

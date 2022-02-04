@@ -6,18 +6,18 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:56 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:23:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/04 14:19:56 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(char *s)
 {
 	int	n;
 
 	n = 0;
 	while (s[n])
-	n++;
+		n++;
 	return (n);
 }
