@@ -13,9 +13,28 @@
 #include "ft_printf.h"
 #include <stdio.h>
 
+int	ft_type_val (char c)
+{
+	if (c == 'd' || c == 'i')
+		return (1);
+	else if (c == 'u')
+		return (1);
+	else if (c == 'x')
+		return (1);
+	else if (c == 'X')
+		return (1);
+	else if (c == 's')
+		return (1);
+	else if (c == 'c')
+		return (1);
+	else if (c == 'p')
+		return (1);
+	return (0);
+}
+
 int	ft_check_type (char c, t_list *params)
 {
-		if (c)
+		if (ft_type_val(c) == 1)
 		{ 
 			if (c == 'd' || c == 'i')
 				params->di += 1;
@@ -40,11 +59,9 @@ void	ft_check_params (char *str, t_list *params)
 {
 	int	c;
 
-	//printf("PARAMS %s\n", str);
+	printf("PARAMS %s\n", str);
 	c = 0;
-	if (str)
-	{
-		while (str[c] && str[c] != '%')
+	while (str[c] && str[c] != '%')
 		{
 			if (str[c] == '-')
 				params->min += 1;
@@ -58,7 +75,6 @@ void	ft_check_params (char *str, t_list *params)
 				params->plus += 1;
 			c++;
 		}
-	}
 	c = 0;
 	while (params->dot == 1 && str[c] != '.' && str[c])
 	{
@@ -70,7 +86,6 @@ void	ft_check_params (char *str, t_list *params)
 			}
 		c++;
 	}
-	//printf("END\n");
 	if (params->dot == 1)
 		ft_find_precision(str, params);
 }
@@ -83,7 +98,10 @@ void	ft_find_width (char *str, t_list *params)
 	to_atoi = "0";
 	i = 0;
 	while (str[i] >= '0' && str[i] <= '9')
+	{
 		to_atoi[i] = str[i];
+		i++;
+	}
 	params->width = ft_atoi(to_atoi);	
 }
 
@@ -108,8 +126,11 @@ void	ft_find_precision (char *str, t_list *params)
 		i++;
 	i++;
 	while (str[i] >= '0' && str[i] <= '9')
-		to_atoi[c] = str[i];
-	params->precision = ft_atoi(to_atoi);	
+		to_atoi[c++] = str[i++];
+	to_atoi[c] = '\0';
+	//printf("TO_ATOI: %s\n", to_atoi);
+	params->precision = ft_atoi(to_atoi);
+	//printf("PREC: %d\n", params->precision);	
 }
 
 void	ft_utility(t_list *params)

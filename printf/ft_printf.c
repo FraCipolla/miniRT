@@ -29,8 +29,12 @@ void	ft_print_args(va_list args, t_list *params)
 	printf("ARG: %d\n", params->c);
 	printf("ARG: %d\n", params->p);
 	printf("ARG: %d\n", params->plus);*/
+	printf("SEGFAULT2\n");
 	if (params->di == 1)
+	{
+		printf("SEGFAULT3\n");
 		ft_print_di(va_arg(args, int), params);
+	}
 	else if (params->u == 1)
 	{
 		params->plus = 0;
@@ -61,22 +65,21 @@ int	ft_printf(const char *format, ...)
 	i = 0;
 	while (format[i])
 	{
-		if (format[i - 1] == '%')
+		if (format[i] == '%')
 		{
+			i++;
 			c = 0;
-			while (format[i] != '\0' || format[i] != '%')
-			{
-				if (ft_check_type(format[i], &params) == 1)
-					break;
-				//printf("BREAK");
+			while (ft_check_type (format[i], &params) == 0)
 				tmp[c++] = format[i++];
-			}
 			tab = malloc(sizeof(char) * c + 1);
-			tab[c + 1] = '\0';
-			//printf("PAR.DI %d\n", params.di);
-			//printf("TAB: %s\n", tab);
+			i = -1;
+			while (++i < c)
+				tab[i] = tmp[i];
+			tab[c] = '\0';
+			//ft_check_type(format[i], &params);
 			ft_check_params(tab, &params);
-			ft_print_args (args, &params);
+			printf("SEGFAULT\n");
+			ft_print_args(args, &params);
 			free(tab);
 		}
 		else if (format[i] != '%')

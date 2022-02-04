@@ -113,8 +113,10 @@ void	ft_print_di(int args, t_list *params)
 	int size;
 
 	len = 0;
+	printf("ARGS: %d\n", args);
 	size = args;
-	//printf("\nPRINT_DI: %d\n", args);
+	printf("SIZE: %d\n", size);
+	printf("\nPRINT_DI: %d\n", args);
 	while (size != 0)
 	{
 		size /= 10;
@@ -129,8 +131,6 @@ void	ft_print_di(int args, t_list *params)
 		ft_print_prec(args, len, params);
 	if (params->zero == 1)
 		ft_print_zero(args, len, params);
-	while (params->width - 1 > len++ && params->plus == 1 && params->zero == 0)
-		ft_putchar (' ', params);
 	if (params->plus == 1 && args >= 0)
 	{
 		ft_putchar ('+', params);

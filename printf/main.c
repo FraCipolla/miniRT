@@ -3,11 +3,11 @@
 
 int main()
 {
-	int d = 7;
+	int x = 7;
 	char c = 'c';
 	char *s = "str";
 
-    printf("%.5d\n", d);
-	ft_printf("%.5d\n", d);
+    printf("%5d\n", x);
+	ft_printf("%5d\n", x);
     return 0;
 }
