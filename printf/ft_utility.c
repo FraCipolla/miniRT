@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/04 14:24:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/04 19:31:10 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	ft_check_params (char *str, t_list *params)
 				params->space += 1;
 			if (str[c] == '+')
 				params->plus += 1;
+			if (str[c] == '0')
+				params->zero += 1;
 			tab[c] = str[c];
 			c++;
 		}
@@ -87,16 +89,46 @@ void	ft_find_width (char *str, t_list *params)
 {
 	char	*to_atoi;
 	int		i;
+	int		c;
 
-	to_atoi = "0";
 	i = 0;
+	c = 0;
+	printf("STR: %s\n", str);
+	if (params->zero == 1)
+	{
+		while (str[i] != '0')
+			i++;
+		i++;
+		while (str[i] < '0' && str[i] > '9')
+			i++;
+	}
+	printf("STR: %s\n", str);
+	printf("%d\n", i);
+	if (params->zero == 0)
+	{
+		printf("STR: %s\n", str);
+		printf("PAR_ZERO\n");
+		while (str[i] < '0' && str[i] > '9')
+			i++;
+		i++;
+		printf("%d\n", i);
+	}
+	printf("%d\n", i);
+	printf("%d\n", c);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		to_atoi[i] = str[i];
+		printf("TO_ATOI: %s\n", to_atoi);
+		to_atoi[c] = str[i];
 		i++;
+		c++;
 	}
+	printf("%d\n", i);
+	printf("%d\n", c);
+	printf("STR: %s\n", to_atoi);
+	to_atoi[c] = '\0';
+	printf("TO_ATOI: %s\n", to_atoi);
 	params->width = ft_atoi(to_atoi);
-	//printf("WIDTH: %d\n", params->width);	
+	printf("WIDTH: %d\n", params->width);	
 }
 
 void	ft_find_precision (char *str, t_list *params)
@@ -107,9 +139,9 @@ void	ft_find_precision (char *str, t_list *params)
 
 	i = 0;
 	c = 0;
-	to_atoi = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	while (str[i] != '.')
 		i++;
+	to_atoi = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
 	i++;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
