@@ -62,12 +62,14 @@ void	ft_print_direv (long int args, int len, t_list *params)
 
 void	ft_print_prec(long int args, int len, t_list *params)
 {
+	printf("LEN: %d\n", len);
 	if (params->min == 1)
 		ft_print_direv_dot(args, len, params);
 	else
 	{
-		while (params->width-- > params->precision)
-			ft_putchar (' ', params);
+		if (params->width > params->precision)
+			while (params->width-- > params->precision)
+				ft_putchar (' ', params);
 		if (params->plus == 1 && args >= 0)
 		{
 			ft_putchar('+', params);
@@ -107,28 +109,26 @@ void	ft_print_zero(long int args, int len, t_list *params)
 	ft_putstr(ft_itoa(args), params);
 }
 
-void	ft_print_di(int args, t_list *params)
+void	ft_print_di(long int args, t_list *params)
 {
 	int	len;
 	int size;
 
 	len = 0;
-	printf("ARGS: %d\n", args);
 	size = args;
-	printf("SIZE: %d\n", size);
-	printf("\nPRINT_DI: %d\n", args);
 	while (size != 0)
 	{
 		size /= 10;
 		len++;
 	}
+	printf("LEN: %d\n", len);
+	if (params->dot == 1)
+		ft_print_prec(args, len, params);
 	if (params->min == 1)
 	{
 		ft_print_direv (args, len, params);
 		return ;
 	}
-	if (params->dot == 1)
-		ft_print_prec(args, len, params);
 	if (params->zero == 1)
 		ft_print_zero(args, len, params);
 	if (params->plus == 1 && args >= 0)

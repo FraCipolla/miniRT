@@ -59,7 +59,7 @@ void	ft_check_params (char *str, t_list *params)
 {
 	int	c;
 
-	printf("PARAMS %s\n", str);
+	//printf("PARAMS %s\n", str);
 	c = 0;
 	while (str[c] && str[c] != '%')
 		{

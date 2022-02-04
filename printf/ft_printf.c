@@ -29,12 +29,8 @@ void	ft_print_args(va_list args, t_list *params)
 	printf("ARG: %d\n", params->c);
 	printf("ARG: %d\n", params->p);
 	printf("ARG: %d\n", params->plus);*/
-	printf("SEGFAULT2\n");
 	if (params->di == 1)
-	{
-		printf("SEGFAULT3\n");
-		ft_print_di(va_arg(args, int), params);
-	}
+		ft_print_di(va_arg(args, long int), params);
 	else if (params->u == 1)
 	{
 		params->plus = 0;
@@ -58,6 +54,7 @@ int	ft_printf(const char *format, ...)
 	char	*tab;
 	int		i;
 	int		c;
+	int		m;
 	t_list params;
 
 	va_start (args, format);
@@ -72,17 +69,16 @@ int	ft_printf(const char *format, ...)
 			while (ft_check_type (format[i], &params) == 0)
 				tmp[c++] = format[i++];
 			tab = malloc(sizeof(char) * c + 1);
-			i = -1;
-			while (++i < c)
-				tab[i] = tmp[i];
+			m = -1;
+			while (++m < c)
+				tab[m] = tmp[m];
 			tab[c] = '\0';
 			//ft_check_type(format[i], &params);
 			ft_check_params(tab, &params);
-			printf("SEGFAULT\n");
 			ft_print_args(args, &params);
 			free(tab);
 		}
-		else if (format[i] != '%')
+		else
 			ft_putchar (format[i], &params);
 		i++;
 	}
