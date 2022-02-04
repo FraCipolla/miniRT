@@ -46,5 +46,6 @@ void	ft_print_p(long unsigned int args, t_list *params);
 int		ft_check_type (char c, t_list *params);
 void    put_nbr_hex(unsigned int n, char *str, t_list *params);
 int		ft_type_val (char c);
+size_t	ft_strlen(const char *s);
 
 #endif

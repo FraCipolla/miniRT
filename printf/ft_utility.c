@@ -58,9 +58,11 @@ int	ft_check_type (char c, t_list *params)
 void	ft_check_params (char *str, t_list *params)
 {
 	int	c;
+	char	*tab;
 
 	//printf("PARAMS %s\n", str);
 	c = 0;
+	tab = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	while (str[c])
 		{
 			if (str[c] == '-')
@@ -76,9 +78,9 @@ void	ft_check_params (char *str, t_list *params)
 			c++;
 		}
 	c = 0;
-	ft_find_width(str, params);
+	ft_find_width(tab, params);
 	if (params->dot == 1)
-		ft_find_precision(str, params);
+		ft_find_precision(tab, params);
 }
 
 void	ft_find_width (char *str, t_list *params)
@@ -113,6 +115,7 @@ void	ft_find_precision (char *str, t_list *params)
 
 	i = 0;
 	c = 0;
+	to_atoi = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	while (str[i] != '.')
 		i++;
 	i++;
