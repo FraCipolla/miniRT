@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/04 19:31:10 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/04 19:33:45 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,14 @@ void	ft_find_width (char *str, t_list *params)
 	printf("%d\n", i);
 	printf("%d\n", c);
 	while (str[i] >= '0' && str[i] <= '9')
+	{
+		i++;
+		c++;
+	}
+	c = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+		i++;
+	to_atoi = malloc(sizeof(char) * c +1);
 	{
 		printf("TO_ATOI: %s\n", to_atoi);
 		to_atoi[c] = str[i];
