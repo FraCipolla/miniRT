@@ -7,7 +7,7 @@ int main()
 	char c = 'c';
 	char *s = "str";
 
-    printf("%.4d\n", x);
-	ft_printf("%.4d\n", x);
+    printf("%.5s\n", s);
+	ft_printf("%.5s\n", s);
     return 0;
 }

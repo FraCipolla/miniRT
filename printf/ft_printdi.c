@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/04 14:25:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/04 14:29:57 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ void	ft_print_di(long int args, t_list *params)
 		size /= 10;
 		len++;
 	}
+	if (params->width > len)
+		//ft_print_width(args, len, params);
 	if (params->dot == 1)
 	{
 		ft_print_prec(args, len, params);
