@@ -30,7 +30,7 @@ void	ft_print_args(va_list args, t_list *params)
 	printf("ARG: %d\n", params->p);
 	printf("ARG: %d\n", params->plus);*/
 	if (params->di == 1)
-		ft_print_di(va_arg(args, long int), params);
+		ft_print_di(va_arg(args, int), params);
 	else if (params->u == 1)
 	{
 		params->plus = 0;

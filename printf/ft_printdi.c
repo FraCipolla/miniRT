@@ -123,7 +123,10 @@ void	ft_print_di(long int args, t_list *params)
 	}
 	printf("LEN: %d\n", len);
 	if (params->dot == 1)
+	{
 		ft_print_prec(args, len, params);
+		return ;
+	}
 	if (params->min == 1)
 	{
 		ft_print_direv (args, len, params);

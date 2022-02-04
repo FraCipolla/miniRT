@@ -61,7 +61,7 @@ void	ft_check_params (char *str, t_list *params)
 
 	//printf("PARAMS %s\n", str);
 	c = 0;
-	while (str[c] && str[c] != '%')
+	while (str[c])
 		{
 			if (str[c] == '-')
 				params->min += 1;
@@ -76,16 +76,7 @@ void	ft_check_params (char *str, t_list *params)
 			c++;
 		}
 	c = 0;
-	while (params->dot == 1 && str[c] != '.' && str[c])
-	{
-		if (str[c] == '0' && (str[c - 1] <= '0' && str[c - 1] >= '9'))
-			{
-				params->zero += 1;
-				ft_find_width (str, params);
-				break ;
-			}
-		c++;
-	}
+	ft_find_width(str, params);
 	if (params->dot == 1)
 		ft_find_precision(str, params);
 }
