@@ -6,12 +6,22 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:08:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/04 14:24:12 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/04 14:26:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdio.h>
+
+int	ft_strlen(char *s)
+{
+	int	n;
+
+	n = 0;
+	while (s[n])
+		n++;
+	return (n);
+}
 
 void	ft_putstr(char *s, t_list *params)
 {
