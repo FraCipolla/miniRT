@@ -6,12 +6,33 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 11:52:29 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:16:08 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
+
+void	ft_print_s_rev(char *args, int len, t_list *params)
+{
+	int	c;
+
+	c = -1;
+	if (params->dot == 1)
+	{
+		while(++c < params->precision)
+			ft_putchar(args[c], params);
+		while (len++ <= params->width)
+			ft_putchar(' ', params);
+	}
+	else
+	{
+		while(++c < len)
+			ft_putchar(args[c], params);
+		while (params->width > len++)
+			ft_putchar (' ', params);
+	}
+}
+
 void	ft_print_s(char *args, t_list *params)
 {
 	int	len;
@@ -22,21 +43,7 @@ void	ft_print_s(char *args, t_list *params)
 	while (args[len])
 		len++;
 	if (params->min == 1)
-	{
-		if (params->dot == 1)
-		{
-			while(++c < params->precision)
-				ft_putchar(args[c], params);
-			while (len++ <= params->width)
-				ft_putchar(' ', params);
-		}
-		else
-		{
-			ft_putchar(args[len], params);
-			while (params->width > len++)
-				ft_putchar (' ', params);
-		}
-	}
+		ft_print_s_rev(args, len, params);
 	else if (params->dot == 1)
 	{
 		if (params->precision < len)
