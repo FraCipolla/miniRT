@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 18:50:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 18:55:21 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	check_prefix(t_list *params)
 
 void	ft_print_hex_rev(char *str, int len, t_list *params)
 {
+	printf("WIDTH: %d\n", params->width);
 	if (params->dot == 0)
 	{
 		check_prefix(params);
@@ -48,7 +49,10 @@ void	ft_print_hex_rev(char *str, int len, t_list *params)
 void	ft_print_hex(char *str, int len, t_list *params)
 {
 	if (params->min == 1)
+	{
 		ft_print_hex_rev(str, len, params);
+		return ;
+	}
 	if (params->dot == 0)
 	{
 		while (params->width-- > len)
