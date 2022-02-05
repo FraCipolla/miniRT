@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/04 19:33:45 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 15:33:28 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ int	ft_check_type (char c, t_list *params)
 				params->p += 1;
 			return (1);
 		}
+	if (c == '%')
+	{
+		params->percent += 1;
+		ft_putchar(c, params);
+	}
 	return (0);
 }
 
@@ -60,9 +65,9 @@ void	ft_check_params (char *str, t_list *params)
 	int		c;
 	char	*tab;
 
-	c = 0;
+	c = -1;
 	tab = malloc(sizeof(char) * (ft_strlen(str) + 1));
-	while (str[c])
+	while (str[++c])
 		{
 			if (str[c] == '-')
 				params->min += 1;
@@ -75,12 +80,12 @@ void	ft_check_params (char *str, t_list *params)
 			if (str[c] == '+')
 				params->plus += 1;
 			if (str[c] == '0')
-				params->zero += 1;
+				params->zero = 1;
 			tab[c] = str[c];
-			c++;
 		}
-	c = 0;
 	ft_find_width(tab, params);
+	if (params->hash == 1)
+		params->width -= 2;
 	if (params->dot == 1)
 		ft_find_precision(tab, params);
 }
@@ -93,7 +98,6 @@ void	ft_find_width (char *str, t_list *params)
 
 	i = 0;
 	c = 0;
-	printf("STR: %s\n", str);
 	if (params->zero == 1)
 	{
 		while (str[i] != '0')
@@ -102,41 +106,25 @@ void	ft_find_width (char *str, t_list *params)
 		while (str[i] < '0' && str[i] > '9')
 			i++;
 	}
-	printf("STR: %s\n", str);
-	printf("%d\n", i);
 	if (params->zero == 0)
 	{
-		printf("STR: %s\n", str);
-		printf("PAR_ZERO\n");
-		while (str[i] < '0' && str[i] > '9')
+		while ((str[i] < '0' || str[i] > '9') && str[i])
 			i++;
-		i++;
-		printf("%d\n", i);
 	}
-	printf("%d\n", i);
-	printf("%d\n", c);
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[i] >= '0' && str[i] <= '9' && str[i])
 	{
 		i++;
 		c++;
 	}
-	c = 0;
-	while (str[i] >= '0' && str[i] <= '9')
-		i++;
 	to_atoi = malloc(sizeof(char) * c +1);
-	{
-		printf("TO_ATOI: %s\n", to_atoi);
-		to_atoi[c] = str[i];
+	c = 0;
+	i = 0;
+	while ((str[i] < '0' || str[i] > '9') && str[i])
 		i++;
-		c++;
-	}
-	printf("%d\n", i);
-	printf("%d\n", c);
-	printf("STR: %s\n", to_atoi);
+	while (str[i] >= '0' && str[i] <= '9' && str[i])
+		to_atoi[c++] = str[i++];
 	to_atoi[c] = '\0';
-	printf("TO_ATOI: %s\n", to_atoi);
 	params->width = ft_atoi(to_atoi);
-	printf("WIDTH: %d\n", params->width);	
 }
 
 void	ft_find_precision (char *str, t_list *params)
@@ -158,9 +146,7 @@ void	ft_find_precision (char *str, t_list *params)
 		i++;
 	}
 	to_atoi[c] = 0;
-	//printf("TO_ATOI: %s\n", to_atoi);
 	params->precision = ft_atoi(to_atoi);
-	//printf("PREC: %d\n", params->precision);	
 }
 
 void	ft_utility(t_list *params)
@@ -181,4 +167,5 @@ void	ft_utility(t_list *params)
 	params->c = 0;
 	params->p = 0;
 	params->ret = 0;
+	params->percent = 0;
 }

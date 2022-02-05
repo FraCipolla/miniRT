@@ -6,46 +6,64 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/02 16:03:31 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 14:58:11 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_print_hexdev (unsigned int args, int len, t_list *params)
+void	ft_print_hex(char *str, int len, t_list *params)
 {
-	while (params->width > len++)
-		ft_putchar ('0', params);
-	ft_itoa_hex(args, params);
-	params->zero = 0;
-}
-
-void	ft_print_precision (va_list args, t_list *params)
-{
-	params->precision -= params->width;
-
-	while (params->precision > 0)
+	if (params->dot == 0)
 	{
-		ft_putchar('0', params);
-		params->precision -= 1;
+		while (params->width-- > len)
+			ft_putchar(' ', params);
+		if (params->hash == 1)
+		{
+			if (params->x == 1)
+				ft_putstr("0x", params);
+			else
+				ft_putstr("0X", params);
+		}
+		while (len-- > 0)
+			ft_putchar(str[len], params);	
+	}
+	if (params->dot == 1)
+	{
+		while (params->width-- > params->precision)
+			ft_putchar(' ', params);
+		if (params->hash == 1)
+		{
+			if (params->x == 1)
+				ft_putstr("0x", params);
+			else
+				ft_putstr("0X", params);
+		}
+		while (params->precision-- > len)
+			ft_putchar('0', params);
+		while (len-- > 0)
+			ft_putchar(str[len], params);
 	}
 }
 
-void	ft_print_hex(unsigned int args, t_list *params)
+void	ft_itoa_hex(unsigned int n, t_list *params)
 {
-	int		len;
 	char	*str;
+	int		len;
+	char	*tab;
 
 	len = 0;
-	while (str[len++])
-	if (params->min == 1 && params->dot == 0)
+	tab = malloc(sizeof(char) * 35);
+	if (params->x == 1)
+		str = "0123456789abcdef";
+	else
+		str = "0123456789ABCDEF";
+	while (n > 0)
 	{
-		ft_print_direv (args, len, params);
-		return ;
+		tab[len] = str[n % 16];
+		n = n / 16;
+		len++;
 	}
-	while (params->width - 1 > len++ && params->zero == 0)
-		ft_putchar (' ', params);
-	while (params->width > len++)
-			ft_putchar ('0', params);
-	ft_itoa_hex(args, params);
+	tab[len] = '\0';
+	ft_print_hex(tab, len, params);
 }

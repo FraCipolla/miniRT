@@ -3,11 +3,11 @@
 
 int main()
 {
-	int x = 7;
+	int x = -255;
 	char c = 'c';
 	char *s = "str";
 
-    printf("%-7.2s A\n", s);
-	ft_printf("%-7.2s A\n", s);
+    printf("%d A\n", x);
+	ft_printf("%d A\n", x);
     return 0;
 }
