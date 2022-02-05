@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 18:07:40 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:57:24 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	ft_print_args(va_list args, t_list *params)
 {
 	if (params->di == 1)
-		ft_print_di(va_arg(args, unsigned int), params);
+		ft_print_di(va_arg(args, long int), params);
 	else if (params->u == 1)
 	{
 		params->plus = 0;
