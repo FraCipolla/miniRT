@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 18:34:34 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 20:20:33 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	ft_check_params (char *str, t_list *params)
 				params->space += 1;
 			if (str[c] == '+')
 				params->plus += 1;
-			if (str[c] == '0' && (str[c - 1] < '0' || str[c - 1] > '9'))
+			if (str[c] == '0' && (str[c - 1] < '0' || str[c - 1] > '9') && (str[c - 1] != '.'))
 				params->zero = 1;
 			tab[c] = str[c];
 		}
