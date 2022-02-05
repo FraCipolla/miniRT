@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 19:16:08 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:45:30 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	ft_print_s_rev(char *args, int len, t_list *params)
 	int	c;
 
 	c = -1;
-	if (params->dot == 1)
+	if (params->dot == 1 && params->precision < len)
 	{
-		while(++c < params->precision)
+		while (++c < params->precision)
 			ft_putchar(args[c], params);
 		while (len++ <= params->width)
 			ft_putchar(' ', params);
@@ -33,6 +33,27 @@ void	ft_print_s_rev(char *args, int len, t_list *params)
 	}
 }
 
+void	ft_print_s_dot(char *args, int len, t_list *params)
+{
+	int	c;
+
+	c = -1;
+	if (params->precision < len)
+	{
+		while (len++ <= params->width)
+			ft_putchar(' ', params);
+		while(++c < params->precision)
+			ft_putchar(args[c], params);
+	}
+	else
+	{
+		while (len < params->width--)
+			ft_putchar(' ', params);
+		while(++c < len)
+			ft_putchar(args[c], params);
+	}
+}
+
 void	ft_print_s(char *args, t_list *params)
 {
 	int	len;
@@ -43,19 +64,14 @@ void	ft_print_s(char *args, t_list *params)
 	while (args[len])
 		len++;
 	if (params->min == 1)
+	{
 		ft_print_s_rev(args, len, params);
+		return ;
+	}
 	else if (params->dot == 1)
 	{
-		if (params->precision < len)
-			{
-				while (len++ <= params->width)
-					ft_putchar(' ', params);
-				while(++c < params->precision)
-					ft_putchar(args[c], params);
-			}
-		else
-			while(++c < len)
-					ft_putchar(args[c], params);
+		ft_print_s_dot(args, len, params);
+		return ;
 	}
 	else if (params->dot == 0)
 	{
