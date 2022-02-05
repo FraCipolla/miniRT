@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 16:56:19 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 18:18:37 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	ft_print_di(long int args, t_list *params)
 	if (args < 0 || params->plus == 1)
 		params->width -= 1;
 	if (params->width > len && params->dot == 0 && params->min == 0)
-		while (len++ < params->width)
+		while (++len < params->width)
 			ft_putchar(' ', params);
 	if (params->dot == 1)
 	{
