@@ -7,7 +7,7 @@ int main()
 	char c = 'c';
 	char *s = "str";
 
-    printf("%10d A\n", x);
-	ft_printf("%10d A\n", x);
+    printf("%30p A\n", s);
+	ft_printf("%30p A\n", s);
     return 0;
 }

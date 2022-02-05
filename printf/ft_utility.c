@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 18:16:50 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 18:34:34 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	ft_check_params (char *str, t_list *params)
 	char	*tab;
 
 	c = -1;
-	printf("STR: %s\n", str);
 	tab = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	while (str[++c])
 		{
