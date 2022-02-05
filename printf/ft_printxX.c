@@ -6,11 +6,19 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 14:58:11 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 16:55:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	check_prefix(t_list *params)
+{
+	if (params->x == 1)
+				ft_putstr("0x", params);
+			else
+				ft_putstr("0X", params);
+}
 
 void	ft_print_hex(char *str, int len, t_list *params)
 {
@@ -19,12 +27,7 @@ void	ft_print_hex(char *str, int len, t_list *params)
 		while (params->width-- > len)
 			ft_putchar(' ', params);
 		if (params->hash == 1)
-		{
-			if (params->x == 1)
-				ft_putstr("0x", params);
-			else
-				ft_putstr("0X", params);
-		}
+			check_prefix(params);
 		while (len-- > 0)
 			ft_putchar(str[len], params);	
 	}
@@ -33,12 +36,7 @@ void	ft_print_hex(char *str, int len, t_list *params)
 		while (params->width-- > params->precision)
 			ft_putchar(' ', params);
 		if (params->hash == 1)
-		{
-			if (params->x == 1)
-				ft_putstr("0x", params);
-			else
-				ft_putstr("0X", params);
-		}
+			check_prefix(params);
 		while (params->precision-- > len)
 			ft_putchar('0', params);
 		while (len-- > 0)

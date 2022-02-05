@@ -6,12 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 15:46:54 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/05 16:56:19 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 void	ft_print_direv_dot (long int args, int len, t_list *params)
 {
@@ -86,18 +85,31 @@ void	ft_print_prec(long int args, int len, t_list *params)
 	}
 }
 
+int	check_sign(long int args, t_list *params)
+{
+	if (params->plus == 1 && args >= 0)
+	{
+		ft_putchar ('+', params);
+		params->space = 0;
+	}
+	if (args < 0)
+	{
+		ft_putchar ('-', params);
+		args *= -1;
+		params->space = 0;
+	}
+	return (args);
+}
+
 void	ft_print_di(long int args, t_list *params)
 {
 	int	len;
 	int size;
 
-	len = 0;
+	len = 1;
 	size = args;
-	while (size != 0)
-	{
-		size /= 10;
+	while ((size /= 10) != 0)
 		len++;
-	}
 	if (args < 0 || params->plus == 1)
 		params->width -= 1;
 	if (params->width > len && params->dot == 0 && params->min == 0)
@@ -113,17 +125,7 @@ void	ft_print_di(long int args, t_list *params)
 		ft_print_direv (args, len, params);
 		return ;
 	}
-	if (params->plus == 1 && args >= 0)
-	{
-		ft_putchar ('+', params);
-		params->space = 0;
-	}
-	if (args < 0)
-	{
-		ft_putchar ('-', params);
-		args *= -1;
-		params->space = 0;
-	}
+	check_sign(args, params);
 	ft_putstr(ft_itoa(args), params);
 	while (params->width > len++)
 			ft_putchar ('0', params);
