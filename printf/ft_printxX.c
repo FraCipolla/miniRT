@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 16:35:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 18:58:46 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 #include <stdio.h>
 void	check_prefix(t_list *params)
 {
-	if (params->hash == 1 || params->p == 1)
+	if (params->p == 1)
 	{
-		if (params->x == 1 || params->p == 1)
+		ft_putstr("0x", params);
+		params->width -= 2;	
+	}
+	if (params->hash == 1)
+	{
+		if (params->x == 1)
 			ft_putstr("0x", params);
 		else
 			ft_putstr("0X", params);
@@ -57,7 +62,9 @@ void	ft_print_hex(char *str, int len, t_list *params)
 	}
 	if (params->dot == 0)
 	{
-		while (params->width-- > len)
+		while (params->zero == 1 && params->width-- > len)
+			ft_putchar ('0', params);
+		while (params->width-- > len && params->zero == 0)
 			ft_putchar(' ', params);
 		check_prefix(params);
 		while (len-- > 0)

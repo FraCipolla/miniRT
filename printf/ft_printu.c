@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:54:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 14:47:53 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 18:47:16 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_print_u(unsigned args, t_list *params)
 	size = args;
 	while ((size /= 10) != 0)
 		len++;
-	if (params->width > len && params->dot == 0 && params->min == 0)
+	if (params->width > len && params->dot == 0 && params->min == 0 && params->zero == 0)
 		while (len++ < params->width)
 			ft_putchar(' ', params);
 	if (params->dot == 1)
@@ -34,7 +34,7 @@ void	ft_print_u(unsigned args, t_list *params)
 		ft_print_direv (args, len, params);
 		return ;
 	}
-	ft_utoa(args, params);
 	while (params->width > len++)
 			ft_putchar ('0', params);
+	ft_utoa(args, params);
 }

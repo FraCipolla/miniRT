@@ -6,12 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 15:45:08 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 15:25:26 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 18:40:08 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
+
 void	ft_print_p(long unsigned int args, t_list *params)
 {
     char	*tab;
