@@ -8,7 +8,7 @@ int main()
 	char c = 'c';
 	char *s = "str";
 
-    printf("%d\n", printf(" %.2u ", -1));
-	printf("%d\n", ft_printf(" %.2u ", -1));
+    printf("%d\n", printf(" %#x ", 0));
+	printf("%d\n", ft_printf(" %#x ", 0));
     return 0;
 }

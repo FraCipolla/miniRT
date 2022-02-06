@@ -6,12 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 19:09:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 20:48:36 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
+
 void	check_prefix(t_list *params)
 {
 	if (params->p == 1)
@@ -53,6 +53,7 @@ void	ft_print_hex_rev(char *str, int len, t_list *params)
 			ft_putchar(' ', params);
 	}
 }
+
 void	ft_print_hex(char *str, int len, t_list *params)
 {
 	if (params->min == 1)
@@ -88,17 +89,13 @@ void	ft_itoa_hex(unsigned int n, t_list *params)
 	int		len;
 	char	*tab;
 
-	if (n == 0)
-	{
-		ft_putchar('0', params);
-		return ;
-	}
 	len = 0;
 	tab = malloc(sizeof(char) * 35);
 	if (n == 0)
 	{
 		tab[0] = '0';
 		len = 1;
+		params->hash = 0;
 	}
 	if (params->x == 1)
 		str = "0123456789abcdef";

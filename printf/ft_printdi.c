@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 19:59:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 20:40:13 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ void	ft_print_direv_dot (long int args, int len, t_list *params)
 
 void	ft_print_direv (long int args, int len, t_list *params)
 {
+	int	c;
+
+	c = args;
 	if (params->dot == 0)
 	{
 		if (params->plus == 1 && args >= 0)
@@ -47,7 +50,7 @@ void	ft_print_direv (long int args, int len, t_list *params)
 			params->space = 0;
 			params->width -= 1;
 		}
-		if (args < 0 && args != INT_MIN)
+		if (c < 0 && args != INT_MIN)
 		{
 			ft_putchar ('-', params);
 			args *= -1;
