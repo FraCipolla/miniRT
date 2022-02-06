@@ -48,5 +48,9 @@ char	put_nbr_hex(unsigned int n, char *str, t_list *params);
 int		ft_type_val (char c);
 int		ft_strlen(char *s);
 void	ft_itoa_hex(unsigned int n, t_list *params);
+char	*ft_utoa(unsigned int n);
+void	ft_print_u(unsigned args, t_list *params);
+void	ft_print_prec(long int args, int len, t_list *params);
+void	ft_print_direv_dot (long int args, int len, t_list *params);
 
 #endif

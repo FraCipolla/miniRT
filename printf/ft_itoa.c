@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 20:09:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 11:06:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,35 @@ char	*ft_itoa(int n)
 	int			size;
 	char		*tab;
 	long int	nbr;
+
+	nbr = n;
+	if (nbr < 0)
+		size = find_size(nbr) + 1;
+	else
+		size = find_size(nbr);
+	tab = (char *)malloc(sizeof(char) * size + 1);
+	if (!tab)
+		return (NULL);
+	tab[size] = 0;
+	if (nbr == 0)
+	{
+		tab[0] = '0';
+		return (tab);
+	}
+	if (nbr < 0)
+	{
+		tab[0] = '-';
+		nbr = nbr * -1;
+	}
+	put_nbr(tab, nbr, size - 1);
+	return (tab);
+}
+
+char	*ft_utoa(unsigned int n)
+{
+	int				size;
+	char			*tab;
+	unsigned int	nbr;
 
 	nbr = n;
 	if (nbr < 0)
