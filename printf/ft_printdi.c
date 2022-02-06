@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 14:47:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:28:39 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ void	ft_print_prec(long int args, int len, t_list *params)
 	}
 }
 
-int	check_sign(long int args, t_list *params)
+void	check_sign(long int args, t_list *params)
 {
+	if (args == LONG_MIN)
+		args = 0;
 	if (params->plus == 1 && args >= 0)
 	{
 		ft_putchar ('+', params);
@@ -107,7 +109,7 @@ int	check_sign(long int args, t_list *params)
 		args *= -1;
 		params->space = 0;
 	}
-	return (args);
+	ft_itoa(args, params);
 }
 
 void	ft_print_di(long int args, t_list *params)
@@ -135,7 +137,7 @@ void	ft_print_di(long int args, t_list *params)
 		return ;
 	}
 	check_sign(args, params);
-	ft_itoa(args, params);
+	//ft_itoa(args, params);
 	while (params->width > len++)
 			ft_putchar ('0', params);
 }

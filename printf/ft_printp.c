@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 15:45:08 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 11:50:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 15:25:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,15 @@ void	ft_print_p(long unsigned int args, t_list *params)
     char    *str;
     unsigned int     len;
 
-    len = 0;
     str = "0123456789abcdef";
     tab = malloc(sizeof(char) * 35);
+	if (args == 0)
+	{
+		tab[0] = '0';
+		len = 1;
+	}
+	else
+    	len = 0;
     while (args > 0)
 	{
 		tab[len] = str[args % 16];
@@ -28,8 +34,11 @@ void	ft_print_p(long unsigned int args, t_list *params)
 		len++;
 	}
 	tab[len] = '\0';
-    params->hash = 0;
-    params->width -= 2;
+	if (params->hash == 1)
+	{
+		params->hash = 0;
+		params->width -= 2;
+	}
 	ft_print_hex(tab, len, params);
 	free(tab);
 }

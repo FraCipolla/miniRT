@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 14:53:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:28:51 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	find_size(long int n)
 
 void	put_nbr(char *tab, long int n, int size)
 {
+	if (n < 0)
+		n *= -1;
 	if (n > 9)
 		put_nbr (tab, n / 10, size -1);
 	tab[size] = (n % 10 + '0');
@@ -43,6 +45,8 @@ void	ft_itoa(int n, t_list *params)
 	long int	nbr;
 
 	nbr = n;
+	if (nbr == LONG_MIN)
+		nbr = 0;
 	if (nbr < 0)
 		size = find_size(nbr) + 1;
 	else
@@ -52,10 +56,7 @@ void	ft_itoa(int n, t_list *params)
 		return ;
 	tab[size] = 0;
 	if (nbr < 0)
-	{
 		tab[0] = '-';
-		nbr = nbr * -1;
-	}
 	put_nbr(tab, nbr, size - 1);
 	ft_putstr(tab, params);
 	free(tab);
