@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 15:26:23 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:35:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	ft_print_hex_rev(char *str, int len, t_list *params)
 			ft_putchar(' ', params);
 	}
 }
-#include <stdio.h>
 void	ft_print_hex(char *str, int len, t_list *params)
 {
 	if (params->min == 1)
@@ -84,6 +83,11 @@ void	ft_itoa_hex(unsigned int n, t_list *params)
 
 	len = 0;
 	tab = malloc(sizeof(char) * 35);
+	if (n == 0)
+	{
+		tab[0] = '0';
+		len = 1;
+	}
 	if (params->x == 1)
 		str = "0123456789abcdef";
 	else

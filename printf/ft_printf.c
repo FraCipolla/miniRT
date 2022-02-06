@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 16:17:21 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:53:02 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	*ft_make_malloc(const char *format, int i, t_list *params)
 	char	*tmp;
 
 	c = 0;
+	ft_utility(params);
 	while (ft_check_type (format[i], params) == 0)
 	{
 		i++;
@@ -44,6 +45,7 @@ char	*ft_make_malloc(const char *format, int i, t_list *params)
 	}
 	tmp = malloc(sizeof(char) * c + 1);
 	tmp[c] = '\0';
+	ft_utility(params);
 	return (tmp);
 }
 
@@ -62,16 +64,13 @@ int	ft_printf(const char *format, ...)
 	{
 		if (format[i] == '%')
 		{
-			ft_utility(&params);
 			i++;
 			tmp = ft_make_malloc(format, i, &params);
 			c = 0;
-			while (ft_check_type (format[i], &params) == 0)
-			{
-				if (params.percent == 1)
-					break ;	
+			while (ft_check_type (format[i], &params) == 0 && format[i] != '%')
 				tmp[c++] = format[i++];
-			}
+			if (params.percent == 1)
+				ft_putchar('%', &params);
 			ft_check_params(tmp, &params);
 			ft_print_args(args, &params);
 			free(tmp);
