@@ -6,12 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 11:15:19 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:47:39 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
+
 void	ft_print_direv_dot (long int args, int len, t_list *params)
 {
 	if (params->plus == 1 && args >= 0)
@@ -30,9 +30,9 @@ void	ft_print_direv_dot (long int args, int len, t_list *params)
 	while (params->precision > len++)
 		ft_putchar ('0', params);
 	if (params->u == 1)
-		ft_putstr(ft_utoa(args), params);
+		ft_utoa(args, params);
 	else
-		ft_putstr(ft_itoa(args), params);
+		ft_itoa(args, params);
 	while (params->width >= len++)
 		ft_putchar (' ', params);
 }
@@ -55,9 +55,9 @@ void	ft_print_direv (long int args, int len, t_list *params)
 			params->space = 0;
 		}
 		if (params->u == 1)
-			ft_putstr(ft_utoa(args), params);
+			ft_utoa(args, params);
 		else
-			ft_putstr(ft_itoa(args), params);
+			ft_itoa(args, params);
 		while (params->width > len++)
 			ft_putchar (' ', params);
 	}
@@ -88,9 +88,9 @@ void	ft_print_prec(long int args, int len, t_list *params)
 		while (params->precision-- > len)
 			ft_putchar('0', params);
 		if (params->u == 1)
-			ft_putstr(ft_utoa(args), params);
+			ft_utoa(args, params);
 		else
-			ft_putstr(ft_itoa(args), params);
+			ft_itoa(args, params);
 	}
 }
 
@@ -135,7 +135,7 @@ void	ft_print_di(long int args, t_list *params)
 		return ;
 	}
 	check_sign(args, params);
-	ft_putstr(ft_itoa(args), params);
+	ft_itoa(args, params);
 	while (params->width > len++)
 			ft_putchar ('0', params);
 }

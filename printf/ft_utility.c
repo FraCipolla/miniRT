@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 20:20:33 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 11:59:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,22 @@ int	ft_check_type (char c, t_list *params)
 		if (ft_type_val(c) == 1)
 		{ 
 			if (c == 'd' || c == 'i')
-				params->di += 1;
+				params->di = 1;
 			else if (c == 'u')
-				params->u += 1;
+				params->u = 1;
 			else if (c == 'x')
-				params->x += 1;
+				params->x = 1;
 			else if (c == 'X')
-				params->X += 1;
+				params->X = 1;
 			else if (c == 's')
-				params->s += 1;
+				params->s = 1;
 			else if (c == 'c')
-				params->c += 1;
+				params->c = 1;
 			else if (c == 'p')
-				params->p += 1;
+				params->p = 1;
 			else if (c == '%')
 			{
-				params->percent += 1;
+				params->percent = 1;
 				ft_putchar(c, params);
 			}
 			return (1);
@@ -73,15 +73,15 @@ void	ft_check_params (char *str, t_list *params)
 	while (str[++c])
 		{
 			if (str[c] == '-')
-				params->min += 1;
+				params->min = 1;
 			if (str[c] == '#')
-				params->hash += 1;
+				params->hash = 1;
 			if (str[c] == '.')
-				params->dot += 1;
+				params->dot = 1;
 			if (str[c] == ' ')
-				params->space += 1;
+				params->space = 1;
 			if (str[c] == '+')
-				params->plus += 1;
+				params->plus = 1;
 			if (str[c] == '0' && (str[c - 1] < '0' || str[c - 1] > '9') && (str[c - 1] != '.'))
 				params->zero = 1;
 			tab[c] = str[c];
@@ -91,6 +91,7 @@ void	ft_check_params (char *str, t_list *params)
 		params->width -= 2;
 	if (params->dot == 1)
 		ft_find_precision(tab, params);
+	free(tab);
 }
 
 void	ft_find_width (char *str, t_list *params)
@@ -119,6 +120,7 @@ void	ft_find_width (char *str, t_list *params)
 		to_atoi[c++] = str[i++];
 	to_atoi[c] = '\0';
 	params->width = ft_atoi(to_atoi);
+	free(to_atoi);
 }
 
 void	ft_find_precision (char *str, t_list *params)
@@ -141,6 +143,7 @@ void	ft_find_precision (char *str, t_list *params)
 	}
 	to_atoi[c] = 0;
 	params->precision = ft_atoi(to_atoi);
+	free(to_atoi);
 }
 
 void	ft_utility(t_list *params)
@@ -160,6 +163,5 @@ void	ft_utility(t_list *params)
 	params->s = 0;
 	params->c = 0;
 	params->p = 0;
-	params->ret = 0;
 	params->percent = 0;
 }

@@ -6,13 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 10:56:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 12:09:42 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdio.h>
-
 void	ft_print_args(va_list args, t_list *params)
 {
 	if (params->di == 1)
@@ -31,6 +30,21 @@ void	ft_print_args(va_list args, t_list *params)
 	else if (params->p == 1)
 		ft_print_p(va_arg(args, long unsigned int), params);
 }
+char	*ft_make_malloc(const char *format, int i, t_list *params)
+{
+	int		c;
+	char	*tmp;
+
+	c = 0;
+	while (ft_check_type (format[i], params) == 0)
+	{
+		i++;
+		c++;
+	}
+	tmp = malloc(sizeof(char) * c + 1);
+	tmp[c] = '\0';
+	return (tmp);
+}
 
 int	ft_printf(const char *format, ...)
 {
@@ -41,26 +55,29 @@ int	ft_printf(const char *format, ...)
 	t_list params;
 
 	va_start (args, format);
-	i = -1;
-	while (format[++i])
+	params.ret = 0;
+	i = 0;
+	while (format[i])
 	{
 		if (format[i] == '%')
 		{
 			ft_utility(&params);
 			i++;
+			tmp = ft_make_malloc(format, i, &params);
 			c = 0;
 			while (ft_check_type (format[i], &params) == 0)
 			{
 				if (params.percent == 1)
 					break ;	
-				tmp[c++] = format[i++];	
+				tmp[c++] = format[i++];
 			}
-			tmp[c] = '\0';
 			ft_check_params(tmp, &params);
 			ft_print_args(args, &params);
+			free(tmp);
 		}
 		else
 			ft_putchar (format[i], &params);
+		i++;
 	}
 	va_end (args);
 	return (params.ret);

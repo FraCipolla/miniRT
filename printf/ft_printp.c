@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 15:45:08 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 18:50:10 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 11:50:42 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,5 @@ void	ft_print_p(long unsigned int args, t_list *params)
     params->hash = 0;
     params->width -= 2;
 	ft_print_hex(tab, len, params);
+	free(tab);
 }

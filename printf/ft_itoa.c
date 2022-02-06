@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 11:06:00 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:53:49 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	put_nbr(char *tab, long int n, int size)
 	tab[size] = (n % 10 + '0');
 }
 
-char	*ft_itoa(int n)
+void	ft_itoa(int n, t_list *params)
 {
 	int			size;
 	char		*tab;
@@ -49,23 +49,19 @@ char	*ft_itoa(int n)
 		size = find_size(nbr);
 	tab = (char *)malloc(sizeof(char) * size + 1);
 	if (!tab)
-		return (NULL);
+		return ;
 	tab[size] = 0;
-	if (nbr == 0)
-	{
-		tab[0] = '0';
-		return (tab);
-	}
 	if (nbr < 0)
 	{
 		tab[0] = '-';
 		nbr = nbr * -1;
 	}
 	put_nbr(tab, nbr, size - 1);
-	return (tab);
+	ft_putstr(tab, params);
+	free(tab);
 }
 
-char	*ft_utoa(unsigned int n)
+void	ft_utoa(unsigned int n, t_list *params)
 {
 	int				size;
 	char			*tab;
@@ -78,18 +74,14 @@ char	*ft_utoa(unsigned int n)
 		size = find_size(nbr);
 	tab = (char *)malloc(sizeof(char) * size + 1);
 	if (!tab)
-		return (NULL);
+		return ;
 	tab[size] = 0;
-	if (nbr == 0)
-	{
-		tab[0] = '0';
-		return (tab);
-	}
 	if (nbr < 0)
 	{
 		tab[0] = '-';
 		nbr = nbr * -1;
 	}
 	put_nbr(tab, nbr, size - 1);
-	return (tab);
+	ft_putstr(tab, params);
+	free(tab);
 }

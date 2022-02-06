@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/05 19:45:30 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:59:41 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	ft_print_s(char *args, t_list *params)
 
 	c = -1;
 	len = 0;
+	if (args == NULL)
+		args = "(null)";
 	while (args[len])
 		len++;
 	if (params->min == 1)

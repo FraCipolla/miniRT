@@ -6,12 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:54:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 11:15:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:47:53 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 void	ft_print_u(unsigned args, t_list *params)
 {
@@ -35,7 +34,7 @@ void	ft_print_u(unsigned args, t_list *params)
 		ft_print_direv (args, len, params);
 		return ;
 	}
-	ft_putstr(ft_utoa(args), params);
+	ft_utoa(args, params);
 	while (params->width > len++)
 			ft_putchar ('0', params);
 }
