@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 16:53:02 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 20:14:57 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 #include <stdio.h>
 void	ft_print_args(va_list args, t_list *params)
 {
-
-	if (params->di == 1)
-		ft_print_di(va_arg(args, long int), params);
-	else if (params->u == 1)
+	if (params->u == 1)
 	{
 		params->plus = 0;
 		ft_print_u(va_arg(args, unsigned int), params);
 	}
+	else if (params->di == 1)
+		ft_print_di(va_arg(args, long int), params);
 	else if (params->x == 1 || params->X == 1)
 		ft_itoa_hex(va_arg(args, unsigned int), params);
 	else if (params->s == 1)

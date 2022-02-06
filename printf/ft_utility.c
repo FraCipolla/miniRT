@@ -6,12 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 16:51:45 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 20:14:02 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 int	ft_type_val (char c)
 {
@@ -112,7 +111,7 @@ void	ft_find_width (char *str, t_list *params)
 	}
 	if (params->zero == 0)
 	{
-		while ((str[i] < '0' || str[i] > '9') && str[i])
+		while ((str[i] < '0' || str[i] > '9') && str[i] && str[i] != '.')
 			i++;
 	}
 	while ((str[i] >= '0' && str[i] <= '9') && str[i])

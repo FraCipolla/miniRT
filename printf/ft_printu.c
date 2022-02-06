@@ -6,15 +6,15 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:54:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 18:47:16 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 20:08:42 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_print_u(unsigned args, t_list *params)
+void	ft_print_u(unsigned int args, t_list *params)
 {
-	int	len;
+	int			len;
 	unsigned int size;
 
 	len = 1;

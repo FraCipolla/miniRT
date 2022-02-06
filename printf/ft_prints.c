@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 14:59:41 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 19:57:37 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,36 @@ void	ft_print_s_dot(char *args, int len, t_list *params)
 {
 	int	c;
 
-	c = -1;
+	c = 0;
 	if (params->precision < len)
 	{
-		while (len++ <= params->width)
+		while (len < params->width)
+		{
 			ft_putchar(' ', params);
-		while(++c < params->precision)
+			len++;
+		}
+		while(c < params->precision)
+		{
 			ft_putchar(args[c], params);
+			c++;
+		}
 	}
 	else
 	{
 		while (len < params->width--)
 			ft_putchar(' ', params);
-		while(++c < len)
+		while(c < len)
+		{
 			ft_putchar(args[c], params);
+			c++;
+		}
 	}
 }
 
 void	ft_print_s(char *args, t_list *params)
 {
-	int	len;
-	int	c;
+	int		len;
+	int		c;
 
 	c = -1;
 	len = 0;

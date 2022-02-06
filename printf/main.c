@@ -8,7 +8,7 @@ int main()
 	char c = 'c';
 	char *s = "str";
 
-    printf("%d\n", printf(" % d ", INT_MAX));
-	printf("%d\n", ft_printf(" % d ", INT_MAX));
+    printf("%d\n", printf(" %.2u ", -1));
+	printf("%d\n", ft_printf(" %.2u ", -1));
     return 0;
 }

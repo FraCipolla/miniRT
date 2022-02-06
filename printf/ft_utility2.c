@@ -6,12 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:08:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 14:50:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 20:12:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 int	ft_strlen(char *s)
 {

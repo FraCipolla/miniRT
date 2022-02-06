@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 18:58:46 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/06 19:09:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ void	ft_itoa_hex(unsigned int n, t_list *params)
 	int		len;
 	char	*tab;
 
+	if (n == 0)
+	{
+		ft_putchar('0', params);
+		return ;
+	}
 	len = 0;
 	tab = malloc(sizeof(char) * 35);
 	if (n == 0)
