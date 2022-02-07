@@ -6,30 +6,24 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 14:08:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 11:57:10 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 12:32:29 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_type_val(char c)
+int	ft_check_prec_dot(long int args, int len, t_list *params)
 {
-	if (c == 'd' || c == 'i')
+	if (params->min == 1)
+	{
+		ft_print_direv(args, len, params);
 		return (1);
-	else if (c == 'u')
+	}
+	if (params->dot == 1)
+	{
+		ft_print_prec(args, len, params);
 		return (1);
-	else if (c == 'x')
-		return (1);
-	else if (c == 'xx')
-		return (1);
-	else if (c == 's')
-		return (1);
-	else if (c == 'c')
-		return (1);
-	else if (c == 'p')
-		return (1);
-	else if (c == '%')
-		return (1);
+	}
 	return (0);
 }
 

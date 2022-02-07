@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 10:32:13 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 11:57:56 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 12:35:10 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	ft_print_prec(long int args, int len, t_list *params);
 void	ft_print_direv_dot(long int args, int len, t_list *params);
 void	ft_print_args(va_list args, t_list *params);
 void	ft_putstr_free(char *s, t_list *params);
+int		ft_check_prec_dot(long int args, int len, t_list *params);
 
 #endif

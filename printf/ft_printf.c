@@ -6,11 +6,32 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 11:57:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 12:42:16 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+int	ft_type_val(char c)
+{
+	if (c == 'd' || c == 'i')
+		return (1);
+	else if (c == 'u')
+		return (1);
+	else if (c == 'x')
+		return (1);
+	else if (c == 'X')
+		return (1);
+	else if (c == 's')
+		return (1);
+	else if (c == 'c')
+		return (1);
+	else if (c == 'p')
+		return (1);
+	else if (c == '%')
+		return (1);
+	return (0);
+}
 
 void	ft_print_args(va_list args, t_list *params)
 {
@@ -30,6 +51,7 @@ void	ft_print_args(va_list args, t_list *params)
 	else if (params->p == 1)
 		ft_print_p(va_arg(args, long unsigned int), params);
 }
+
 char	*ft_make_malloc(const char *format, int i, t_list *params)
 {
 	int		c;
@@ -54,12 +76,12 @@ int	ft_printf(const char *format, ...)
 	char	*tmp;
 	int		i;
 	int		c;
-	t_list params;
+	t_list	params;
 
 	va_start (args, format);
 	params.ret = 0;
-	i = 0;
-	while (format[i])
+	i = -1;
+	while (format[++i])
 	{
 		if (format[i] == '%')
 		{
@@ -76,7 +98,6 @@ int	ft_printf(const char *format, ...)
 		}
 		else
 			ft_putchar (format[i], &params);
-		i++;
 	}
 	va_end (args);
 	return (params.ret);

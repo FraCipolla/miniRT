@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:31 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 10:31:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 12:31:55 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,27 @@ void	ft_print_direv(long int args, int len, t_list *params)
 	int	c;
 
 	c = args;
-	if (params->dot == 0)
-	{
-		if (params->plus == 1 && args >= 0)
-		{
-			ft_putchar ('+', params);
-			params->space = 0;
-			params->width -= 1;
-		}
-		if (c < 0 && args != INT_MIN)
-		{
-			ft_putchar ('-', params);
-			args *= -1;
-			params->space = 0;
-			params->width -= 1;
-		}
-		if (params->u == 1)
-			ft_utoa(args, params);
-		else
-			ft_itoa(args, params);
-		while (params->width > len++)
-			ft_putchar (' ', params);
-	}
-	else
+	if (params->dot == 1)
 		ft_print_direv_dot (args, len, params);
+	if (params->plus == 1 && args >= 0)
+	{
+		ft_putchar ('+', params);
+		params->space = 0;
+		params->width -= 1;
+	}
+	if (c < 0 && args != INT_MIN)
+	{
+		ft_putchar ('-', params);
+		args *= -1;
+		params->space = 0;
+		params->width -= 1;
+	}
+	if (params->u == 1)
+		ft_utoa(args, params);
+	else
+		ft_itoa(args, params);
+	while (params->width > len++)
+		ft_putchar (' ', params);
 }
 
 void	ft_print_prec(long int args, int len, t_list *params)
@@ -73,33 +70,28 @@ void	ft_print_prec(long int args, int len, t_list *params)
 	int	c;
 
 	c = args;
-	if (params->min == 1)
-		ft_print_direv_dot(args, len, params);
-	else
+	if (params->width > params->prec)
+		while (params->width-- > params->prec && params->prec > len)
+			ft_putchar (' ', params);
+	if (params->plus == 1 && args >= 0)
 	{
-		if (params->width > params->prec)
-			while (params->width-- > params->prec && params->prec > len)
-				ft_putchar (' ', params);
-		if (params->plus == 1 && args >= 0)
-		{
-			ft_putchar('+', params);
-			params->space = 0;
-			params->width -= 1;
-		}
-		if (c < 0)
-		{
-			ft_putchar('-', params);
-			args *= -1;
-			params->space = 0;
-			params->width -= 1;
-		}
-		while (params->prec-- > len)
-			ft_putchar('0', params);
-		if (params->u == 1)
-			ft_utoa(args, params);
-		else
-			ft_itoa(args, params);
+		ft_putchar('+', params);
+		params->space = 0;
+		params->width -= 1;
 	}
+	if (c < 0)
+	{
+		ft_putchar('-', params);
+		args *= -1;
+		params->space = 0;
+		params->width -= 1;
+	}
+	while (params->prec-- > len)
+		ft_putchar('0', params);
+	if (params->u == 1)
+		ft_utoa(args, params);
+	else
+		ft_itoa(args, params);
 }
 
 void	check_sign(long int args, t_list *params)
@@ -126,22 +118,21 @@ void	check_sign(long int args, t_list *params)
 void	ft_print_di(long int args, t_list *params)
 {
 	int	len;
-	int size;
+	int	size;
 
-	len = 1;
+	len = 0;
 	size = args;
 	if (args == LONG_MIN)
 		args = 0;
-	while ((size /= 10) != 0)
-		len++;
-	if (params->dot == 1 || params->min == 1)
+	if (size == 0)
+		len = 1;
+	while (size != 0)
 	{
-		if (params->dot == 1)
-			ft_print_prec(args, len, params);
-		if (params->min == 1)
-			ft_print_direv(args, len, params);
-		return ;
+		size /= 10;
+		len++;
 	}
+	if (ft_check_prec_dot(args, len, params) == 1)
+		return ;
 	if (params->width > len && params->zero == 0)
 		while (++len < params->width)
 			ft_putchar(' ', params);
