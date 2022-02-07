@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:02 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:23:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 09:48:11 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	i = 0;
 	j = 0;
 	a = ft_strlen(needle);
-	if (a == 0)
+	if (a == 0 || needle == 0)
 		return ((char *)haystack);
 	while (haystack[i] != '\0' && i < len)
 	{
