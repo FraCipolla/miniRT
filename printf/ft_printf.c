@@ -6,12 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 19:45:35 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 20:32:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 11:57:24 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
+
 void	ft_print_args(va_list args, t_list *params)
 {
 	if (params->u == 1)
@@ -21,7 +21,7 @@ void	ft_print_args(va_list args, t_list *params)
 	}
 	else if (params->di == 1)
 		ft_print_di(va_arg(args, long int), params);
-	else if (params->x == 1 || params->X == 1)
+	else if (params->x == 1 || params->xx == 1)
 		ft_itoa_hex(va_arg(args, unsigned int), params);
 	else if (params->s == 1)
 		ft_print_s(va_arg(args, char *), params);

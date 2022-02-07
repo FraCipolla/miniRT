@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:56:55 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 20:48:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 11:44:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	check_prefix(t_list *params)
 	if (params->p == 1)
 	{
 		ft_putstr("0x", params);
-		params->width -= 2;	
+		params->width -= 2;
 	}
-	if (params->hash == 1)
+	if (params->hash == 1 && params->p == 0)
 	{
 		if (params->x == 1)
 			ft_putstr("0x", params);
@@ -39,13 +39,13 @@ void	ft_print_hex_rev(char *str, int len, t_list *params)
 		while (len-- > 0)
 			ft_putchar(str[len], params);
 		while (params->width-- > c)
-			ft_putchar(' ', params);	
+			ft_putchar(' ', params);
 	}
 	if (params->dot == 1)
 	{
-		c = params->precision;
+		c = params->prec;
 		check_prefix(params);
-		while (params->precision-- > len)
+		while (params->prec-- > len)
 			ft_putchar('0', params);
 		while (len-- > 0)
 			ft_putchar(str[len], params);
@@ -69,14 +69,14 @@ void	ft_print_hex(char *str, int len, t_list *params)
 			ft_putchar(' ', params);
 		check_prefix(params);
 		while (len-- > 0)
-			ft_putchar(str[len], params);	
+			ft_putchar(str[len], params);
 	}
 	if (params->dot == 1)
 	{
-		while (params->width-- > params->precision)
+		while (params->width-- > params->prec)
 			ft_putchar(' ', params);
 		check_prefix(params);
-		while (params->precision-- > len)
+		while (params->prec-- > len)
 			ft_putchar('0', params);
 		while (len-- > 0)
 			ft_putchar(str[len], params);

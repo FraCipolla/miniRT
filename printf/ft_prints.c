@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 23:54:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/06 19:57:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 11:36:54 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void	ft_print_s_rev(char *args, int len, t_list *params)
 	int	c;
 
 	c = -1;
-	if (params->dot == 1 && params->precision < len)
+	if (params->dot == 1 && params->prec < len)
 	{
-		while (++c < params->precision)
+		while (++c < params->prec)
 			ft_putchar(args[c], params);
 		while (len++ <= params->width)
 			ft_putchar(' ', params);
 	}
 	else
 	{
-		while(++c < len)
+		while (++c < len)
 			ft_putchar(args[c], params);
 		while (params->width > len++)
 			ft_putchar (' ', params);
@@ -37,29 +37,23 @@ void	ft_print_s_dot(char *args, int len, t_list *params)
 {
 	int	c;
 
-	c = 0;
-	if (params->precision < len)
+	c = -1;
+	if (params->prec < len)
 	{
 		while (len < params->width)
 		{
 			ft_putchar(' ', params);
 			len++;
 		}
-		while(c < params->precision)
-		{
+		while (++c < params->prec)
 			ft_putchar(args[c], params);
-			c++;
-		}
 	}
 	else
 	{
 		while (len < params->width--)
 			ft_putchar(' ', params);
-		while(c < len)
-		{
+		while (++c < len)
 			ft_putchar(args[c], params);
-			c++;
-		}
 	}
 }
 
@@ -74,14 +68,12 @@ void	ft_print_s(char *args, t_list *params)
 		args = "(null)";
 	while (args[len])
 		len++;
-	if (params->min == 1)
+	if (params->min == 1 || params->dot == 1)
 	{
-		ft_print_s_rev(args, len, params);
-		return ;
-	}
-	else if (params->dot == 1)
-	{
-		ft_print_s_dot(args, len, params);
+		if (params->min == 1)
+			ft_print_s_rev(args, len, params);
+		if (params->dot == 1)
+			ft_print_s_dot(args, len, params);
 		return ;
 	}
 	else if (params->dot == 0)
