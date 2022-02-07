@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 13:49:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 19:25:21 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/07 22:39:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,36 @@ char	*ft_strcat(char *s)
 
 	c = 0;
 	i = 0;
-	while (s[c - 1] != '\n' && s[c])
+	while (s[c - 1] != '\n' && s[c] != '\0')
 		c++;
-	tmp = malloc(sizeof(char) * (ft_strlen(s) - c + 1));
-	while (s[c])
-		tmp[i++] = s[c++];
+//	printf("C2: %d\n", c);
+	tmp = malloc(sizeof(char) * ft_strlen(s) - c + 1);
+	//printf("S: %s\n", s);
+//	printf("SC: %c\n", s[c]);
+//	printf("LEN: %d\n", ft_strlen(s) - c + 1);
+//	printf("C2: %d\n", c);
+	while (s[c] != '\0')
+	{
+		tmp[i] = s[c];
+		i++;
+		c++;
+	}
 	tmp[i] = '\0';
+//	printf("C2: %d\n", c);
+//	printf("I: %d\n", i);
+//	printf("TMP: %s\n", tmp);
 	free(s);
+//	printf("I: %d\n", i);
 	s = malloc(sizeof(char) * (i + 1));
 	c = 0;
 	while (tmp[c])
 	{
-		s[c] = tmp [c];
+		s[c] = tmp[c];
 		c++;
 	}
+	s[c] = '\0';
+//	printf("S: %s\n", s);
+	//printf("SLEN: %d\n", ft_strlen(s));
 	free(tmp);
 	return (s);
 }
@@ -65,21 +81,13 @@ char	*ft_strjoin(char *s, char *buff)
 		return (s);
 	}
 	tab = malloc(sizeof(char) * (ft_strlen(s) + ft_strlen(buff) + 1));
-	//printf("LEN: %d\n", ft_strlen(s) + ft_strlen(buff) + 1);
-	//printf("S: %s\n", s);
 	while (s[++i])
 		tab[i] = s[i];
-	//printf("TAB: %s\n", tab);
 	while (buff[c])
-	{
-		tab[i] = buff[c];
-		i++;
-		c++;
-	}
+		tab[i++] = buff[c++];
 	tab[i] = '\0';
 	free(s);
 	s = malloc(sizeof(char) * (i + 1));
-	//printf("BUFF: %s\n", buff);
 	i = 0;
 	while (tab[i])
 	{
@@ -91,6 +99,28 @@ char	*ft_strjoin(char *s, char *buff)
 	return (s);
 }
 
+char	*ft_find_ret(char *s)
+{
+	char	*ret;
+	int		c;
+
+	c = 0;
+	while (s[c] != '\n' && s[c] != '\0')
+		c++;
+	if (c == 0)
+		c = 1;
+	//printf("SC: %c\n", s[c -1]);
+	//printf("C: %d\n", c);
+	ret = malloc(sizeof(char) * c + 1);
+	ret[c] = '\0';
+	c = 0;
+	while (s[c] != '\n' && s[c] != '\0')
+	{
+		ret[c] = s[c];
+		c++;
+	}
+	return (ret);
+}
 char	*get_next_line(int fd)
 {
 	char		*buff;
@@ -102,33 +132,27 @@ char	*get_next_line(int fd)
 	c = 0;
 	if (fd < 0 || fd > 257)
 		return (NULL);
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
-		return (NULL);
-	tab = read (fd, buff, BUFFER_SIZE);
-	buff[tab] = '\0';
-	if (tab <= 0)
+	if (s == NULL)
 	{
-		free(buff);
-		return (NULL);
-	}
-	while (tab != 0)
-	{
-		s = ft_strjoin(s, buff);
+		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		if (!buff)
+			return (NULL);
 		tab = read (fd, buff, BUFFER_SIZE);
+		buff[BUFFER_SIZE] = '\0';
+		if (tab <= 0)
+		{
+			free(buff);
+			return (NULL);
+		}
+		while (tab != 0)
+		{
+			s = ft_strjoin(s, buff);
+			tab = read (fd, buff, BUFFER_SIZE);
+		}
+		free(buff);
 	}
-	while (s[c] && s[c - 1] != '\n')
-		c++;
-	ret = malloc(sizeof(char) * c + 1);
-	ret[c] = '\0';
-	c = 0;
-	while (ret[c])
-	{
-		ret[c] = s[c];
-		c++;
-	}
+	ret = ft_find_ret(s);
+//	printf("RET: %s\n", ret);
 	s = ft_strcat(s);
-	free(buff);
-	free(s);
 	return (ret);
 }

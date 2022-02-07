@@ -4,8 +4,13 @@ int main()
 {
 	int	fd;
 
-	fd = open("41_with_nl", O_RDONLY);
+	fd = open("TESTO", O_RDONLY);
 
+	printf("%s\n", get_next_line(fd));
+	printf("%s\n", get_next_line(fd));
+	printf("%s\n", get_next_line(fd));
+	printf("%s\n", get_next_line(fd));
+	printf("%s\n", get_next_line(fd));
 	printf("%s\n", get_next_line(fd));
 	return (0);
 }
