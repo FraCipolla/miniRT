@@ -1,41 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/28 17:36:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 10:15:43 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/01/28 17:35:36 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/01/29 22:27:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+void	ft_putstr_fd(char *s, int fd)
 {
-	char			*tab;
-	unsigned int	j;
+	int	i;
 
-	j = 0;
+	i = 0;
 	if (s == NULL)
-		return (NULL);
-	if (ft_strlen(s) < start)
+		return ;
+	while (s[i])
 	{
-		tab = malloc(sizeof(char) * 1);
-		if (!tab)
-			return (NULL);
-		tab[0] = '\0';
-		return (tab);
+		write (fd, &s[i], 1);
+		i++;
 	}
-	tab = malloc(sizeof(char) * (len + 1));
-	if (!tab)
-		return (NULL);
-	while (len--)
-	{
-		tab[j] = s[start + j];
-		j++;
-	}
-	tab[j] = 0;
-	return (tab);
 }

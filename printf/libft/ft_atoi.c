@@ -1,41 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/28 17:36:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 10:15:43 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/01/28 17:34:46 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/01/29 22:04:18 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+int	ft_atoi(const char *str)
 {
-	char			*tab;
-	unsigned int	j;
+	int	i;
+	int	sign;
+	int	res;
 
-	j = 0;
-	if (s == NULL)
-		return (NULL);
-	if (ft_strlen(s) < start)
+	sign = 1;
+	i = 0;
+	res = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		tab = malloc(sizeof(char) * 1);
-		if (!tab)
-			return (NULL);
-		tab[0] = '\0';
-		return (tab);
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
 	}
-	tab = malloc(sizeof(char) * (len + 1));
-	if (!tab)
-		return (NULL);
-	while (len--)
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		tab[j] = s[start + j];
-		j++;
+		res = res * 10 + (str[i] - '0');
+		i++;
 	}
-	tab[j] = 0;
-	return (tab);
+	return (res * sign);
 }

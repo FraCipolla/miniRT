@@ -1,41 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/28 17:36:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 10:15:43 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/01/28 17:35:34 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/02 18:52:46 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+static void	ft_putchar(char c, int fd)
 {
-	char			*tab;
-	unsigned int	j;
+	write (fd, &c, 1);
+}
 
-	j = 0;
-	if (s == NULL)
-		return (NULL);
-	if (ft_strlen(s) < start)
+void	ft_putnbr_fd(int n, int fd)
+{
+	if (n == -2147483648)
 	{
-		tab = malloc(sizeof(char) * 1);
-		if (!tab)
-			return (NULL);
-		tab[0] = '\0';
-		return (tab);
+		write (fd, "-2147483648", 11);
+		return ;
 	}
-	tab = malloc(sizeof(char) * (len + 1));
-	if (!tab)
-		return (NULL);
-	while (len--)
+	else
 	{
-		tab[j] = s[start + j];
-		j++;
+		if (n < 0)
+		{
+			ft_putchar ('-', fd);
+			n *= -1;
+		}
+		if (n > 9)
+			ft_putnbr_fd (n / 10, fd);
+		ft_putchar((n % 10) + '0', fd);
 	}
-	tab[j] = 0;
-	return (tab);
 }
