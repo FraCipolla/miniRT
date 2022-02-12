@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   basics.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/12 14:29:27 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/12 14:32:31 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/02/12 14:36:33 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/12 14:39:36 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
-#include "map/map.h"
-#include "basics.h"
+#ifndef BASICS_H
+# define BASICS_H
 
-int	main(int argc, char *argv[])
+# include "libft/libft.h"
+# include <stdio.h>
+
+typedef enum e_bool
 {
-	t_game	game;
+	TRUE = 1,
+	FALSE = 0
+}	t_bool;
 
-	if (!start(&game, argc, argv))
-		return (0);
-	mlx_hook(game.window, 2, 0, input, (void *)&game);
-	mlx_loop_hook(game.mlx, update, (void *)&game);
-	mlx_loop(game.mlx);
-	return (0);
-}
+typedef struct s_vector
+{
+	int	x;
+	int	y
+}	t_vector;
+
+int		error(char *message);
+void	*null_error(char *message);
+void	print_warning(char *message);
+
+#endif

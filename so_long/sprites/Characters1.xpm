@@ -1,0 +1,33 @@
+/* XPM */
+static char *ff8f96745fd846468d310561f7841301LlhHViWSVBlKOfky[] = {
+/* columns rows colors chars-per-pixel */
+"256 96 9 1 ",
+"  c None",
+". c #181425", /* nero */
+"X c #E4A672", /* pelle scuro */
+"o c #466C81",
+"O c #5A6988", /* grigio scuro */
+"+ c #4691BC",
+"@ c #8B9BB4", /* grigio */
+"# c #EAD4AA", /* pelle */
+"$ c white", /* bianco */
+/* pixels */
+"
+"
+"
+"
+"
+"           ..........",
+"           .X#######.",
+"           .X#######.",
+"           .X#######.",
+"           .X#..###..",
+"           .X#..###..",
+"           .X#######.",
+"           .X#######.",
+"           .X#######.",
+"           .++++++++.",
+"           .oooooooo.",
+"           .oooooooo.",
+"           .@@....@@.",
+"           ...   ...",
