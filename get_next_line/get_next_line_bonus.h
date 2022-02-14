@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/07 15:48:53 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/13 14:48:31 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/02/13 15:19:11 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/13 15:19:29 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#ifndef	GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
-int	ft_strlen(char *s)
-{
-	int	c;
+# include <unistd.h>
+# include <stdlib.h>
+# include <strings.h>
+# include <stddef.h>
+# include <stdarg.h>
+# include <limits.h>
+# include <fcntl.h>
+# include <stdio.h>
 
-	c = 0;
-	if (!s)
-		return (0);
-	while (s[c])
-		c++;
-	return (c);
-}
+char *get_next_line(int fd);
+int	ft_strlen(char *s);
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 13:51:02 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/07 16:10:44 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/13 14:50:21 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@
 # include <stdio.h>
 
 char *get_next_line(int fd);
+int	ft_strlen(char *s);
 
 #endif

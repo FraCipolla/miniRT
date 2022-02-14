@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/07 13:49:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/13 15:25:56 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/02/13 14:27:12 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/13 15:37:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"	
+#include "get_next_line_bonus.h"	
 
 char	*ft_strjoin(char *s, char *buff)
 {
@@ -110,7 +110,6 @@ char	*get_next_line(int fd)
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
-	buff[BUFFER_SIZE] = '\0';
 	tab = read (fd, buff, BUFFER_SIZE);
 	if (tab <= 0 && s[fd] == NULL)
 	{
@@ -125,7 +124,5 @@ char	*get_next_line(int fd)
 	}
 	free(buff);
 	s[fd] = ft_save(ret);
-	if (s[fd] == NULL)
-		free(s[fd]);
 	return (ret);
 }
