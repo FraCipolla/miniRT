@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/07 13:51:02 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/14 18:51:07 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/02/14 20:15:46 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/14 20:15:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,10 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <strings.h>
-# include <stddef.h>
-# include <stdarg.h>
-# include <limits.h>
-# include <fcntl.h>
-# include <stdio.h>
 
+size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char *s1, char *s2);
+int		ft_strchr(const char *s, char c);
 char	*get_next_line(int fd);
-int		ft_strlen(char *s);
 
 #endif

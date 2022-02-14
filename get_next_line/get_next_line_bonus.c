@@ -5,55 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/14 18:46:19 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/14 18:50:45 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/02/14 20:16:27 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/14 20:16:28 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"	
-
-char	*ft_strjoin(char *s, char *buff)
-{
-	char	*tab;
-	int		i;
-	int		c;
-
-	c = 0;
-	i = -1;
-	if (s == NULL)
-	{
-		tab = malloc(sizeof(char) * (ft_strlen(buff) + 1));
-		while (buff[++i])
-			tab[i] = buff[i];
-		tab[i] = '\0';
-		return (tab);
-	}
-	tab = malloc(sizeof(char) * (ft_strlen(s) + ft_strlen(buff) + 1));
-	if (tab == NULL)
-		return (NULL);
-	while (s[++i])
-		tab[i] = s[i];
-	while (buff[c])
-		tab[i++] = buff[c++];
-	tab[i] = '\0';
-	free(s);
-	return (tab);
-}
-
-int	ft_strchr(const char *s, char c)
-{
-	if (s == NULL)
-		return (0);
-	while (*s != '\0')
-	{
-		if (*s == c)
-			break ;
-		s++;
-	}
-	if (*s != c)
-		return (0);
-	return (1);
-}
+#include "get_next_line_bonus.h"
 
 void	ft_strcpy2(char *save, char *str, int i)
 {
@@ -69,55 +26,53 @@ void	ft_strcpy2(char *save, char *str, int i)
 	save[j] = '\0';
 }
 
-char	*ft_save(char *ret)
+char	*ft_save(char *str)
 {
 	char	*save;
 	int		i;
 	int		j;
 
 	i = 0;
-	if (ft_strchr(ret, '\n') == 0)
+	if (ft_strchr(str, '\n') == 0)
 		return (NULL);
-	while (ret[i] != '\n')
+	while (str[i] != '\n')
 		i++;
 	i += 1;
 	j = i;
-	while (ret[j] != '\0')
+	while (str[j] != '\0')
 		j++;
 	if (j == i)
 		return (NULL);
 	save = (char *) malloc (sizeof(char) * (j + 1));
 	if (save == NULL)
 		return (NULL);
-	ft_strcpy2(save, ret, i);
+	ft_strcpy2(save, str, i);
 	return (save);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*buff;
-	int			tab;
-	static char	*s[257];
-	char		*ret;
+	char		*buffer;
+	char		*str;
+	static char	*save[257];
+	int			bytes;
 
-	ret = s[fd];
+	str = save[fd];
+	bytes = 1;
 	if (fd < 0 || fd > 256)
 		return (NULL);
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
-		return (NULL);
-	tab = 1;
-	while (tab > 0)
+	buffer = (char *) malloc (sizeof(char) * BUFFER_SIZE + 1);
+	while (ft_strchr(str, '\n') == 0 && bytes > 0)
 	{
-		tab = read (fd, buff, BUFFER_SIZE);
-		buff[tab] = '\0';
-		if (tab <= 0)
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes <= 0)
 			break ;
-		if (tab < BUFFER_SIZE)
-			tab = 0;
-		ret = ft_strjoin(ret, buff);
+		buffer[bytes] = '\0';
+		if (bytes < BUFFER_SIZE)
+			bytes = 0;
+		str = ft_strjoin(str, buffer);
 	}
-	free(buff);
-	s[fd] = ft_save(ret);
-	return (ret);
+	free (buffer);
+	save[fd] = ft_save(str);
+	return (str);
 }
