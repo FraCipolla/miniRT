@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/13 14:27:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/14 15:11:39 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/02/14 18:46:19 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/02/14 18:50:45 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,9 @@ char	*ft_strjoin(char *s, char *buff)
 	if (s == NULL)
 	{
 		tab = malloc(sizeof(char) * (ft_strlen(buff) + 1));
-		if (tab == NULL)
-			return (NULL);
 		while (buff[++i])
 			tab[i] = buff[i];
 		tab[i] = '\0';
-		free(s);
 		return (tab);
 	}
 	tab = malloc(sizeof(char) * (ft_strlen(s) + ft_strlen(buff) + 1));
@@ -102,7 +99,7 @@ char	*get_next_line(int fd)
 	int			tab;
 	static char	*s[257];
 	char		*ret;
-	
+
 	ret = s[fd];
 	if (fd < 0 || fd > 256)
 		return (NULL);
@@ -114,8 +111,8 @@ char	*get_next_line(int fd)
 	{
 		tab = read (fd, buff, BUFFER_SIZE);
 		buff[tab] = '\0';
-		if(tab <= 0)
-			break;
+		if (tab <= 0)
+			break ;
 		if (tab < BUFFER_SIZE)
 			tab = 0;
 		ret = ft_strjoin(ret, buff);

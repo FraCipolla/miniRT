@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"get_next_line.h": "c",
-		"istream": "c"
+		"istream": "c",
+		"unistd.h": "c"
 	}
 }

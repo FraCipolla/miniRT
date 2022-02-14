@@ -6,11 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 13:51:02 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/02/13 14:50:21 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/14 18:51:07 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
 # include <unistd.h>
@@ -22,7 +22,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-char *get_next_line(int fd);
-int	ft_strlen(char *s);
+char	*get_next_line(int fd);
+int		ft_strlen(char *s);
 
 #endif

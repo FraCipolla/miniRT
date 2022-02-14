@@ -4,7 +4,7 @@
 # include <mlx.h>
 # include "basics.h"
 
-# define IMG_SIZE 34
+# define IMG_SIZE 32
 typedef enum	e_tiletype
 {
 	EMPTY = '0',
