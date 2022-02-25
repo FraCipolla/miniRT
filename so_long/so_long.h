@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
-/*   Updated: 2022/02/25 13:16:09 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/25 15:20:02 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,13 @@ typedef struct s_images
 	void	*current_grass;
 	void	*img_grass_1;
 	void	*img_grass_2;
+	void	*current_dog;
 	void	*img_dog_1;
 	void	*img_dog_2;
+	void	*current_char;
+	void	*img_char_1;
+	void	*img_char_2;
+	void	*img_coll;
 }	t_images;
 
 typedef	struct
@@ -41,7 +46,9 @@ typedef	struct
 	int		c;
 	int		e;
 	int		p;
-	int		frames;
+	int		grass_frames;
+	int		dog_frames;
+	int		char_frames;
 	
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -60,5 +67,6 @@ int		ft_open(char *file_name, int mode);
 int		ft_checkmap(fdf *data);
 void	ft_open_images(fdf *data);
 int		ft_updates(fdf *data);
+void	draw(fdf *data);
 
 #endif

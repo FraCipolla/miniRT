@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:51:17 by mabasset          #+#    #+#             */
-/*   Updated: 2022/02/25 13:18:46 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/02/25 15:24:15 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,32 @@ void	draw(fdf *data)
 		col = 0;
 		while (col < data->width)
 		{
+			if (data->matrix[row][col] == 'P')
+			{
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * data->img_width, row * data->img_height);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_char, col * data->img_width, row * data->img_height);
+			}
 			if (data->matrix[row][col] == '1')
 			{
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * data->img_width, row * data->img_height);
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_wall, col * data->img_width, row * data->img_height);
 			}
-			else if (data->matrix[row][col] == 'E')
+			if (data->matrix[row][col] == 'E')
 			{
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * data->img_width, row * data->img_height);
-				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_dog_1, col * data->img_width, row * data->img_height);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_dog, col * data->img_width, row * data->img_height);
 			}
-			else
+			if (data->matrix[row][col] == 'C')
+			{
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * data->img_width, row * data->img_height);
+				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_coll, col * data->img_width, row * data->img_height);
+			}
+			if (data->matrix[row][col] == '0')
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * data->img_width, row * data->img_height);
 			col++;
 		}
 		row++;
-		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width, data->height, 15921152, "MOVE_COUNT:");
+		//mlx_string_put(data->mlx_ptr, data->win_ptr, data->width, data->height, 15921152, "MOVE_COUNT:");
 	}
 }
 
@@ -72,7 +82,9 @@ int	main(int argc, char *argv[])
 {
 	fdf	data;
 
-	data.frames = 0;
+	data.grass_frames = 0;
+	data.dog_frames = 0;
+	data.char_frames = 0;
 	if (argc == 2)
 	{
 		read_file(argv[1], &data);
@@ -84,6 +96,9 @@ int	main(int argc, char *argv[])
 		//ft_printf("%d\n", data.img_height);
 		data.win_ptr = mlx_new_window(data.mlx_ptr, data.width * data.img_width, data.height * data.img_height, "FDF");
 		//data.zoom = 20;
+		data.images.current_grass = data.images.img_grass_1;
+		data.images.current_dog = data.images.img_dog_1;
+		data.images.current_char = data.images.img_char_1;
 		draw(&data);
 		mlx_key_hook(data.win_ptr, ft_hooks, &data);
 		mlx_loop_hook(data.mlx_ptr, ft_updates, &data);
