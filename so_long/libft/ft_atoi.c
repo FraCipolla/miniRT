@@ -3,27 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/28 17:34:46 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 22:04:18 by mcipolla         ###   ########.fr       */
+/*   Created: 2021/12/01 15:09:23 by mabasset          #+#    #+#             */
+/*   Updated: 2022/01/11 18:12:04 by mabasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+static int	ft_isspace(char c)
+{
+	if (c == ' ' || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
+}
+
 int	ft_atoi(const char *str)
 {
 	int	i;
+	int	nb;
 	int	sign;
-	int	res;
 
-	sign = 1;
 	i = 0;
-	res = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+	nb = 0;
+	sign = 1;
+	while (ft_isspace(str[i]) && str[i] != '\0')
 		i++;
-	if (str[i] == '-' || str[i] == '+')
+	if (str[i] == '+' || str[i] == '-')
 	{
 		if (str[i] == '-')
 			sign *= -1;
@@ -31,8 +38,9 @@ int	ft_atoi(const char *str)
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		res = res * 10 + (str[i] - '0');
+		nb *= 10;
+		nb += str[i] - '0';
 		i++;
 	}
-	return (res * sign);
+	return (sign * nb);
 }

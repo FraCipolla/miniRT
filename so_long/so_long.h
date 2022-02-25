@@ -1,91 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
+/*   Updated: 2022/02/25 13:16:09 by mcipolla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# include <mlx.h>
-# include "basics.h"
+# include "libft/libft.h"
+# include "mlx.h"
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <math.h>
 
-# define IMG_SIZE 32
-typedef enum	e_tiletype
+typedef struct s_images
 {
-	EMPTY = '0',
-	WALL = '1',
-	COLLECTABLE = 'C',
-	PLAYER = 'P',
-	EXIT = 'E',
-	ENEMY = 'M',
-	FOLLOWER = 'F',
-}	t_tiletype;
+	void	*img_wall;
+	void	*current_grass;
+	void	*img_grass_1;
+	void	*img_grass_2;
+	void	*img_dog_1;
+	void	*img_dog_2;
+}	t_images;
 
-typedef struct s_tile
+typedef	struct
 {
-	t_tiletype	type;
-	t_tiletype	og_type;
-	t_vector	position;
-	struct s_tile	*up;
-	struct s_tile	*down;
-	struct s_tile	*left;
-	struct s_tile	*right;	
-}	t_tile;
-
-/*	PLAYER */
-typedef struct s_player
-{
-	t_tile	*tile;
-	void	*current_img;
-	int		framecount;
-	int		idle_frames;
-	void	*idle_img_0;
-	void	*idle_img_1;
-	int		action_frames;
-	void	*action_img;
-}	t_player;
-
-/*	ENEMY */
-typedef struct s_enemy
-{
-	t_enemytype		type;
-	int				dir;
-	t_tile			*og_tile;
-	t_tile			*tile;
-	struct s_enemy	*next;
-}	t_enemy;
-
-/*	INPUT	*/
-enum	e_keycode
-{
-	KEY_UP = 13,
-	KEY_DOWN = 1,
-	KEY_LEFT = 0,
-	KEY_RIGHT = 2,
-	RESET = 15,
-	ESC = 53
-};
-
-typedef struct s_game
-{
-	void		*mlx;
-	void		*window;
-	t_vector	window_size;
-	t_tile		**tilemap;
+	char	**matrix;
+	int		height;
+	int		width;
+	int		img_height;
+	int		img_width;
+	int		c;
+	int		e;
+	int		p;
+	int		frames;
 	
-	t_player	player;
+	void	*mlx_ptr;
+	void	*win_ptr;
+	t_images	images;
+}				fdf;
 
-	int			og_collects;
-	int			collects;
-	int			moves;
-
-	t_enemy		*enemy_list;
-
-	// sprites/images
-	t_vector		img_size;
-	t_wall_img		wall_imgs;
-	t_collect_img	collects_imgs;
-	t_enemy_img		enemy_imgs;
-	void			*door_open_img;
-	void			*door_close_img;
-	t_effect		effect;
-	void			*red_panel;
-	void			*white_panel;
-}	t_game;
+void	read_file(char *file_name, fdf *data);
+float	ft_max(float a, float b);
+float	ft_mod(float i);
+void	ft_printstruct(fdf *data);
+void	ft_freematrix(char **matrix, int size);
+void	ft_color(fdf *data);
+void	ft_zoom(float *x1, float *y1, fdf *data);
+void	ft_error(char *str);
+int		ft_open(char *file_name, int mode);
+int		ft_checkmap(fdf *data);
+void	ft_open_images(fdf *data);
+int		ft_updates(fdf *data);
 
 #endif

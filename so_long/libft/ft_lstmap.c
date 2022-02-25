@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/29 17:15:17 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 18:39:48 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/01/16 03:27:12 by mabasset          #+#    #+#             */
+/*   Updated: 2022/01/17 16:49:39 by mabasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*new;
-	t_list	*start;
-	t_list	*tmp;
+	t_list	*new_lst;
+	t_list	*new_elem;
 
-	if (lst)
+	if (!f || !del)
+		return (NULL);
+	new_lst = NULL;
+	while (lst)
 	{
-		tmp = lst;
-		start = ft_lstnew(f(tmp-> content));
-		if (!start)
-			return (NULL);
-		tmp = tmp -> next;
-		while (tmp)
+		new_elem = ft_lstnew((*f)(lst->content));
+		if (!new_elem)
 		{
-			new = ft_lstnew(f(tmp-> content));
-			if (!new)
+			while (new_lst)
 			{
-				ft_lstclear(&start, del);
-				return (NULL);
+				new_elem = new_lst->next;
+				(*del)(new_elem->content);
+				free(new_elem);
+				new_elem = new_lst;
 			}
-			ft_lstadd_back(&start, new);
-			tmp = tmp-> next;
+			lst = NULL;
+			return (NULL);
 		}
-		return (start);
+		ft_lstadd_back(&new_lst, new_elem);
+		lst = lst->next;
 	}
-	return (NULL);
+	return (new_lst);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/28 17:36:04 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 17:23:41 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/01/11 09:24:02 by mabasset          #+#    #+#             */
+/*   Updated: 2022/01/14 16:13:14 by mabasset         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,30 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	char	r;
-	int		i;
-	char	*str;
+	int				i;
+	int				j;
+	unsigned char	*str;
+	unsigned char	ch;
 
+	j = 0;
 	i = 0;
-	r = (char)c;
-	str = (char *)s;
-	while (str[i])
-	i++;
-	while (i >= 0)
+	str = (unsigned char *) s;
+	ch = (unsigned char) c;
+	while (str[i] != '\0')
 	{
-		if (str[i] == r)
-			return (&str[i]);
-		i--;
+		if (str[i] == ch)
+			j = i;
+		i++;
 	}
+	if (str[j] == ch)
+		return ((char *)str + j);
+	if (ch == '\0')
+		return ((char *)str + i);
 	return (NULL);
 }
+
+/*int main()
+{
+	printf("%s\n", strrchr("ciao matteo", 'c'));
+	printf("%s\n", ft_strrchr("ciao matteo", 'c'));
+}*/
