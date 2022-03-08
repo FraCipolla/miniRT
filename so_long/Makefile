@@ -1,5 +1,5 @@
 NAME = so_long
-SRC = main.c read_file.c utility.c check.c open_images.c updates.c
+SRC = main.c read_file.c utility.c check.c open_images.c updates.c movement.c
 FLAG = -Wall -Werror -Wextra -g
 LIBFT = libft/libft.a
 MLX_FLAG = -l mlx -framework openGL -framework AppKit

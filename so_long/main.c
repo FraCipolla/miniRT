@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:51:17 by mabasset          #+#    #+#             */
-/*   Updated: 2022/02/25 15:24:15 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/08 12:47:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ static int	ft_hooks(int keycode, fdf *data)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		exit(0);
 	}
+	if (keycode == 13)
+		move_up(data);
+	if (keycode == 1)
+		move_down(data);
+	if (keycode == 0)
+		move_left(data);
+	if (keycode == 2)
+		move_right(data);
 	return(0);
 }
 
@@ -35,6 +43,8 @@ void	draw(fdf *data)
 		{
 			if (data->matrix[row][col] == 'P')
 			{
+				data->y = row;
+				data->x = col;
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * data->img_width, row * data->img_height);
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_char, col * data->img_width, row * data->img_height);
 			}
@@ -58,25 +68,10 @@ void	draw(fdf *data)
 			col++;
 		}
 		row++;
-		//mlx_string_put(data->mlx_ptr, data->win_ptr, data->width, data->height, 15921152, "MOVE_COUNT:");
+		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width, data->height, 16777215, "MOVES");
+		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width * 6, data->height, 16777215, ft_itoa(data->move_count));
 	}
 }
-
-/*int	deal_key(int key, fdf *data)
-{
-	ft_printf("%d\n", key);
-	if (key == 126)
-		data->shift_y -= 10;
-	if (key == 125)
-		data->shift_y += 10;
-	if (key == 123)
-		data->shift_x -= 10;
-	if (key == 124)
-		data->shift_x += 10;
-	mlx_clear_window(data->mlx_ptr, data->win_ptr);
-	draw(data);
-	return (0);
-}*/
 
 int	main(int argc, char *argv[])
 {
@@ -85,6 +80,7 @@ int	main(int argc, char *argv[])
 	data.grass_frames = 0;
 	data.dog_frames = 0;
 	data.char_frames = 0;
+	data.move_count = 0;
 	if (argc == 2)
 	{
 		read_file(argv[1], &data);
@@ -93,9 +89,7 @@ int	main(int argc, char *argv[])
 		ft_printstruct(&data);
 		data.mlx_ptr = mlx_init();
 		ft_open_images (&data);
-		//ft_printf("%d\n", data.img_height);
 		data.win_ptr = mlx_new_window(data.mlx_ptr, data.width * data.img_width, data.height * data.img_height, "FDF");
-		//data.zoom = 20;
 		data.images.current_grass = data.images.img_grass_1;
 		data.images.current_dog = data.images.img_dog_1;
 		data.images.current_char = data.images.img_char_1;

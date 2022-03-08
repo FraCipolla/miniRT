@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
-/*   Updated: 2022/02/25 15:20:02 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/08 12:48:50 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ typedef	struct
 	int		grass_frames;
 	int		dog_frames;
 	int		char_frames;
+	int		move_count;
+	int		x;
+	int		y;
 	
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -68,5 +71,9 @@ int		ft_checkmap(fdf *data);
 void	ft_open_images(fdf *data);
 int		ft_updates(fdf *data);
 void	draw(fdf *data);
+int		move_up(fdf *data);
+int 	move_right(fdf *data);
+int		move_left(fdf *data);
+int 	move_down(fdf *data);
 
 #endif
