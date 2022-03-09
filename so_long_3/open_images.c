@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 11:54:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/08 14:09:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/08 20:12:35 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,10 @@ void	ft_open_images (fdf *data)
 	data->images.img_particle4 = mlx_xpm_file_to_image(data->mlx_ptr, "sprites/particle_4.xpm", &data->img_width, &data->img_height);
 	data->images.img_particle5 = mlx_xpm_file_to_image(data->mlx_ptr, "sprites/particle_5.xpm", &data->img_width, &data->img_height);
 	data->images.img_particle6 = mlx_xpm_file_to_image(data->mlx_ptr, "sprites/particle_6.xpm", &data->img_width, &data->img_height);
-
+	data->images.img_exit_1 = mlx_xpm_file_to_image(data->mlx_ptr, "sprites/img_exit_1.xpm", &data->img_width, &data->img_height);
+	data->images.img_exit_2 = mlx_xpm_file_to_image(data->mlx_ptr, "sprites/img_exit_2.xpm", &data->img_width, &data->img_height);
+	data->images.img_escl = mlx_xpm_file_to_image(data->mlx_ptr, "sprites/esclamation.xpm", &data->img_width, &data->img_height);
+	data->images.img_rev_exit_1 = mlx_xpm_file_to_image(data->mlx_ptr, "sprites/img_rev_exit_1.xpm", &data->img_width, &data->img_height);
+	data->images.img_rev_exit_2 = mlx_xpm_file_to_image(data->mlx_ptr, "sprites/img_rev_exit_2.xpm", &data->img_width, &data->img_height);
 }
+
