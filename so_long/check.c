@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 02:21:35 by mabasset          #+#    #+#             */
-/*   Updated: 2022/02/22 04:03:21 by mabasset         ###   ########.fr       */
+/*   Updated: 2022/03/12 15:14:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	ft_checkchar(fdf *data)
 				data->matrix[row][col] != '1' &&
 				data->matrix[row][col] != 'C' &&
 				data->matrix[row][col] != 'E' &&
-				data->matrix[row][col] != 'P')
+				data->matrix[row][col] != 'P' &&
+				data->matrix[row][col] != 'M')
 				return (0);
 			col++;
 		}
@@ -67,6 +68,7 @@ int	ft_check_cep(fdf *data)
 	data->e = 0;
 	data->p = 0;
 	row = 0;
+	t_enemy *new;
 	while (row++ < data->height - 1)
 	{
 		col = 0;
@@ -78,9 +80,24 @@ int	ft_check_cep(fdf *data)
 				data->e++;
 			else if (data->matrix[row][col] == 'P')
 				data->p++;
+			else if (data->matrix[row][col] == 'M')
+			{
+				new = (t_enemy *)malloc(sizeof(t_enemy));
+				new->pos.x = col;
+				new->pos.y = row;
+				new->next = NULL;
+				if (data->enemy == NULL)
+					data->enemy = new;
+				else
+				{
+					while (data->enemy->next)
+						data->enemy = data->enemy->next;
+					data->enemy->next = new;
+				}	
+			}
 		}
 	}
-	if (data->c == 0 || (data->e == 0 || data->e > 1)
+	if (data->c == 0 || data->e == 0
 		|| (data->p == 0 || data->p > 1))
 		return (0);
 	return (1);

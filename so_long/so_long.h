@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/08 14:20:48 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/12 14:48:12 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ typedef struct s_images
 	void	*img_char_1;
 	void	*img_char_2;
 	void	*img_coll;
+	void	*img_exit_1;
+	void	*img_exit_2;
+	void	*current_exit;
 	int		part_an;
 	void	*img_particle1;
 	void	*img_particle2;
@@ -41,7 +44,33 @@ typedef struct s_images
 	void	*img_particle4;
 	void	*img_particle5;
 	void	*img_particle6;
+	void	*img_escl;
+	void	*img_rev_exit_1;
+	void	*img_rev_exit_2;
 }	t_images;
+
+typedef struct s_vector
+{
+	int	x;
+	int	y;
+}	t_vector;
+
+typedef struct s_enemy
+{
+	t_vector		pos;
+	struct s_enemy	*next;
+}	t_enemy;
+
+typedef enum e_tiletype
+{
+	EMPTY = '0',
+	WALL = '1',
+	COLLECTABLE = 'C',
+	PLAYER = 'P',
+	EXIT = 'E',
+	ENEMY = 'M',
+	FOLLOWER = 'F'
+}	t_tiletype;
 
 typedef	struct
 {
@@ -57,9 +86,16 @@ typedef	struct
 	int		dog_frames;
 	int		char_frames;
 	int		move_count;
-	int		particle_frames;
 	int		x;
 	int		y;
+	int		gx;
+	int		particle_frames;
+	int		flag;
+	int		dx;
+	int		dy;
+	int		i;
+	int		en;
+	t_enemy	*enemy;
 	
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -83,6 +119,6 @@ int		move_up(fdf *data);
 int 	move_right(fdf *data);
 int		move_left(fdf *data);
 int 	move_down(fdf *data);
-int		ft_particles(fdf *data);
+void	ft_movenemy(fdf *data);
 
 #endif

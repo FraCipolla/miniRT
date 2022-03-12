@@ -3,8 +3,8 @@ static char *result[] = {
 /* columns rows colors chars-per-pixel */
 "64 64 5 1 ",
 "  c black",
-". c #888000",
-"X c #F5EB47",
+". c 663300",
+"X c #CC6600",
 "o c white",
 "O c None",
 /* pixels */

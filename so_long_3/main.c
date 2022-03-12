@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:51:17 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/09 17:15:21 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/10 02:21:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	draw(fdf *data)
 			}
 			if (data->matrix[row][col] == 'E')
 			{
-				data->gx = col;
 				if (data->c == 0)
 					mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_escl, col * data->img_width, (row * data->img_height - 64));
 				mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * data->img_width, row * data->img_height);

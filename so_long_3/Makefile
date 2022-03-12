@@ -1,4 +1,4 @@
-NAME = so_long
+NAME = so_long.out
 SRC = main.c read_file.c utility.c check.c open_images.c updates.c movement.c
 FLAG = -Wall -Werror -Wextra -g
 LIBFT = libft/libft.a
@@ -9,6 +9,13 @@ $(NAME):
 			gcc $(SRC) -o $(NAME) $(LIBFT) $(MLX_FLAG)
 
 all:	$(NAME)
+
+#play: all
+#	@echo $(YELLOW)"     - Playing all maps... \n"$(NONE)
+#	@make -C ./ clean
+#	@./$(NAME) maps/map1.ber
+#	@./$(NAME) maps/map2.ber
+#	@./$(NAME) maps/map3.ber
 
 clean:
 			rm -f $(NAME)
