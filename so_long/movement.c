@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 11:34:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/14 16:45:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 18:19:06 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	move_up(fdf *data)
 				data->c--;
 				data->images.part_an = 1;
 				data->particle_frames = 0;
+				data->an_pos = &play_list->pos;
 			}
 			if (data->matrix[play_list->pos.y - 1][play_list->pos.x] == 'M' || data->matrix[play_list->pos.y - 1][play_list->pos.x] == 'E')
 			{
@@ -59,7 +60,6 @@ void	move_up(fdf *data)
 			data->matrix[play_list->pos.y][play_list->pos.x] = '0';
 			data->matrix[play_list->pos.y - 1][play_list->pos.x] = 'P';
 			play_list->pos.y -= 1;
-			data->an_pos = play_list->pos;
 		}
 		play_list = play_list->next;
 	}
@@ -79,6 +79,7 @@ void	move_right(fdf *data)
 				data->c--;
 				data->images.part_an = 1;
 				data->particle_frames = 0;
+				data->an_pos = &play_list->pos;
 			}
 			if (data->matrix[play_list->pos.y][play_list->pos.x + 1] == 'M' || data->matrix[play_list->pos.y][play_list->pos.x + 1] == 'E')
 			{
@@ -89,7 +90,6 @@ void	move_right(fdf *data)
 			data->matrix[play_list->pos.y][play_list->pos.x] = '0';
 			data->matrix[play_list->pos.y][play_list->pos.x + 1] = 'P';
 			play_list->pos.x += 1;
-			data->an_pos = play_list->pos;
 		}
 		play_list = play_list->next;
 	}
@@ -109,6 +109,7 @@ void	move_left(fdf *data)
 				data->c--;
 				data->images.part_an = 1;
 				data->particle_frames = 0;
+				data->an_pos = &play_list->pos;
 			}
 			if (data->matrix[play_list->pos.y][play_list->pos.x - 1] == 'M' || data->matrix[play_list->pos.y][play_list->pos.x - 1] == 'E')
 			{
@@ -119,7 +120,6 @@ void	move_left(fdf *data)
 			data->matrix[play_list->pos.y][play_list->pos.x] = '0';
 			data->matrix[play_list->pos.y][play_list->pos.x - 1] = 'P';
 			play_list->pos.x -= 1;
-			data->an_pos = play_list->pos;
 		}
 		play_list = play_list->next;
 	}
@@ -139,6 +139,7 @@ void move_down(fdf *data)
 				data->c--;
 				data->images.part_an = 1;
 				data->particle_frames = 0;
+				data->an_pos = &play_list->pos;
 			}
 			if (data->matrix[play_list->pos.y + 1][play_list->pos.x] == 'M' || data->matrix[play_list->pos.y + 1][play_list->pos.x] == 'E')
 			{
@@ -149,7 +150,6 @@ void move_down(fdf *data)
 			data->matrix[play_list->pos.y][play_list->pos.x] = '0';
 			data->matrix[play_list->pos.y + 1][play_list->pos.x] = 'P';
 			play_list->pos.y += 1;
-			data->an_pos = play_list->pos;
 		}
 		play_list = play_list->next;
 	}

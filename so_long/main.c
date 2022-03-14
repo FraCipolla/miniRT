@@ -6,14 +6,14 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:51:17 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 16:15:43 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 19:48:52 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 static int	ft_hooks(int keycode, fdf *data)
-{
+{	
 	if (keycode == 53)
 	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
@@ -33,7 +33,6 @@ static int	ft_hooks(int keycode, fdf *data)
 
 void	draw2(fdf *data, int row, int col)
 {
-	t_enemy		*enemy_list;
 	t_player	*player_list;
 	
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * 64, row * 64);
@@ -54,12 +53,6 @@ void	draw2(fdf *data, int row, int col)
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_char, player_list->pos.x * 64, player_list->pos.y * 64);
 		player_list = player_list->next;
 	}
-	enemy_list = data->enemy;
-	while (enemy_list)
-	{
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_dog, enemy_list->pos.x * 64, enemy_list->pos.y * 64);
-		enemy_list = enemy_list->next;
-	}
 }
 
 void	draw(fdf *data)
@@ -67,6 +60,7 @@ void	draw(fdf *data)
 	int	row;
 	int	col;
 	int	i;
+	t_enemy		*enemy_list;
 
 	row = 0;
 	while (row < data->height)
@@ -81,21 +75,12 @@ void	draw(fdf *data)
 		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width, data->height, 16777215, "MOVES");
 		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width * 6, data->height, 16777215, ft_itoa(data->move_count));
 	}
-}
-
-void	ft_initializer(fdf *data)
-{
-	data->grass_frames = 0;
-	data->dog_frames = 0;
-	data->char_frames = 0;
-	data->move_count = 0;
-	data->images.current_grass = data->images.img_grass_1;
-	data->images.current_dog = data->images.img_dog_1;
-	data->images.current_char = data->images.img_char_1;
-	data->images.current_exit = data->images.img_exit_1;
-	data->images.part_an = 0;
-	data->i = 1;
-	data->en = 0;
+	enemy_list = data->enemy;
+	while (enemy_list)
+	{
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_dog, enemy_list->pos.x * 64, enemy_list->pos.y * 64);
+		enemy_list = enemy_list->next;
+	}
 }
 
 int	main(int argc, char *argv[])

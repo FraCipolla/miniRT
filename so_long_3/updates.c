@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:15:28 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/08 21:30:23 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 18:33:23 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,14 @@ int	ft_updates(fdf *data)
 	}
 	if (data->char_frames == 5000 && data->images.current_char == data->images.img_char_1)
 	{
-		if (data->x > data->gx)
-			data->images.current_exit = data->images.img_rev_exit_1;
-		else
-			data->images.current_exit = data->images.img_exit_2;
+		data->images.current_exit = data->images.img_exit_2;
 		data->images.current_char = data->images.img_char_2;
 		draw(data);
 		data->char_frames = 0;
 	}
 	if (data->char_frames == 5000 && data->images.current_char == data->images.img_char_2)
 	{
-		if (data->x > data->gx)
-			data->images.current_exit = data->images.img_rev_exit_2;
-		else
-			data->images.current_exit = data->images.img_exit_1;
+		data->images.current_exit = data->images.img_exit_1;
 		data->images.current_char = data->images.img_char_1;
 		draw(data);
 		data->char_frames = 0;

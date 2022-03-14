@@ -10,6 +10,13 @@ $(NAME):
 
 all:	$(NAME)
 
+#play: all
+#	@echo $(YELLOW)"     - Playing all maps... \n"$(NONE)
+#	@make -C ./ clean
+#	@./$(NAME) maps/map1.ber
+#	@./$(NAME) maps/map2.ber
+#	@./$(NAME) maps/map3.ber
+
 clean:
 			rm -f $(NAME)
 

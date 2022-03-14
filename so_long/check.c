@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 02:21:35 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 14:36:33 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 18:20:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	store_player(fdf *data, int col, int row)
 	t_player *player_list;
 
 	data->p++;
+	data->an_pos = &player_list->pos;
 	new = (t_player *)malloc(sizeof(t_player));
 	if (new == NULL)
 		return ;

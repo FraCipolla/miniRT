@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 16:47:00 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 19:49:01 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_images
 	void	*img_escl;
 	void	*img_rev_exit_1;
 	void	*img_rev_exit_2;
+	void	*white_panel;
 }	t_images;
 
 typedef struct s_vector
@@ -95,12 +96,10 @@ typedef	struct
 	int			move_count;
 	int			gx;
 	int			particle_frames;
-	int			flag;
-	int			i;
-	int			en;
+	
 	t_enemy		*enemy;
 	t_player	*player;
-	t_vector	an_pos;
+	t_vector	*an_pos;
 	
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -125,5 +124,6 @@ void 	move_right(fdf *data);
 void	move_left(fdf *data);
 void 	move_down(fdf *data);
 void	ft_movenemy(fdf *data);
+void	ft_initializer(fdf *data);
 
 #endif

@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   utility.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 10:37:42 by mabasset          #+#    #+#             */
-/*   Updated: 2022/02/21 22:19:27 by mabasset         ###   ########.fr       */
+/*   Updated: 2022/03/14 19:13:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	ft_initializer(fdf *data)
+{
+	data->grass_frames = 0;
+	data->dog_frames = 0;
+	data->char_frames = 0;
+	data->move_count = 0;
+	data->images.current_grass = data->images.img_grass_1;
+	data->images.current_dog = data->images.img_dog_1;
+	data->images.current_char = data->images.img_char_1;
+	data->images.current_exit = data->images.img_exit_1;
+	data->images.part_an = 0;
+}
 
 void	ft_error(char *str)
 {
