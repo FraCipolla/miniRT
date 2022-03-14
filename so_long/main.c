@@ -6,19 +6,16 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:51:17 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 19:48:52 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 23:19:42 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static int	ft_hooks(int keycode, fdf *data)
+static int	ft_hooks(int keycode, t_game *data)
 {	
 	if (keycode == 53)
-	{
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-		exit(0);
-	}
+		end_game(data);
 	if (keycode == 13)
 		move_up(data);
 	else if (keycode == 1)
@@ -31,61 +28,67 @@ static int	ft_hooks(int keycode, fdf *data)
 	return (0);
 }
 
-void	draw2(fdf *data, int row, int col)
+void	draw2(t_game *data, int row, int col)
 {
-	t_player	*player_list;
-	
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * 64, row * 64);
+	t_player	*p_list;
+
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+		data->images.cur_grass, col * 64, row * 64);
 	if (data->matrix[row][col] == '1')
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_wall, col * 64, row * 64);
+		mlx_put_image_to_window(data->mlx_ptr,
+			data->win_ptr, data->images.img_wall, col * 64, row * 64);
 	if (data->matrix[row][col] == 'C')
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_coll, col * 64, row * 64);
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->images.img_coll, col * 64, row * 64);
 	if (data->matrix[row][col] == 'E')
 	{
-		data->gx = col;
 		if (data->c == 0)
-			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_escl, col * 64, (row * 63 - 64));
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_exit, col * 64, row * 64);
+			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+				data->images.img_escl, col * 64, (row * 63 - 64));
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->images.current_exit, col * 64, row * 64);
 	}
-	player_list = data->player;
-	while (player_list)
+	p_list = data->player;
+	while (p_list)
 	{
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_char, player_list->pos.x * 64, player_list->pos.y * 64);
-		player_list = player_list->next;
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->images.current_char, p_list->pos.x * 64, p_list->pos.y * 64);
+		p_list = p_list->next;
 	}
 }
 
-void	draw(fdf *data)
+void	draw(t_game *data)
 {
-	int	row;
-	int	col;
-	int	i;
+	int			row;
+	int			col;
+	int			i;
 	t_enemy		*enemy_list;
 
 	row = 0;
 	while (row < data->height)
 	{
-		col = 0;
-		while (col < data->width)
-		{
+		col = -1;
+		while (++col < data->width)
 			draw2(data, row, col);
-			col++;
-		}
 		row++;
-		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width, data->height, 16777215, "MOVES");
-		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width * 6, data->height, 16777215, ft_itoa(data->move_count));
+		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width,
+			data->height, 16777215, "MOVES");
+		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width * 6,
+			data->height, 16777215, ft_itoa(data->move_count));
 	}
 	enemy_list = data->enemy;
 	while (enemy_list)
 	{
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_dog, enemy_list->pos.x * 64, enemy_list->pos.y * 64);
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+			data->images.current_dog,
+			enemy_list->pos.x * 64, enemy_list->pos.y * 64);
 		enemy_list = enemy_list->next;
 	}
 }
 
 int	main(int argc, char *argv[])
 {
-	fdf	data;
+	t_game	data;
 
 	ft_initializer(&data);
 	if (argc == 2)
@@ -97,7 +100,8 @@ int	main(int argc, char *argv[])
 		data.mlx_ptr = mlx_init();
 		ft_open_images (&data);
 		ft_initializer(&data);
-		data.win_ptr = mlx_new_window(data.mlx_ptr, data.width * 64, data.height * 64, "so_long");
+		data.win_ptr = mlx_new_window(data.mlx_ptr,
+				data.width * 64, data.height * 64, "so_long");
 		draw(&data);
 		mlx_do_key_autorepeaton(data.mlx_ptr);
 		mlx_hook(data.win_ptr, 2, (1 >> 1L), ft_hooks, &data);

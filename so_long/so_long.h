@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 19:49:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 23:22:17 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 typedef struct s_images
 {
 	void	*img_wall;
-	void	*current_grass;
+	void	*cur_grass;
 	void	*img_grass_1;
 	void	*img_grass_2;
 	void	*current_dog;
@@ -45,8 +45,6 @@ typedef struct s_images
 	void	*img_particle5;
 	void	*img_particle6;
 	void	*img_escl;
-	void	*img_rev_exit_1;
-	void	*img_rev_exit_2;
 	void	*white_panel;
 }	t_images;
 
@@ -63,24 +61,13 @@ typedef struct s_enemy
 	int				dir;
 }	t_enemy;
 
-typedef enum e_tiletype
-{
-	EMPTY = '0',
-	WALL = '1',
-	COLLECTABLE = 'C',
-	PLAYER = 'P',
-	EXIT = 'E',
-	ENEMY = 'M',
-	FOLLOWER = 'F'
-}	t_tiletype;
-
 typedef struct s_player
 {
 	t_vector			pos;
-	struct	s_player	*next;
+	struct s_player		*next;
 }	t_player;
 
-typedef	struct
+typedef struct s_game
 {
 	char		**matrix;
 	int			height;
@@ -94,36 +81,35 @@ typedef	struct
 	int			dog_frames;
 	int			char_frames;
 	int			move_count;
-	int			gx;
 	int			particle_frames;
-	
 	t_enemy		*enemy;
 	t_player	*player;
 	t_vector	*an_pos;
-	
-	void	*mlx_ptr;
-	void	*win_ptr;
+	void		*mlx_ptr;
+	void		*win_ptr;
 	t_images	images;
-}				fdf;
+}	t_game;
 
-void	read_file(char *file_name, fdf *data);
+void	read_file(char *file_name, t_game *data);
 float	ft_max(float a, float b);
 float	ft_mod(float i);
-void	ft_printstruct(fdf *data);
+void	ft_printstruct(t_game *data);
 void	ft_freematrix(char **matrix, int size);
-void	ft_color(fdf *data);
-void	ft_zoom(float *x1, float *y1, fdf *data);
+void	ft_color(t_game *data);
+void	ft_zoom(float *x1, float *y1, t_game *data);
 void	ft_error(char *str);
 int		ft_open(char *file_name, int mode);
-int		ft_checkmap(fdf *data);
-void	ft_open_images(fdf *data);
-int		ft_updates(fdf *data);
-void	draw(fdf *data);
-void	move_up(fdf *data);
-void 	move_right(fdf *data);
-void	move_left(fdf *data);
-void 	move_down(fdf *data);
-void	ft_movenemy(fdf *data);
-void	ft_initializer(fdf *data);
-
+int		ft_checkmap(t_game *data);
+void	ft_open_images(t_game *data);
+int		ft_updates(t_game *data);
+void	draw(t_game *data);
+void	move_up(t_game *data);
+void	move_right(t_game *data);
+void	move_left(t_game *data);
+void	move_down(t_game *data);
+void	ft_movenemy(t_game *data);
+void	ft_initializer(t_game *data);
+void	store_enemy(t_game *data, int col, int row);
+void	store_player(t_game *data, int col, int row);
+void	end_game(t_game *data);
 #endif

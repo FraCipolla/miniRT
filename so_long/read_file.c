@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 11:07:12 by mabasset          #+#    #+#             */
-/*   Updated: 2022/02/21 22:39:21 by mabasset         ###   ########.fr       */
+/*   Updated: 2022/03/14 23:20:01 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ static void	ft_check(int fd, int width)
 
 int	get_height(char *file_name)
 {
-	int	height;
-	int fd;
-	char *str;
+	int		height;
+	int		fd;
+	char	*str;
 
 	fd = ft_open(file_name, O_RDONLY);
 	str = get_next_line(fd);
 	height = 0;
-	while(str != NULL)
+	while (str != NULL)
 	{
 		height++;
 		free(str);
@@ -88,11 +88,11 @@ static void	ft_strcpy(char *matrix, const char *str)
 	matrix[i] = '\0';
 }
 
-void	read_file(char *file_name, fdf *data)
+void	read_file(char *file_name, t_game *data)
 {
 	int		row;
 	int		fd;
-	char	*str; 
+	char	*str;
 
 	data->height = get_height(file_name);
 	data->width = get_width(file_name);
@@ -102,7 +102,7 @@ void	read_file(char *file_name, fdf *data)
 		ft_error("Malloc");
 	fd = ft_open(file_name, O_RDONLY);
 	row = 0;
-	while(row < data->height)
+	while (row < data->height)
 	{
 		data->matrix[row] = (char *) malloc (sizeof(char) * data->width + 1);
 		if (data->matrix[row] == NULL)

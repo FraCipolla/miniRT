@@ -6,19 +6,19 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 10:37:42 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 19:13:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 23:18:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	ft_initializer(fdf *data)
+void	ft_initializer(t_game *data)
 {
 	data->grass_frames = 0;
 	data->dog_frames = 0;
 	data->char_frames = 0;
 	data->move_count = 0;
-	data->images.current_grass = data->images.img_grass_1;
+	data->images.cur_grass = data->images.img_grass_1;
 	data->images.current_dog = data->images.img_dog_1;
 	data->images.current_char = data->images.img_char_1;
 	data->images.current_exit = data->images.img_exit_1;
@@ -31,7 +31,7 @@ void	ft_error(char *str)
 	exit(1);
 }
 
-int		ft_open(char *file_name, int mode)
+int	ft_open(char *file_name, int mode)
 {
 	int	fd;
 
@@ -41,7 +41,7 @@ int		ft_open(char *file_name, int mode)
 	return (fd);
 }
 
-void	ft_printstruct(fdf *data)
+void	ft_printstruct(t_game *data)
 {
 	int	row;
 

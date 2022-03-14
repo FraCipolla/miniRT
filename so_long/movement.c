@@ -6,151 +6,151 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 11:34:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/14 18:19:06 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 23:18:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	ft_movenemy(fdf *data)
+void	ft_movenemy(t_game *d)
 {
-	t_enemy *enemy_list;
+	t_enemy	*en;
 
-	enemy_list = data->enemy;
-	while (enemy_list)
+	en = d->enemy;
+	while (en)
 	{
-		if (data->matrix[enemy_list->pos.y - 1][enemy_list->pos.x] == '1' || data->matrix[enemy_list->pos.y - 1][enemy_list->pos.x] == 'E' || data->matrix[enemy_list->pos.y - 1][enemy_list->pos.x] == 'C')
-				enemy_list->dir = 1;
-		else if (data->matrix[enemy_list->pos.y + 1][enemy_list->pos.x] == '1' || data->matrix[enemy_list->pos.y + 1][enemy_list->pos.x] == 'E' || data->matrix[enemy_list->pos.y + 1][enemy_list->pos.x] == 'C')
-			enemy_list->dir = -1;
-		if (data->matrix[enemy_list->pos.y + enemy_list->dir][enemy_list->pos.x] == 'P')
+		if (d->matrix[en->pos.y - 1][en->pos.x] == '1'
+		|| d->matrix[en->pos.y - 1][en->pos.x] == 'E'
+		|| d->matrix[en->pos.y - 1][en->pos.x] == 'C')
+				en->dir = 1;
+		else if (d->matrix[en->pos.y + 1][en->pos.x] == '1'
+		|| d->matrix[en->pos.y + 1][en->pos.x] == 'E'
+		|| d->matrix[en->pos.y + 1][en->pos.x] == 'C')
+			en->dir = -1;
+		if (d->matrix[en->pos.y + en->dir][en->pos.x] == 'P')
 		{
-			mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+			mlx_destroy_window(d->mlx_ptr, d->win_ptr);
 			exit(0);
 		}
-		data->matrix[enemy_list->pos.y][enemy_list->pos.x] = '0';
-		data->matrix[enemy_list->pos.y + enemy_list->dir][enemy_list->pos.x] = 'M';
-		enemy_list->pos.y += enemy_list->dir;
-		enemy_list = enemy_list->next;
+		d->matrix[en->pos.y][en->pos.x] = '0';
+		d->matrix[en->pos.y + en->dir][en->pos.x] = 'M';
+		en->pos.y += en->dir;
+		en = en->next;
 	}
 }
 
-void	move_up(fdf *data)
+void	move_up(t_game *d)
 {
-	t_player	*play_list;
+	t_player	*pl;
 
-	play_list = data->player;
-	while (play_list)
+	pl = d->player;
+	while (pl)
 	{
-		if (data->matrix[play_list->pos.y - 1][play_list->pos.x] != '1' && (data->matrix[play_list->pos.y - 1][play_list->pos.x] != 'E' || data->c == 0))
+		if (d->matrix[pl->pos.y - 1][pl->pos.x] != '1'
+		&& (d->matrix[pl->pos.y - 1][pl->pos.x] != 'E' || d->c == 0))
 		{
-			if (data->matrix[play_list->pos.y - 1][play_list->pos.x] == 'C')
+			if (d->matrix[pl->pos.y - 1][pl->pos.x] == 'C')
 			{
-				data->c--;
-				data->images.part_an = 1;
-				data->particle_frames = 0;
-				data->an_pos = &play_list->pos;
+				d->c--;
+				d->images.part_an = 1;
+				d->particle_frames = 0;
+				d->an_pos = &pl->pos;
 			}
-			if (data->matrix[play_list->pos.y - 1][play_list->pos.x] == 'M' || data->matrix[play_list->pos.y - 1][play_list->pos.x] == 'E')
-			{
-				mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-				exit(0);
-			}
-			data->move_count += 1;
-			data->matrix[play_list->pos.y][play_list->pos.x] = '0';
-			data->matrix[play_list->pos.y - 1][play_list->pos.x] = 'P';
-			play_list->pos.y -= 1;
+			if (d->matrix[pl->pos.y - 1][pl->pos.x] == 'M'
+			|| d->matrix[pl->pos.y - 1][pl->pos.x] == 'E')
+				end_game(d);
+			d->move_count += 1;
+			d->matrix[pl->pos.y][pl->pos.x] = '0';
+			d->matrix[pl->pos.y - 1][pl->pos.x] = 'P';
+			pl->pos.y -= 1;
 		}
-		play_list = play_list->next;
+		pl = pl->next;
 	}
 }
 
-void	move_right(fdf *data)
+void	move_right(t_game *d)
 {
-	t_player	*play_list;
+	t_player	*pl;
 
-	play_list = data->player;
-	while (play_list)
+	pl = d->player;
+	while (pl)
 	{
-		if (data->matrix[play_list->pos.y][play_list->pos.x + 1] != '1' && (data->matrix[play_list->pos.y][play_list->pos.x + 1] != 'E' || data->c == 0))
+		if (d->matrix[pl->pos.y][pl->pos.x + 1] != '1'
+		&& (d->matrix[pl->pos.y][pl->pos.x + 1] != 'E' || d->c == 0))
 		{
-			if (data->matrix[play_list->pos.y][play_list->pos.x + 1] == 'C')
+			if (d->matrix[pl->pos.y][pl->pos.x + 1] == 'C')
 			{
-				data->c--;
-				data->images.part_an = 1;
-				data->particle_frames = 0;
-				data->an_pos = &play_list->pos;
+				d->c--;
+				d->images.part_an = 1;
+				d->particle_frames = 0;
+				d->an_pos = &pl->pos;
 			}
-			if (data->matrix[play_list->pos.y][play_list->pos.x + 1] == 'M' || data->matrix[play_list->pos.y][play_list->pos.x + 1] == 'E')
-			{
-				mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-				exit(0);
-			}
-			data->move_count += 1;
-			data->matrix[play_list->pos.y][play_list->pos.x] = '0';
-			data->matrix[play_list->pos.y][play_list->pos.x + 1] = 'P';
-			play_list->pos.x += 1;
+			if (d->matrix[pl->pos.y][pl->pos.x + 1] == 'M'
+			|| d->matrix[pl->pos.y][pl->pos.x + 1] == 'E')
+				end_game(d);
+			d->move_count += 1;
+			d->matrix[pl->pos.y][pl->pos.x] = '0';
+			d->matrix[pl->pos.y][pl->pos.x + 1] = 'P';
+			pl->pos.x += 1;
 		}
-		play_list = play_list->next;
+		pl = pl->next;
 	}
 }
 
-void	move_left(fdf *data)
+void	move_left(t_game *d)
 {
-	t_player	*play_list;
+	t_player	*pl;
 
-	play_list =data->player;
-	while (play_list)
+	pl = d->player;
+	while (pl)
 	{
-		if (data->matrix[play_list->pos.y][play_list->pos.x - 1] != '1' && (data->matrix[play_list->pos.y][play_list->pos.x - 1] != 'E' || data->c == 0))
+		if (d->matrix[pl->pos.y][pl->pos.x - 1] != '1'
+		&& (d->matrix[pl->pos.y][pl->pos.x - 1] != 'E' || d->c == 0))
 		{
-			if (data->matrix[play_list->pos.y][play_list->pos.x - 1] == 'C')
+			if (d->matrix[pl->pos.y][pl->pos.x - 1] == 'C')
 			{
-				data->c--;
-				data->images.part_an = 1;
-				data->particle_frames = 0;
-				data->an_pos = &play_list->pos;
+				d->c--;
+				d->images.part_an = 1;
+				d->particle_frames = 0;
+				d->an_pos = &pl->pos;
 			}
-			if (data->matrix[play_list->pos.y][play_list->pos.x - 1] == 'M' || data->matrix[play_list->pos.y][play_list->pos.x - 1] == 'E')
-			{
-				mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-				exit(0);
-			}
-			data->move_count += 1;
-			data->matrix[play_list->pos.y][play_list->pos.x] = '0';
-			data->matrix[play_list->pos.y][play_list->pos.x - 1] = 'P';
-			play_list->pos.x -= 1;
+			if (d->matrix[pl->pos.y][pl->pos.x - 1] == 'M'
+			|| d->matrix[pl->pos.y][pl->pos.x - 1] == 'E')
+				end_game(d);
+			d->move_count += 1;
+			d->matrix[pl->pos.y][pl->pos.x] = '0';
+			d->matrix[pl->pos.y][pl->pos.x - 1] = 'P';
+			pl->pos.x -= 1;
 		}
-		play_list = play_list->next;
+		pl = pl->next;
 	}
 }
 
-void move_down(fdf *data)
+void	move_down(t_game *d)
 {
-	t_player	*play_list;
+	t_player	*pl;
 
-	play_list = data->player;
-	while (play_list)
+	pl = d->player;
+	while (pl)
 	{
-		if (data->matrix[play_list->pos.y + 1][play_list->pos.x] != '1' && (data->matrix[play_list->pos.y + 1][play_list->pos.x] != 'E' || data->c == 0))
+		if (d->matrix[pl->pos.y + 1][pl->pos.x] != '1'
+		&& (d->matrix[pl->pos.y + 1][pl->pos.x] != 'E' || d->c == 0))
 		{
-			if (data->matrix[play_list->pos.y + 1][play_list->pos.x] == 'C')
+			if (d->matrix[pl->pos.y + 1][pl->pos.x] == 'C')
 			{
-				data->c--;
-				data->images.part_an = 1;
-				data->particle_frames = 0;
-				data->an_pos = &play_list->pos;
+				d->c--;
+				d->images.part_an = 1;
+				d->particle_frames = 0;
+				d->an_pos = &pl->pos;
 			}
-			if (data->matrix[play_list->pos.y + 1][play_list->pos.x] == 'M' || data->matrix[play_list->pos.y + 1][play_list->pos.x] == 'E')
-			{
-				mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-				exit(0);
-			}
-			data->move_count += 1;
-			data->matrix[play_list->pos.y][play_list->pos.x] = '0';
-			data->matrix[play_list->pos.y + 1][play_list->pos.x] = 'P';
-			play_list->pos.y += 1;
+			if (d->matrix[pl->pos.y + 1][pl->pos.x] == 'M'
+			|| d->matrix[pl->pos.y + 1][pl->pos.x] == 'E')
+				end_game(d);
+			d->move_count += 1;
+			d->matrix[pl->pos.y][pl->pos.x] = '0';
+			d->matrix[pl->pos.y + 1][pl->pos.x] = 'P';
+			pl->pos.y += 1;
 		}
-		play_list = play_list->next;
+		pl = pl->next;
 	}
 }
