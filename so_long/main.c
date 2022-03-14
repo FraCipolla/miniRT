@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:51:17 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/12 15:14:14 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 16:15:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,12 @@ static int	ft_hooks(int keycode, fdf *data)
 
 void	draw2(fdf *data, int row, int col)
 {
-	t_enemy	*enemy_list;
+	t_enemy		*enemy_list;
+	t_player	*player_list;
 	
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_grass, col * 64, row * 64);
-	if (data->matrix[row][col] == 'P')
-	{
-		data->y = row;
-		data->x = col;
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_char, col * 64, row * 64);
-	}
 	if (data->matrix[row][col] == '1')
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_wall, col * 64, row * 64);
-	/*if (data->matrix[row][col] == 'M')
-	{
-		data->dx = col;
-		data->dy = row;
-		if (data->flag > 0)
-			ft_movenemy(data);
-		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_dog, col * 64, row * 64);
-	}*/
 	if (data->matrix[row][col] == 'C')
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_coll, col * 64, row * 64);
 	if (data->matrix[row][col] == 'E')
@@ -60,6 +47,12 @@ void	draw2(fdf *data, int row, int col)
 		if (data->c == 0)
 			mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.img_escl, col * 64, (row * 63 - 64));
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_exit, col * 64, row * 64);
+	}
+	player_list = data->player;
+	while (player_list)
+	{
+		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->images.current_char, player_list->pos.x * 64, player_list->pos.y * 64);
+		player_list = player_list->next;
 	}
 	enemy_list = data->enemy;
 	while (enemy_list)
@@ -119,9 +112,10 @@ int	main(int argc, char *argv[])
 		data.mlx_ptr = mlx_init();
 		ft_open_images (&data);
 		ft_initializer(&data);
-		data.win_ptr = mlx_new_window(data.mlx_ptr, data.width * 64, data.height * 64, "FDF");
+		data.win_ptr = mlx_new_window(data.mlx_ptr, data.width * 64, data.height * 64, "so_long");
 		draw(&data);
-		mlx_key_hook(data.win_ptr, ft_hooks, &data);
+		mlx_do_key_autorepeaton(data.mlx_ptr);
+		mlx_hook(data.win_ptr, 2, (1 >> 1L), ft_hooks, &data);
 		mlx_loop_hook(data.mlx_ptr, ft_updates, &data);
 		mlx_loop(data.mlx_ptr);
 		ft_freematrix(data.matrix, data.height);

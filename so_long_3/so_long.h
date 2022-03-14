@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/10 02:16:46 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 15:20:55 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int		ft_checkmap(fdf *data);
 void	ft_open_images(fdf *data);
 int		ft_updates(fdf *data);
 void	draw(fdf *data);
-int		move_up(fdf *data);
+void		move_up(fdf *data);
 int 	move_right(fdf *data);
 int		move_left(fdf *data);
 int 	move_down(fdf *data);

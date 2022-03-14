@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/12 14:48:12 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/14 16:47:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_enemy
 {
 	t_vector		pos;
 	struct s_enemy	*next;
+	int				dir;
 }	t_enemy;
 
 typedef enum e_tiletype
@@ -72,30 +73,34 @@ typedef enum e_tiletype
 	FOLLOWER = 'F'
 }	t_tiletype;
 
+typedef struct s_player
+{
+	t_vector			pos;
+	struct	s_player	*next;
+}	t_player;
+
 typedef	struct
 {
-	char	**matrix;
-	int		height;
-	int		width;
-	int		img_height;
-	int		img_width;
-	int		c;
-	int		e;
-	int		p;
-	int		grass_frames;
-	int		dog_frames;
-	int		char_frames;
-	int		move_count;
-	int		x;
-	int		y;
-	int		gx;
-	int		particle_frames;
-	int		flag;
-	int		dx;
-	int		dy;
-	int		i;
-	int		en;
-	t_enemy	*enemy;
+	char		**matrix;
+	int			height;
+	int			width;
+	int			img_height;
+	int			img_width;
+	int			c;
+	int			e;
+	int			p;
+	int			grass_frames;
+	int			dog_frames;
+	int			char_frames;
+	int			move_count;
+	int			gx;
+	int			particle_frames;
+	int			flag;
+	int			i;
+	int			en;
+	t_enemy		*enemy;
+	t_player	*player;
+	t_vector	an_pos;
 	
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -115,10 +120,10 @@ int		ft_checkmap(fdf *data);
 void	ft_open_images(fdf *data);
 int		ft_updates(fdf *data);
 void	draw(fdf *data);
-int		move_up(fdf *data);
-int 	move_right(fdf *data);
-int		move_left(fdf *data);
-int 	move_down(fdf *data);
+void	move_up(fdf *data);
+void 	move_right(fdf *data);
+void	move_left(fdf *data);
+void 	move_down(fdf *data);
 void	ft_movenemy(fdf *data);
 
 #endif
