@@ -19,8 +19,7 @@ G_FLAG = -D BUFFER_SIZE=42
 
 $(NAME):
 		make -C printf
-		gcc $(FLAGS) -c $(GNL) $(G_FLAG)
-		gcc $(FLAGS) -c $(SRCS)
+		gcc $(FLAGS) -c $(GNL) $(G_FLAG) $(SRCS)
 		ar rc $(NAME) $(OBJS) $(P_OBJ) $(G_OBJ)
 		ranlib $(NAME)
 

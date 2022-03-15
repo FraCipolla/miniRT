@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 10:37:42 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 23:18:58 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/15 04:01:53 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ void	ft_printstruct(t_game *data)
 	}
 }
 
-void	ft_freematrix(char **matrix, int size)
+void	ft_freematrix(t_game *data)
 {
 	int	row;
 
 	row = 0;
-	while (row < size)
+	while (row < data->height)
 	{
-		free(matrix[row]);
+		free(data->matrix[row]);
 		row++;
 	}
-	free(matrix);
+	free(data->matrix);
 }

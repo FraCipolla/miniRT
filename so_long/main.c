@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:51:17 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 23:19:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/15 04:14:40 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int	ft_hooks(int keycode, t_game *data)
 		move_left(data);
 	else if (keycode == 2)
 		move_right(data);
+	ft_printf("MOVES: %d\n", data->move_count);
 	draw(data);
 	return (0);
 }
@@ -61,21 +62,20 @@ void	draw(t_game *data)
 {
 	int			row;
 	int			col;
-	int			i;
 	t_enemy		*enemy_list;
+	char		*moves;
 
-	row = 0;
-	while (row < data->height)
+	row = -1;
+	moves = ft_itoa(data->move_count);
+	while (++row < data->height)
 	{
 		col = -1;
 		while (++col < data->width)
 			draw2(data, row, col);
-		row++;
 		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width,
-			data->height, 16777215, "MOVES");
-		mlx_string_put(data->mlx_ptr, data->win_ptr, data->width * 6,
-			data->height, 16777215, ft_itoa(data->move_count));
+			data->height, 16777215, moves);
 	}
+	free(moves);
 	enemy_list = data->enemy;
 	while (enemy_list)
 	{
@@ -107,6 +107,5 @@ int	main(int argc, char *argv[])
 		mlx_hook(data.win_ptr, 2, (1 >> 1L), ft_hooks, &data);
 		mlx_loop_hook(data.mlx_ptr, ft_updates, &data);
 		mlx_loop(data.mlx_ptr);
-		ft_freematrix(data.matrix, data.height);
 	}
 }

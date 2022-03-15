@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:16:29 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/14 23:22:17 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/15 00:53:57 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,12 @@ typedef struct s_game
 	t_images	images;
 }	t_game;
 
+void	free_list(t_game *data);
 void	read_file(char *file_name, t_game *data);
 float	ft_max(float a, float b);
 float	ft_mod(float i);
 void	ft_printstruct(t_game *data);
-void	ft_freematrix(char **matrix, int size);
+void	ft_freematrix(t_game *data);
 void	ft_color(t_game *data);
 void	ft_zoom(float *x1, float *y1, t_game *data);
 void	ft_error(char *str);

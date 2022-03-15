@@ -5,7 +5,7 @@ LIBFT = libft/libft.a
 MLX_FLAG = -l mlx -framework openGL -framework AppKit
 
 $(NAME):
-			make re -C libft
+			make re  -C libft
 			gcc $(SRC) -o $(NAME) $(LIBFT) $(MLX_FLAG)
 
 all:	$(NAME)

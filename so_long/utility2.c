@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:27:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/14 23:23:09 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/15 04:00:16 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,52 +15,59 @@
 void	end_game(t_game *data)
 {
 	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	ft_freematrix(data);
 	exit(0);
+}
+
+t_enemy	*last_enemy(t_enemy *enemy)
+{
+	if (!enemy)
+		return (NULL);
+	while (enemy->next)
+		enemy = enemy->next;
+	return (enemy);
 }
 
 void	store_enemy(t_game *data, int col, int row)
 {
 	t_enemy	*new;
-	t_enemy	*enemy_list;
 
-	new = (t_enemy *)malloc(sizeof(t_enemy));
-	if (new == NULL)
-		return ;
+	new = malloc(sizeof(t_enemy));
 	new->pos.x = col;
 	new->pos.y = row;
 	new->dir = 1;
 	new->next = NULL;
+	if (new == NULL)
+		return ;
 	if (data->enemy == NULL)
 		data->enemy = new;
 	else
-	{
-		enemy_list = data->enemy;
-		while (enemy_list->next != NULL)
-			enemy_list = enemy_list->next;
-		enemy_list->next = new;
-	}
+		last_enemy(data->enemy)->next = new;
+}
+
+t_player	*last_player(t_player *player)
+{
+	if (!player)
+		return (NULL);
+	while (player->next)
+		player = player->next;
+	return (player);
 }
 
 void	store_player(t_game *data, int col, int row)
 {
 	t_player	*new;
-	t_player	*player_list;
 
 	data->p++;
-	data->an_pos = &player_list->pos;
-	new = (t_player *)malloc(sizeof(t_player));
-	if (new == NULL)
-		return ;
+	data->an_pos = &data->player->pos;
+	new = malloc(sizeof(t_player));
 	new->pos.x = col;
 	new->pos.y = row;
 	new->next = NULL;
+	if (new == NULL)
+		return ;
 	if (data->player == NULL)
 		data->player = new;
 	else
-	{
-		player_list = data->player;
-		while (player_list->next != NULL)
-			player_list = player_list->next;
-		player_list->next = new;
-	}
+		last_player(data->player)->next = new;
 }
