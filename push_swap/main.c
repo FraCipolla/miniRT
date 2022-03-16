@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 15:42:19 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/16 01:49:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/16 04:22:22 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,78 +64,78 @@ void	ft_combine_ab(t_struct *data)
 		ft_push_a(data);
 }
 
-int	ft_check_arr_b(int *ar)
+int	ft_check_arr_b(t_struct *data)
 {
 	int	i;
 
 	i = 0;
-	while (ar[i])
-		i++;
-	if (i == 1)
-		return (1);
-	i = 0;
-	while (ar[i])
+	if (data->size_b == 1)
+		return (0);
+	while (data->size_b > i) 
 	{
-		if (ar[i] > ar[i + 1])
+		if (data->ar_b[i] < data->ar_b[i + 1])
 			return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
-int	ft_check_arr_a(int *ar)
+int	ft_check_arr_a(t_struct *data)
 {
 	int	i;
 
 	i = 0;
-	while (ar[i])
-		i++;
-	if (i == 1)
-		return (1);
-	i = 0;
-	while (ar[i])
+	if (data->size_a == 1)
+		return (0);
+	while (i < data->size_a)
 	{
-		if (ar[i] < ar[i + 1])
+		if (data->ar_a[i] > data->ar_a[i + 1])
 			return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 void	ft_brainfuck(t_struct *data)
 {
-	while (data->size_b < (data->max_size / 2) - 1)
+	int	size;
+
+	if (data->max_size == 3)
+		size = 1;
+	else
+		size = data->max_size / 2 - 1;
+	while (data->size_b < size)
 	{
-		if (data->ar_a[0] < data->max_size / 2)
+		if (data->ar_a[0] <= data->max_size / 2)
 			ft_push_b(data);
 		else
 			ft_rotate_a(data);
 	}
-	while (ft_check_arr_a(data->ar_a) == 1 && ft_check_arr_b(data->ar_b) == 1)
+	while (ft_check_arr_a(data) == 1 || ft_check_arr_b(data) == 1)
 	{
-		if (data->ar_a[0] > data->ar_a[1])
+		if (data->ar_a[0] > data->ar_a[1] && ft_check_arr_a(data) == 1)
 		{
-			if (data->ar_b[0] < data->ar_b[1])
+			if (data->ar_b[0] < data->ar_b[1] && ft_check_arr_b(data) == 1)
 				ft_swap_s(data->ar_a, data->ar_b);
 			else
 				ft_swap_a(data->ar_a);
 		}
-		else if (data->ar_a[0] > data->ar_a[data->size_a - 1])
+		else if (data->ar_a[0] > data->ar_a[data->size_a - 1] && ft_check_arr_a(data) == 1)
 		{
-			if (data->ar_b[0] < data->ar_b[data->size_b - 1])
+			if (data->ar_b[0] < data->ar_b[data->size_b - 1] && ft_check_arr_b(data) == 1)
+				ft_rev_rotate_r(data);
+			else
+				ft_rev_rotate_a(data);
+		}
+		else if (data->ar_a[0] < data->ar_a[data->size_a - 1] && ft_check_arr_a(data) == 1)
+		{
+			if (data->ar_b[0] > data->ar_b[data->size_b - 1] && ft_check_arr_b(data) == 1)
 				ft_rotate_r(data);
 			else
 				ft_rotate_a(data);
 		}
-		else if (data->ar_b[0] < data->ar_b[1])
-			ft_swap_b(data->ar_b);
-		else if (data->ar_b[0] < data->ar_b[data->size_b - 1])
-			ft_rotate_b(data);
-		else if (data->ar_a[0] < data->ar_a[data->size_a - 1])
-			ft_rotate_a(data);
-		else if (data->ar_b[0] > data->ar_b[data->size_b - 1])
-			ft_rotate_b(data);
 	}
+	printf("ENTRA");
 	ft_combine_ab(data);
 }
 
