@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 15:42:19 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/16 04:22:22 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/21 16:54:02 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,88 +55,131 @@
  	}
 }
 
-void	ft_combine_ab(t_struct *data)
+int	ft_order_b(int *ar, int size)
 {
 	int	i;
 
 	i = 0;
-	while (data->size_b > 0)
-		ft_push_a(data);
-}
-
-int	ft_check_arr_b(t_struct *data)
-{
-	int	i;
-
-	i = 0;
-	if (data->size_b == 1)
-		return (0);
-	while (data->size_b > i) 
+	if (size == 0)
+		return (1);
+	while (i < size - 1)
 	{
-		if (data->ar_b[i] < data->ar_b[i + 1])
-			return (1);
+		if (ar[i] < ar[i + 1])
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
-int	ft_check_arr_a(t_struct *data)
+int	ft_order_a(int *ar, int size)
 {
 	int	i;
 
 	i = 0;
-	if (data->size_a == 1)
-		return (0);
-	while (i < data->size_a)
+	while (i < size - 1)
 	{
-		if (data->ar_a[i] > data->ar_a[i + 1])
-			return (1);
+		if (ar[i] > ar[i + 1])
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
+}
+
+static int	ft_findmax(t_struct *data)
+{
+	int	i;
+	int	res;
+
+	i = - 1;
+	res = 0;
+	while (i++ < data->size_b)
+	{
+		if (data->ar_b[i] > res)
+			res = data->ar_b[i];
+	}
+	return (res);
 }
 
 void	ft_brainfuck(t_struct *data)
 {
 	int	size;
+	int	max;
+	int	x;
 
-	if (data->max_size == 3)
-		size = 1;
-	else
-		size = data->max_size / 2 - 1;
-	while (data->size_b < size)
+	max = data->size_a - 1;
+	x = 9;
+	size = max;
+	while (data->size_b < size / 10)
 	{
-		if (data->ar_a[0] <= data->max_size / 2)
+		if (data->ar_a[0] > (size / 10) * x)
 			ft_push_b(data);
 		else
 			ft_rotate_a(data);
 	}
-	while (ft_check_arr_a(data) == 1 || ft_check_arr_b(data) == 1)
+	if (data->size_b < 3)
 	{
-		if (data->ar_a[0] > data->ar_a[1] && ft_check_arr_a(data) == 1)
+		while(ft_order_a(data->ar_a, data->size_a) == 0)
+			{
+				if (data->ar_a[0] > data->ar_a[1])
+					ft_swap_a(data->ar_a);
+				else if (data->ar_a[0] > data->ar_a[data->size_a - 1])
+					ft_rotate_a(data);
+				else
+			 		ft_rev_rotate_a(data);
+			}
+		while (data->size_b > 0)
+			{
+				if (data->ar_b[0] == data->ar_a[0] - 1)
+					ft_push_a(data);
+				else
+					ft_rotate_b(data);
+			}
+	}
+	while (data->size_b > 0)
+	{
+		while (ft_order_a(data->ar_a, data->size_a) == 0)
 		{
-			if (data->ar_b[0] < data->ar_b[1] && ft_check_arr_b(data) == 1)
-				ft_swap_s(data->ar_a, data->ar_b);
-			else
-				ft_swap_a(data->ar_a);
-		}
-		else if (data->ar_a[0] > data->ar_a[data->size_a - 1] && ft_check_arr_a(data) == 1)
-		{
-			if (data->ar_b[0] < data->ar_b[data->size_b - 1] && ft_check_arr_b(data) == 1)
-				ft_rev_rotate_r(data);
-			else
-				ft_rev_rotate_a(data);
-		}
-		else if (data->ar_a[0] < data->ar_a[data->size_a - 1] && ft_check_arr_a(data) == 1)
-		{
-			if (data->ar_b[0] > data->ar_b[data->size_b - 1] && ft_check_arr_b(data) == 1)
-				ft_rotate_r(data);
-			else
-				ft_rotate_a(data);
+			while (ft_order_b(data->ar_b, data->size_b) == 0)
+			{
+				if (data->ar_b[data->size_b - 1] == ft_findmax(data))
+					ft_rev_rotate_b(data);
+				if (data->ar_b[0] == ft_findmax(data))
+					ft_push_a(data);
+				else if (data->ar_b[0] < data->ar_b[1])
+					ft_swap_b(data->ar_b);
+				else if (data->ar_b[0] < data->ar_b[data->size_b - 1])
+					ft_rotate_b(data);
+				else
+			 		ft_rev_rotate_b(data);
+			}
+			while (data->size_b > 0)
+				ft_push_a(data);
+			x = x - 1;
+			if (x > 0)
+			{
+				while (data->size_b < size / 10)
+				{
+					if (data->ar_a[0] > (size / 10) * x && data->ar_a[0] <= (size/ 10) * (x + 1))
+						ft_push_b(data);
+					else
+						ft_rotate_a(data);
+				}
+			}
 		}
 	}
-	printf("ENTRA");
-	ft_combine_ab(data);
+	while (ft_order_b(data->ar_b, data->size_b) == 0)
+		{
+			// if (data->ar_a[0] < data->size_b)
+			// 	ft_push_b(data);
+			if (data->ar_b[0] < data->ar_b[1])
+				ft_swap_b(data->ar_b);
+			else if (data->ar_b[0] < data->ar_b[data->size_b - 1])
+				ft_rotate_b(data);
+			else
+		 		ft_rev_rotate_b(data);
+		}
+		while (data->size_b > 0)
+			ft_push_a(data);
 }
 
 void	ft_resolve(t_struct *data)
@@ -144,7 +187,7 @@ void	ft_resolve(t_struct *data)
 	data->max_size = data->size_a;
 	data->ar_b = (int *) malloc (sizeof(int) * data->max_size);
 	data->size_b = 0;
-	if(ft_order(data->ar_a, data->size_a) == 0)
+	if(ft_order_a(data->ar_a, data->size_a) == 0)
 	{
 		//ft_findcomb(data);
 		//printf("\n");

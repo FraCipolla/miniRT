@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 15:42:02 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/15 15:42:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/16 14:14:18 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,6 @@ void	ft_checkmalloc(void *ptr)
 {
 	if (ptr == NULL)
 		ft_error();
-}
-
-int	ft_order(int *ar, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size - 1)
-	{
-		if (ar[i] > ar[i + 1])
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 int ft_check(char **matrix, int size)

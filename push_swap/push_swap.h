@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:01:24 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/15 18:34:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/03/16 14:15:37 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	ft_rev_rotate_a(t_struct *data);
 void	ft_rev_rotate_b(t_struct *data);
 void	ft_rev_rotate_r(t_struct *data);
 void	ft_error(void);
-int		ft_order(int *ar, int size);
+int		ft_order_a(int *ar, int size);
+int		ft_order_b(int *ar, int size);
 int		ft_check(char **matrix, int size);
 int		*ft_initializer(char **matrix, int size);
 int		ft_checkfordoubles(int *ar, int size);
