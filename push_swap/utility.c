@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/15 15:42:45 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/15 15:42:47 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/05/11 17:24:42 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/05/11 17:24:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 void	ft_error(void)
 {
-	write(2, "Error", 5);
+	write(2, "Error\n", 6);
 	exit(1);
 }
 
-int		*ft_ardup(int *ar, int size)
+int	*ft_ardup(int *ar, int size)
 {
 	int	*ptr;
 	int	i;
 
 	ptr = (int *) malloc (sizeof(int) * size);
+	ft_checkmalloc(ptr);
 	i = 0;
 	while (i < size)
 	{
@@ -33,16 +34,27 @@ int		*ft_ardup(int *ar, int size)
 	return (ptr);
 }
 
-void	ft_printarray(int *ar, int size)
+void	ft_freematrix(int **matrix, int size)
 {
 	int	i;
 
 	i = 0;
 	while (i < size)
 	{
-		printf("%d\n", ar[i]);
+		free(matrix[i]);
 		i++;
 	}
+	free(matrix);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] != '\0' && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }
 
 void	ft_sort_ar(int *ar, int size)
@@ -57,9 +69,9 @@ void	ft_sort_ar(int *ar, int size)
 		i = 0;
 		while (i < size - 1)
 		{
-			if(ar[i] > ar[i + 1])
+			if (ar[i] > ar[i + 1])
 			{
-				ft_swap(ar + i, ar + (i + 1));
+				ft_swap(ar + i, ar + (i + 1), size);
 				flag = 0;
 			}
 			i++;
@@ -67,22 +79,14 @@ void	ft_sort_ar(int *ar, int size)
 	}
 }
 
-int	*ft_initializer(char **matrix, int size)
-{
-	int row;
-	int	*ar;
-	int	i;
+// void	ft_printarray(int *ar, int size)
+// {
+// 	int	i;
 
-	ar = (int *) malloc (sizeof(int) * (size - 1));
-	if (ar == NULL)
-		ft_error();
-	i = 0;
-	row = 1;
-	while (row < size)
-	{
-		ar[i] = ft_atoi(matrix[row]);
-		i++;
-		row++;
-	}
-	return (ar);
-}
+// 	i = 0;
+// 	while (i < size)
+// 	{
+// 		ft_printf("%d\n", ar[i]);
+// 		i++;
+// 	}
+// }

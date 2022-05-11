@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/15 15:42:34 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/03/15 15:42:35 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/05/11 17:24:32 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/05/11 17:24:32 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_rotate(int *ar, int size)
 	int	temp;
 	int	i;
 
+	if (size <= 1)
+		ft_error();
 	size -= 1;
 	i = 0;
 	temp = ar[0];
