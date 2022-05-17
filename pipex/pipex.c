@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/02 19:05:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/17 17:54:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,21 @@ void    child_one(t_px *pipex, char *argv[], char **envp, int *end)
 	close(end[0]);
 	mypath = ft_split(command_path(envp), ':');
 	mycmdargs = ft_split(argv[2], ' ');
-	i = 0;
-	while (mypath[i])
-	{
+	i = -1;
+	while (mypath[++i])
 		mypath[i] = ft_strjoin(mypath[i], "/");
-		i++;
-	}
 	i = 0;
 	while (mypath[i])
 	{
-		cmd = ft_strjoin(mypath[i], argv[2]);
-		execve(cmd, mycmdargs, envp);
-		free(cmd);
+		cmd = ft_strjoin(mypath[i], mycmdargs[0]);
+		printf("%s\n", cmd);
+		if (access(cmd, R_OK) == 0)
+			break ;
+		else
+			free(cmd);
 		i++;
 	}
-	close(pipex->f1);
+	execve(cmd, mycmdargs, envp);
 }
 
 void    child_two(t_px *pipex, char *argv[], char **envp, int *end)
@@ -60,27 +60,26 @@ void    child_two(t_px *pipex, char *argv[], char **envp, int *end)
 	int     i;
 	char    *cmd;
 
-	dup2(pipex->f2, STDOUT_FILENO);
-	dup2(end[0], STDIN_FILENO);
-	close(end[1]);
 	waitpid(-1, &pipex->status, 0);
+	dup2(end[0], 0);
+	dup2(pipex->f2, STDOUT_FILENO);
+	close(end[1]);
 	mypath = ft_split(command_path(envp), ':');
 	mycmdargs = ft_split(argv[3], ' ');
+	i = -1;
+	while (mypath[++i])
+		mypath[i] = ft_strjoin(mypath[i], "/");
 	i = 0;
 	while (mypath[i])
 	{
-		ft_strjoin(mypath[i], "/");
+		cmd = ft_strjoin(mypath[i], mycmdargs[0]);
+		if (access(cmd, R_OK) == 0)
+			break ;
+		else
+			free(cmd);
 		i++;
 	}
-	i = 0;
-	while (mypath[i])
-	{
-		cmd = ft_strjoin(mypath[i], argv[3]);
-		execve(cmd, mycmdargs, envp);
-		free(cmd);
-		i++;
-	}
-	close(pipex->f2);
+	execve(cmd, mycmdargs, envp);
 }
 
 void    pipex(t_px *px, char *argv[], char **envp)
@@ -91,15 +90,19 @@ void    pipex(t_px *px, char *argv[], char **envp)
 
 	pipe(end);
 	child1 = fork();
+	if (child1 < 0)
+         return (perror("Fork: "));
 	if (child1 == 0)
 		child_one(px, argv, envp, end);
 	child2 = fork();
+	if (child2 < 0)
+         return (perror("Fork: "));
 	if (child2 == 0)
 		child_two(px, argv, envp, end);
-	// close(end[0]);
-	// close(end[1]);
-	// waitpid(child1, &pipex->status, 0);
-	// waitpid(child2, &pipex->status, 0);
+	close(end[0]);
+	close(end[1]);
+	waitpid(child1, &px->status, 0);
+	waitpid(child2, &px->status, 0);
 }
 
 int main(int argc, char *argv[], char **envp)
@@ -109,7 +112,7 @@ int main(int argc, char *argv[], char **envp)
 	if (argc != 5)
 		return (-1);
 	px.f1 = open(argv[1], O_RDONLY);
-	px.f2 = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	px.f2 = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (px.f1 < 0 || px.f2 < 0)
 		return (-1);
 	pipex(&px, argv, envp);

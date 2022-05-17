@@ -9,8 +9,6 @@ typedef struct s_px
 {
 	int		f1;
 	int		f2;
-	char	*cmd1;
-	char	*cmd2;
 	int		status;
 }	t_px;
 
