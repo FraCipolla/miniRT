@@ -6,12 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/17 19:15:22 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/18 16:35:03 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-#include <stdio.h>
+#include "../includes/pipex_bonus.h"
 
 char    *command_path(char **envp)
 {
@@ -24,38 +23,32 @@ char    *command_path(char **envp)
 	return(NULL);
 }
 
-void    child_one(t_px *pipex, char *argv[], char **envp, int *end)
+void    child_one(t_px *pipex, char **envp, int *end)
 {
-	char    **mypath;
-	char    **mycmdargs;
 	int     i;
 	char    *cmd;
 
 	dup2(pipex->f1, STDIN_FILENO);
 	dup2(end[1], STDOUT_FILENO);
 	close(end[0]);
-	mypath = ft_split(command_path(envp), ':');
-	mycmdargs = ft_split(argv[2], ' ');
-	i = -1;
-	while (mypath[++i])
-		mypath[i] = ft_strjoin(mypath[i], "/");
-	i = 0;
-	while (mypath[i])
+	while (*pipex->mycmdargs)
 	{
-		cmd = ft_strjoin(mypath[i], mycmdargs[0]);
-		printf("%s\n", cmd);
-		if (access(cmd, R_OK) == 0)
-			break ;
-		else
-			free(cmd);
-		i++;
+		i = 0;
+		while (pipex->mypath[i])
+		{
+			cmd = ft_strjoin(pipex->mypath[i], *pipex->mycmdargs[0]);
+			if (access(cmd, R_OK) == 0)
+				execve(cmd, *pipex->mycmdargs, envp);
+			else
+				free(cmd);
+			i++;
+		}
+		pipex->mycmdargs++;
 	}
-	execve(cmd, mycmdargs, envp);
 }
 
 void    child_two(t_px *pipex, char *argv[], char **envp, int *end)
 {
-	char    **mypath;
 	char    **mycmdargs;
 	int     i;
 	char    *cmd;
@@ -64,15 +57,11 @@ void    child_two(t_px *pipex, char *argv[], char **envp, int *end)
 	dup2(end[0], 0);
 	dup2(pipex->f2, STDOUT_FILENO);
 	close(end[1]);
-	mypath = ft_split(command_path(envp), ':');
-	mycmdargs = ft_split(argv[3], ' ');
-	i = -1;
-	while (mypath[++i])
-		mypath[i] = ft_strjoin(mypath[i], "/");
+	mycmdargs = ft_split(argv[pipex->arg - 1], ' ');
 	i = 0;
-	while (mypath[i])
+	while (pipex->mypath[i])
 	{
-		cmd = ft_strjoin(mypath[i], mycmdargs[0]);
+		cmd = ft_strjoin(pipex->mypath[i], mycmdargs[0]);
 		if (access(cmd, R_OK) == 0)
 			break ;
 		else
@@ -93,7 +82,7 @@ void    pipex(t_px *px, char *argv[], char **envp)
 	if (child1 < 0)
          return (perror("Fork: "));
 	if (child1 == 0)
-		child_one(px, argv, envp, end);
+		child_one(px, envp, end);
 	child2 = fork();
 	if (child2 < 0)
          return (perror("Fork: "));
@@ -107,14 +96,28 @@ void    pipex(t_px *px, char *argv[], char **envp)
 
 int main(int argc, char *argv[], char **envp)
 {
-	t_px px;
+	t_px	px;
+	int		i;
 
-	if (argc != 5)
+	if (argc < 5)
 		return (-1);
+	px.arg = argc;
+	px.mycmdargs = malloc(sizeof(char **) * argc - 4);
+	px.mypath = ft_split(command_path(envp), ':');
 	px.f1 = open(argv[1], O_RDONLY);
-	px.f2 = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0000644);
+	px.f2 = open(argv[argc -1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (px.f1 < 0 || px.f2 < 0)
 		return (-1);
+	i  = 2;
+	while (i < argc - 2)
+	{
+		*px.mycmdargs = ft_split(argv[i], ' ');
+		px.mycmdargs++;
+		i++;
+	}
+	i = -1;
+	while (px.mypath[++i])
+		px.mypath[i] = ft_strjoin(px.mypath[i], "/");
 	pipex(&px, argv, envp);
 	return (0);
 }

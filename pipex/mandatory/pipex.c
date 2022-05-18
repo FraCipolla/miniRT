@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/17 19:02:17 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/17 23:19:05 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void    child_one(t_px *pipex, char *argv[], char **envp, int *end)
 	char    *cmd;
 
 	dup2(pipex->f1, STDIN_FILENO);
-	dup2(end[1], STDOUT_FILENO);
 	close(end[0]);
+	dup2(end[1], STDOUT_FILENO);
 	mypath = ft_split(command_path(envp), ':');
 	mycmdargs = ft_split(argv[2], ' ');
 	i = -1;
@@ -43,7 +43,6 @@ void    child_one(t_px *pipex, char *argv[], char **envp, int *end)
 	while (mypath[i])
 	{
 		cmd = ft_strjoin(mypath[i], mycmdargs[0]);
-		printf("%s\n", cmd);
 		if (access(cmd, R_OK) == 0)
 			break ;
 		else
@@ -61,7 +60,7 @@ void    child_two(t_px *pipex, char *argv[], char **envp, int *end)
 	char    *cmd;
 
 	waitpid(-1, &pipex->status, 0);
-	dup2(end[0], 0);
+	dup2(end[0], STDIN_FILENO);
 	dup2(pipex->f2, STDOUT_FILENO);
 	close(end[1]);
 	mypath = ft_split(command_path(envp), ':');
