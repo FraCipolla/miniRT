@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/19 16:32:46 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/19 18:01:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void    child_one(t_px *pipex, char **envp, int *end)
 			free(cmd);
 		i++;
 	}
+	close(end[1]);
 }
 
 void    child_n(t_px *pipex, char **envp, int i, char **cmdargs)
@@ -48,9 +49,10 @@ void    child_n(t_px *pipex, char **envp, int i, char **cmdargs)
 	char    *cmd;
 
 	waitpid(-1, &pipex->status, 0);
-	dup2(pipex->end[i - 1], STDIN_FILENO);
-	dup2(pipex->end[i], STDOUT_FILENO);
-	close(pipex->end[i]);
+	printf("%d\n", i * 2 - 2);
+	dup2(pipex->end[i * 2 - 2], STDIN_FILENO);
+	dup2(pipex->end[i * 2], STDOUT_FILENO);
+	close(pipex->end[i * 2 - 1]);
 	i = 0;
 	while (pipex->mypath[i])
 	{
@@ -63,16 +65,15 @@ void    child_n(t_px *pipex, char **envp, int i, char **cmdargs)
 	}
 }
 
-void    child_last(t_px *pipex, char *argv[], char **envp, int *end)
+void    child_last(t_px *pipex, char *argv[], char **envp, int i)
 {
 	char    **mycmdargs;
-	int     i;
 	char    *cmd;
 
 	waitpid(-1, &pipex->status, 0);
-	dup2(end[0], 0);
+	dup2(pipex->end[i * 2 - 2], STDIN_FILENO);
 	dup2(pipex->f2, STDOUT_FILENO);
-	close(end[1]);
+	close(pipex->end[i]);
 	mycmdargs = ft_split(argv[pipex->arg - 2], ' ');
 	i = 0;
 	while (pipex->mypath[i])
@@ -92,7 +93,7 @@ void    pipex(t_px *px, char *argv[], char **envp)
 	int		i;
 	char	**cmdargs;
 
-	px->end = malloc(sizeof(int) * px->arg - 3);
+	px->end = malloc(sizeof(int) * px->arg - 4);
 	pipe(px->end);
 	px->child = malloc(sizeof(pid_t) * px->arg - 3);
 	px->child[0] = fork();
@@ -116,14 +117,18 @@ void    pipex(t_px *px, char *argv[], char **envp)
 	if (px->child[i] < 0)
 		return (perror("Fork: "));
 	if (px->child[i] == 0)
-		child_last(px, argv, envp, px->end);
+		child_last(px, argv, envp, i);
 	while (i > 0)
 	{
 		close(px->end[i]);
 		i--;
 	}
-	while (i++ < px->arg - 3)
+	i = 0;
+	while (i < px->arg - 3)
+	{
 		waitpid(px->child[i], &px->status, 0);
+		i++;
+	}
 }
 
 int main(int argc, char *argv[], char **envp)
