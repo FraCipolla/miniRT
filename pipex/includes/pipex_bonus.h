@@ -12,6 +12,8 @@ typedef struct s_px
 	int		f2;
 	int		status;
 	int		arg;
+	int		*end;
+	pid_t	*child;
 	char 	***mycmdargs;
 	char	**mypath;
 }	t_px;
