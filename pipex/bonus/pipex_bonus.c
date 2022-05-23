@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/19 18:01:43 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/23 14:53:29 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,36 +23,40 @@ char    *command_path(char **envp)
 	return(NULL);
 }
 
-void    child_one(t_px *pipex, char **envp, int *end)
+void	close_pipes(t_px *pipex)
 {
-	int     i;
-	char    *cmd;
+	int	i;
 
-	dup2(pipex->f1, STDIN_FILENO);
-	dup2(end[1], STDOUT_FILENO);
-	close(end[0]);
 	i = 0;
-	while (pipex->mypath[i])
+	while (i < (2 * pipex->arg - 3) - 1)
 	{
-		cmd = ft_strjoin(pipex->mypath[i], *pipex->mycmdargs[0]);
-		if (access(cmd, R_OK) == 0)
-			execve(cmd, *pipex->mycmdargs, envp);
-		else
-			free(cmd);
+		close (pipex->end[i]);
 		i++;
 	}
-	close(end[1]);
 }
 
-void    child_n(t_px *pipex, char **envp, int i, char **cmdargs)
+void    child(t_px *pipex, char **envp, int i, char **cmdargs)
 {
 	char    *cmd;
 
-	waitpid(-1, &pipex->status, 0);
-	printf("%d\n", i * 2 - 2);
-	dup2(pipex->end[i * 2 - 2], STDIN_FILENO);
-	dup2(pipex->end[i * 2], STDOUT_FILENO);
-	close(pipex->end[i * 2 - 1]);
+	if (i == 0)
+	{
+		dup2(pipex->f1, STDIN_FILENO);
+		dup2(pipex->end[1], STDOUT_FILENO);
+		// close_pipes(pipex);
+	}
+	else if (i == pipex->arg - 4)
+	{
+		dup2(pipex->end[2 * i - 2], STDIN_FILENO);
+		dup2(pipex->f2, STDOUT_FILENO);
+		// close_pipes(pipex);
+	}
+	else
+	{
+		dup2(pipex->end[2 * i - 2], STDIN_FILENO);
+		dup2(pipex->end[2 * i + 1], STDOUT_FILENO);
+		// close_pipes(pipex);
+	}
 	i = 0;
 	while (pipex->mypath[i])
 	{
@@ -65,70 +69,37 @@ void    child_n(t_px *pipex, char **envp, int i, char **cmdargs)
 	}
 }
 
-void    child_last(t_px *pipex, char *argv[], char **envp, int i)
-{
-	char    **mycmdargs;
-	char    *cmd;
-
-	waitpid(-1, &pipex->status, 0);
-	dup2(pipex->end[i * 2 - 2], STDIN_FILENO);
-	dup2(pipex->f2, STDOUT_FILENO);
-	close(pipex->end[i]);
-	mycmdargs = ft_split(argv[pipex->arg - 2], ' ');
-	i = 0;
-	while (pipex->mypath[i])
-	{
-		cmd = ft_strjoin(pipex->mypath[i], mycmdargs[0]);
-		if (access(cmd, R_OK) == 0)
-			break ;
-		else
-			free(cmd);
-		i++;
-	}
-	execve(cmd, mycmdargs, envp);
-}
-
-void    pipex(t_px *px, char *argv[], char **envp)
+void    pipex(t_px *px, char **envp)
 {
 	int		i;
 	char	**cmdargs;
+	pid_t	pid;
 
-	px->end = malloc(sizeof(int) * px->arg - 4);
-	pipe(px->end);
-	px->child = malloc(sizeof(pid_t) * px->arg - 3);
-	px->child[0] = fork();
-	if (px->child[0] < 0)
-		return (perror("Fork: "));
-	if (px->child[0] == 0)
-		child_one(px, envp, px->end);
-	i = 0;
-	while (++i < px->arg - 4)
+	px->end = (int *)malloc(sizeof(int) * (2 * px->arg - 3) - 1);
+	i = -1	;
+	while (++i < px->arg - 3)
+		pipe(px->end + i * 2);
+	i = -1;
+	while (++i < px->arg - 3)
 	{
-		px->child[i] = fork();
-		if (px->child[i] < 0)
+		pid = fork();
+		if (pid < 0)
          	return (perror("Fork: "));
-		if (px->child[i] == 0)
+		if (pid == 0)
 		{
 			cmdargs = px->mycmdargs[i];
-			child_n(px, envp, i, cmdargs);
+			child(px, envp, i, cmdargs);
+			close_pipes(px);
 		}
 	}
-	px->child[i] = fork();
-	if (px->child[i] < 0)
-		return (perror("Fork: "));
-	if (px->child[i] == 0)
-		child_last(px, argv, envp, i);
-	while (i > 0)
-	{
-		close(px->end[i]);
-		i--;
-	}
+	close_pipes(px);
+	waitpid(-1, NULL, 0);
 	i = 0;
-	while (i < px->arg - 3)
-	{
-		waitpid(px->child[i], &px->status, 0);
-		i++;
-	}
+	// while (i < px->arg - 3)
+	// {
+	// 	waitpid(px->child[i], NULL, 0);
+	// 	i++;
+	// }
 }
 
 int main(int argc, char *argv[], char **envp)
@@ -140,8 +111,8 @@ int main(int argc, char *argv[], char **envp)
 	if (argc < 5)
 		return (-1);
 	px.arg = argc;
-	px.mycmdargs = malloc(sizeof(char **) * argc - 3);
-	px.mycmdargs[argc - 4] = NULL;
+	px.mycmdargs = malloc(sizeof(char **) * argc - 2);
+	px.mycmdargs[argc - 3] = NULL;
 	px.mypath = ft_split(command_path(envp), ':');
 	px.f1 = open(argv[1], O_RDONLY);
 	px.f2 = open(argv[argc -1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
@@ -158,6 +129,6 @@ int main(int argc, char *argv[], char **envp)
 	i = -1;
 	while (px.mypath[++i])
 		px.mypath[i] = ft_strjoin(px.mypath[i], "/");
-	pipex(&px, argv, envp);
+	pipex(&px, envp);
 	return (0);
 }

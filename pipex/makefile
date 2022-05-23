@@ -17,7 +17,7 @@ BONUSPATH = $(addprefix $(BONUS_DIR), $(BONUS))
 UTILPATH = $(addprefix $(UTIL_DIR), $(UTIL))
 # OBJ = $(SRCPATH:.c=.o)
 
-FLAG = -Wall -Wextra -Werror
+FLAG = -Wall -Wextra -Werror -g
 
 $(NAME):
 		gcc $(FLAG) $(SRCPATH) $(UTILPATH) -o $(NAME)
