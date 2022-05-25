@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "fcntl.h": "c",
-        "pipex_bonus.h": "c"
+        "pipex_bonus.h": "c",
+        "locale": "c"
     }
 }
