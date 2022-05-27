@@ -6,25 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/25 19:04:26 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/27 12:24:01 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex_bonus.h"
-
-void	close_pipes(t_px *pipex)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < pipex->n_cmd)
-	{
-		j = -1;
-		while (++j < 2)
-			close(pipex->end[i][j]);
-	}
-}
 
 void    child_1(t_px *pipex, char **envp, int i, char **cmdargs)
 {
@@ -135,6 +121,21 @@ void    pipex(t_px *px, char **envp)
 		waitpid(px->pid[i], &status, 0);
 }
 
+void	here_doc_pipex(t_px *pipex)
+{
+	char	*buff;
+
+	buff = NULL;
+	write(1, "> ", 2);
+	while (1)
+	{
+		buff = get_next_line(0);
+		if (ft_strcmp(buff, pipex->limiter) == 0)
+			break;
+		write(1, "> ", 2);
+	}
+}
+
 int main(int argc, char *argv[], char **envp)
 {
 	t_px	px;
@@ -142,6 +143,13 @@ int main(int argc, char *argv[], char **envp)
 	if (argc < 5)
 		return (-1);
 	init(argc, argv, envp, &px);
+	if (ft_strcmp(argv[1], "here_doc") == 0)
+	{
+		px.limiter = argv[2];
+		here_doc_pipex(&px);
+		return (0);
+	}
+	px.f1 = open(argv[1], O_RDONLY);
 	if (px.f1 < 0 || px.f2 < 0)
 		return (-1);
 	create_pipes(&px);

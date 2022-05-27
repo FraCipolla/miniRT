@@ -6,11 +6,25 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/17 19:04:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/27 12:18:29 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] || s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (-1);
+		i++;
+	}
+	return (0);
+}
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

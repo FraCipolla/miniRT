@@ -16,6 +16,7 @@ typedef struct s_px
 	pid_t	*pid;
 	char 	***mycmdargs;
 	char	**mypath;
+	char	*limiter;
 }	t_px;
 
 char	**ft_split(char const *s, char c);
@@ -24,5 +25,7 @@ size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void    init(int argc, char *argv[], char **envp, t_px *pipex);
 void    create_pipes(t_px *px);
+char	*get_next_line(int fd);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

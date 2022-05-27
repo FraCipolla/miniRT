@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 20:16:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/26 16:41:56 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/26 21:15:10 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,17 @@ int	ft_strchr(const char *s, char c)
 	return (1);
 }
 
-size_t	ft_strlen(char const *str)
-{
-	size_t	i;
+// size_t	ft_strlen(char const *str)
+// {
+// 	size_t	i;
 
-	if (str == NULL)
-		return (0);
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
+// 	if (str == NULL)
+// 		return (0);
+// 	i = 0;
+// 	while (str[i] != '\0')
+// 		i++;
+// 	return (i);
+// }
 
 char	*ft_strjoin(char *s1, char *s2)
 {

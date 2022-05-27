@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 16:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/25 19:04:07 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/26 16:11:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void    init(int argc, char *argv[], char **envp, t_px *px)
     px->mycmdargs = malloc(sizeof(char **) * argc - 3);
 	px->mycmdargs[px->n_cmd] = NULL;
 	px->mypath = ft_split(command_path(envp), ':');
-	px->f1 = open(argv[1], O_RDONLY);
 	px->f2 = open(argv[argc -1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	px->pid = malloc(sizeof(pid_t) * px->n_cmd);
     while (i < argc - 1)
