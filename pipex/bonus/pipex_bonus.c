@@ -6,11 +6,41 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/27 12:24:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/27 16:34:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex_bonus.h"
+
+void    heredoc_child(t_px *pipex, char **envp, int i, char **cmdargs)
+{
+	char	*cmd;
+
+	pipex->pid[i] = fork();
+	if (pipex->pid[i] == 0)
+	{
+		dup2(pipex->end[i][0], STDIN_FILENO);
+		close(pipex->end[i][0]);
+		dup2(pipex->end[i][1], STDOUT_FILENO);
+		close(pipex->end[i][1]);
+		i = 0;
+		while (pipex->mypath[i])
+		{
+			cmd = ft_strjoin(pipex->mypath[i], cmdargs[0]);
+			if (access(cmd, R_OK) == 0)
+				break ;
+			else
+				free(cmd);
+			i++;
+		}
+		execve(cmd, cmdargs, envp);
+	}
+	else
+	{
+		close(pipex->end[0][0]);
+		close(pipex->end[0][1]);
+	}
+}
 
 void    child_1(t_px *pipex, char **envp, int i, char **cmdargs)
 {
@@ -110,7 +140,10 @@ void    pipex(t_px *px, char **envp)
 	int	status;
 
 	i = 0;
-	child_1(px, envp, i, px->mycmdargs[i]);
+	if (px->heredoc == 1)
+		heredoc_child(px, envp, i, px->mycmdargs[i]);
+	else
+		child_1(px, envp, i, px->mycmdargs[i]);
 	while (++i < px->n_cmd - 1)
 	{
 		child_mid(px, envp, i, px->mycmdargs[i]);
@@ -121,19 +154,10 @@ void    pipex(t_px *px, char **envp)
 		waitpid(px->pid[i], &status, 0);
 }
 
-void	here_doc_pipex(t_px *pipex)
+int	msgerror(char *s1)
 {
-	char	*buff;
-
-	buff = NULL;
-	write(1, "> ", 2);
-	while (1)
-	{
-		buff = get_next_line(0);
-		if (ft_strcmp(buff, pipex->limiter) == 0)
-			break;
-		write(1, "> ", 2);
-	}
+	printf("%s", s1);
+	return (-1);
 }
 
 int main(int argc, char *argv[], char **envp)
@@ -142,16 +166,24 @@ int main(int argc, char *argv[], char **envp)
 
 	if (argc < 5)
 		return (-1);
-	init(argc, argv, envp, &px);
+	if (init(argc, argv, envp, &px) == -1)
+		return (-1);
 	if (ft_strcmp(argv[1], "here_doc") == 0)
 	{
+		px.n_cmd -= 1;
+		if (px.n_cmd < 2)
+			return (msgerror("Need at least 2 commands"));
 		px.limiter = argv[2];
 		here_doc_pipex(&px);
-		return (0);
+		here_doc_cmd(&px);
+		px.heredoc = 1;
 	}
-	px.f1 = open(argv[1], O_RDONLY);
-	if (px.f1 < 0 || px.f2 < 0)
-		return (-1);
+	else
+	{
+		px.f1 = open(argv[1], O_RDONLY);
+		if (px.f1 < 0)
+			return (-1);
+	}
 	create_pipes(&px);
 	pipex(&px, envp);
 	return (0);
