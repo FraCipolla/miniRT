@@ -6,14 +6,14 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/17 23:19:05 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:01:14 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 #include <stdio.h>
 
-char    *command_path(char **envp)
+char	*command_path(char **envp)
 {
 	while (*envp)
 	{
@@ -21,15 +21,15 @@ char    *command_path(char **envp)
 			return (*envp + 5);
 		envp++;
 	}
-	return(NULL);
+	return (NULL);
 }
 
-void    child_one(t_px *pipex, char *argv[], char **envp, int *end)
+void	child_one(t_px *pipex, char *argv[], char **envp, int *end)
 {
-	char    **mypath;
-	char    **mycmdargs;
-	int     i;
-	char    *cmd;
+	char	**mypath;
+	char	**mycmdargs;
+	int		i;
+	char	*cmd;
 
 	dup2(pipex->f1, STDIN_FILENO);
 	close(end[0]);
@@ -52,12 +52,12 @@ void    child_one(t_px *pipex, char *argv[], char **envp, int *end)
 	execve(cmd, mycmdargs, envp);
 }
 
-void    child_two(t_px *pipex, char *argv[], char **envp, int *end)
+void	child_two(t_px *pipex, char *argv[], char **envp, int *end)
 {
-	char    **mypath;
-	char    **mycmdargs;
-	int     i;
-	char    *cmd;
+	char	**mypath;
+	char	**mycmdargs;
+	int		i;
+	char	*cmd;
 
 	waitpid(-1, &pipex->status, 0);
 	dup2(end[0], STDIN_FILENO);
@@ -81,21 +81,21 @@ void    child_two(t_px *pipex, char *argv[], char **envp, int *end)
 	execve(cmd, mycmdargs, envp);
 }
 
-void    pipex(t_px *px, char *argv[], char **envp)
+void	pipex(t_px *px, char *argv[], char **envp)
 {
-	int end[2];
-	pid_t child1;
-	pid_t child2;
+	int		end[2];
+	pid_t	child1;
+	pid_t	child2;
 
 	pipe(end);
 	child1 = fork();
 	if (child1 < 0)
-         return (perror("Fork: "));
+		return (perror("Fork: "));
 	if (child1 == 0)
 		child_one(px, argv, envp, end);
 	child2 = fork();
 	if (child2 < 0)
-         return (perror("Fork: "));
+		return (perror("Fork: "));
 	if (child2 == 0)
 		child_two(px, argv, envp, end);
 	close(end[0]);
@@ -104,9 +104,9 @@ void    pipex(t_px *px, char *argv[], char **envp)
 	waitpid(child2, &px->status, 0);
 }
 
-int main(int argc, char *argv[], char **envp)
+int	main(int argc, char *argv[], char **envp)
 {
-	t_px px;
+	t_px	px;
 
 	if (argc != 5)
 		return (-1);

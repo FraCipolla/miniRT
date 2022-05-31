@@ -9,7 +9,7 @@ UTILPATH = $(addprefix $(UTIL_DIR), $(UTIL))
 
 BONUS_NAME = pipex_bonus
 
-BONUS = pipex_bonus.c initialize.c
+BONUS = pipex_bonus.c initialize.c childs.c
 UTIL = ft_split.c ft_strlen.c ft_strncmp.c get_next_line.c get_next_line_utils.c utility.c
 BONUS_DIR = bonus/
 UTIL_DIR = utility/
