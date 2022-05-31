@@ -19,6 +19,7 @@ typedef struct s_px
 	char	*limiter;
 	char	*here_doc_str;
 	int		heredoc;
+	int		*heredoc_pipe;
 }	t_px;
 
 char	**ft_split(char const *s, char c);

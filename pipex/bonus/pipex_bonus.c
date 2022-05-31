@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/27 16:34:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:24:07 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void    heredoc_child(t_px *pipex, char **envp, int i, char **cmdargs)
 	pipex->pid[i] = fork();
 	if (pipex->pid[i] == 0)
 	{
-		dup2(pipex->end[i][0], STDIN_FILENO);
 		close(pipex->end[i][0]);
+		dup2(pipex->heredoc_pipe[0], STDIN_FILENO);
 		dup2(pipex->end[i][1], STDOUT_FILENO);
 		close(pipex->end[i][1]);
 		i = 0;
@@ -37,7 +37,7 @@ void    heredoc_child(t_px *pipex, char **envp, int i, char **cmdargs)
 	}
 	else
 	{
-		close(pipex->end[0][0]);
+		close(pipex->heredoc_pipe[0]);
 		close(pipex->end[0][1]);
 	}
 }
@@ -154,12 +154,6 @@ void    pipex(t_px *px, char **envp)
 		waitpid(px->pid[i], &status, 0);
 }
 
-int	msgerror(char *s1)
-{
-	printf("%s", s1);
-	return (-1);
-}
-
 int main(int argc, char *argv[], char **envp)
 {
 	t_px	px;
@@ -173,6 +167,7 @@ int main(int argc, char *argv[], char **envp)
 		px.n_cmd -= 1;
 		if (px.n_cmd < 2)
 			return (msgerror("Need at least 2 commands"));
+		px.f2 = open(argv[argc - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
 		px.limiter = argv[2];
 		here_doc_pipex(&px);
 		here_doc_cmd(&px);
@@ -181,7 +176,7 @@ int main(int argc, char *argv[], char **envp)
 	else
 	{
 		px.f1 = open(argv[1], O_RDONLY);
-		if (px.f1 < 0)
+		if (px.f1 < 0 || px.f2 < 0)
 			return (-1);
 	}
 	create_pipes(&px);
