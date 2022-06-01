@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRC = main.c
+SRC = main.c ft_split.c utility.c ft_strlen.c
 
 FLAG = -Wall -Wextra -Werror -g -lreadline
 
