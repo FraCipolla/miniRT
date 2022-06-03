@@ -6,11 +6,31 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/02 16:19:43 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/03 16:01:45 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	make_echo(char **str)
+{
+	int		fd;
+	char	*cmd;
+	int		i;
+
+	i = 1;
+	cmd = NULL;
+	while (strncmp(str[i], ">", 1) != 0)
+	{
+		cmd = ft_strjoin(cmd, str[i]);
+		cmd = ft_strjoin(cmd, " ");
+		i++;
+	}
+	i++;
+	fd = open(str[i], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	write(fd, cmd, strlen(cmd));
+	exit (0);
+}
 
 int	check_command(char *str, char **mypath)
 {
@@ -32,7 +52,11 @@ int	check_command(char *str, char **mypath)
 		{
 			cmd = ft_strjoin(*mypath, tmp[0]);
 			if (access(cmd, R_OK) == 0)
+			{
+				if (strcmp(tmp[0], "echo") == 0)
+					make_echo(tmp);
 				execve(cmd, tmp, environ);
+			}
 			mypath++;
 		}
 		printf("zsh: command not found: %s\n", str);
@@ -100,7 +124,7 @@ int main()
 		mypath[i] = ft_strjoin(mypath[i], "/");
 	while (1)
 	{
-		buff = readline(CGREEN "minishell: " RESET);
+		buff = readline("minishell: ");
 		if (strcmp(buff, "exit") == 0)
 			break ;
 		if (buff != NULL && strncmp(buff, "\0", 1) != 0)
