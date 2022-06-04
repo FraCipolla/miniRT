@@ -9,6 +9,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <dirent.h>
+# include <signal.h>
 
 # define CGREEN "\033[0;32m"
 # define RESET   "\001\e[0m\002"

@@ -6,11 +6,22 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/03 16:01:45 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:31:08 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_redir(char **str)
+{
+	while (*str)
+	{
+		if (strcmp(*str, ">") == 0)
+			return (0);
+		str++;
+	}
+	return (-1);
+}
 
 void	make_echo(char **str)
 {
@@ -20,7 +31,7 @@ void	make_echo(char **str)
 
 	i = 1;
 	cmd = NULL;
-	while (strncmp(str[i], ">", 1) != 0)
+	while (strncmp(str[i], ">", 1) != 0 && str[i] != NULL)
 	{
 		cmd = ft_strjoin(cmd, str[i]);
 		cmd = ft_strjoin(cmd, " ");
@@ -53,7 +64,7 @@ int	check_command(char *str, char **mypath)
 			cmd = ft_strjoin(*mypath, tmp[0]);
 			if (access(cmd, R_OK) == 0)
 			{
-				if (strcmp(tmp[0], "echo") == 0)
+				if (strcmp(tmp[0], "echo") == 0 && check_redir(tmp) == 0)
 					make_echo(tmp);
 				execve(cmd, tmp, environ);
 			}
@@ -112,25 +123,65 @@ int	check_strcmp(char *str, char **mypath)
 	return (-1);
 }
 
+int	check_semicolon(char *str, char **mypath)
+{
+	int		i;
+	char	**cmds;
+
+	cmds = ft_split(str, ';');
+	if (cmds[0] == NULL)
+		return (-1);
+	else
+	{
+		i = 0;
+		while (cmds[i])
+		{
+			if (check_strcmp(cmds[i], mypath) == -1)
+				printf("zsh: command not found: %s\n", cmds[i]);
+			i++;
+		}
+	}
+	return (0);
+}
+
+void	new_line()
+{
+	write(1, "\n", 1);
+	printf("CIAO");
+}
+
+struct sigaction	sig_init(struct sigaction *sa)
+{
+	sigemptyset(&sa->sa_mask);
+	sa->sa_flags = SA_RESTART;
+	sa->sa_handler = SIG_IGN;
+	sa->sa_sigaction = new_line;
+	return (*sa);
+}
+
 int main()
 {
 	char	*buff;
 	char	**mypath;
 	int		i;
+	struct sigaction	sa;
 
+	sa = sig_init(&sa);
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
 		mypath[i] = ft_strjoin(mypath[i], "/");
 	while (1)
 	{
+		sigaction(SIGINT, &sa, NULL);
 		buff = readline("minishell: ");
-		if (strcmp(buff, "exit") == 0)
+		if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
 			break ;
 		if (buff != NULL && strncmp(buff, "\0", 1) != 0)
 			add_history(buff);
-		if (check_strcmp(buff, mypath) == -1)
-			printf("zsh: command not found: %s\n", buff);
+		if (check_semicolon(buff, mypath) == -1)
+				if (check_strcmp(buff, mypath) == -1)
+					printf("zsh: command not found: %s\n", buff);
 		free(buff);
 	}
 	return (0);
