@@ -21,5 +21,11 @@ char	*ft_strjoin(char *s1, char *s2);
 int		ft_strcpy(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
 char	*rem_char(char *str, int r);
+int		check_quotes(char *str, int flag);
+char	*quotes_resolve(char *str, int q);
+int		check_semicolon(char *str, char **mypath);
+int		check_strcmp(char *str, char **mypath);
+int		my_env(char *str);
+int		my_exp(char *str);
 
 #endif
