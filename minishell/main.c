@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/04 17:31:08 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/06 17:54:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,19 +144,69 @@ int	check_semicolon(char *str, char **mypath)
 	return (0);
 }
 
-void	new_line()
+// void	new_line()
+// {
+// 	write(1, "\n", 1);
+// 	printf("CIAO");
+// }
+
+// struct sigaction	sig_init(struct sigaction *sa)
+// {
+// 	sigemptyset(&sa->sa_mask);
+// 	sa->sa_sigaction = new_line;
+// 	sa->sa_flags = SA_SIGINFO;
+// 	sigaddset(&sa->sa_mask, SIGINT);
+// 	// sa->sa_handler = SIG_IGN;
+	
+// 	return (*sa);
+// }
+
+int	check_quotes(char *str, int flag)
 {
-	write(1, "\n", 1);
-	printf("CIAO");
+	int	i;
+	int	count;
+	int	count2;
+
+	i = 0;
+	count = 0;
+	count2 = 0;
+	while (str[i])
+	{
+		if (str[i] == 39)
+			count++;
+		if (str[i] == 34)
+			count2++;
+		i++;
+	}
+	if (count % 2 != 0 && flag != 34)
+		return (39);
+	else if (count2 % 2 != 0 && flag != 39)
+		return (34);
+	else
+		return (0);
 }
 
-struct sigaction	sig_init(struct sigaction *sa)
+char	*quotes_resolve(char *str, int q)
 {
-	sigemptyset(&sa->sa_mask);
-	sa->sa_flags = SA_RESTART;
-	sa->sa_handler = SIG_IGN;
-	sa->sa_sigaction = new_line;
-	return (*sa);
+	int		c;
+	char	*tmp;
+	int		i;
+
+	i = -1;
+	c = 0;
+	while (1)
+	{
+		tmp = readline("quote> ");
+		str = ft_strjoin(str, "\n");
+		str = ft_strjoin(str, tmp);
+		if (check_quotes(tmp, q) == q)
+		{
+			free (tmp);
+			return (rem_char(str, q));
+		}
+		free(tmp);
+	}
+	return (str);
 }
 
 int main()
@@ -164,21 +214,24 @@ int main()
 	char	*buff;
 	char	**mypath;
 	int		i;
-	struct sigaction	sa;
+	// struct sigaction	sa;
 
-	sa = sig_init(&sa);
+	// sa = sig_init(&sa);
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
 		mypath[i] = ft_strjoin(mypath[i], "/");
 	while (1)
 	{
-		sigaction(SIGINT, &sa, NULL);
+		// sigaction(SIGINT, &sa, NULL);
 		buff = readline("minishell: ");
-		if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
-			break ;
 		if (buff != NULL && strncmp(buff, "\0", 1) != 0)
 			add_history(buff);
+		if (check_quotes(buff, 0) > 0)
+			buff = quotes_resolve(buff, check_quotes(buff, 0));
+		buff = rem_char(buff, 92);
+		if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
+			break ;
 		if (check_semicolon(buff, mypath) == -1)
 				if (check_strcmp(buff, mypath) == -1)
 					printf("zsh: command not found: %s\n", buff);

@@ -20,5 +20,6 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strcpy(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
+char	*rem_char(char *str, int r);
 
 #endif

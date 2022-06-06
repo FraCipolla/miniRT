@@ -6,11 +6,35 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/01 21:46:09 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/06 17:46:49 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*rem_char(char *str, int r)
+{
+	char	*ret;
+	int		i;
+	int		c;
+
+	i = 0;
+	c = 0;
+	while (str[i])
+	{
+		if (str[i] != r)
+			c++;
+		i++;
+	}
+	ret = malloc(sizeof(char) * c + 1);
+	ret[c] = '\0';
+	i = -1;
+	c = -1;
+	while (str[++i])
+		if (str[i] != r)
+			ret[++c] = str[i];
+	return (ret);
+}
 
 int	ft_strcpy(char *s1, char *s2)
 {
