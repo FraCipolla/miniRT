@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/06 20:03:17 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/06 22:15:24 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	my_env(char *str)
 	char		*tmp;	
 
 	c = 0;
-	i = 3;
+	i = 4;
 	tmp = NULL;
-	while (str[++i])
+	while (str[i])
 	{
 		if (str[i] != ' ')
 		{
@@ -43,6 +43,7 @@ int	my_env(char *str)
 			}
 			return(printf("env: %s: No such file or directory\n", tmp));
 		}
+		i++;
 	}
 	while (*environ)
 	{
@@ -58,25 +59,39 @@ char	**sort_env(char **env)
 	int		i;
 
 	tmp = NULL;
-	i = -1;
-	while(env[++i])
+	i = 0;
+	while (env[i + 1])
 	{
-		i = -1;
-		while (env[++i])
+		if (strcmp(env[i], env[i + 1]) > 0 && env[i])
 		{
-			if (strcmp(env[i], env[i + 1]) > 0)
-			{
-				tmp = env[i];
-				env[i] = env[1 + 1];
-				env[i + 1] = tmp;
-				break ;
-			}
+			tmp = env[i];
+			env[i] = env[i + 1];
+			env[i + 1] = tmp;
+			i = 0;
 		}
+		i++;
 	}
 	return (env);
 }
 
-int	my_exp(char *str)
+char	**add_env(char **env, char *str)
+{
+	int		i;
+	char	**tmp;
+
+	tmp = malloc(sizeof(char *) * strlen(*env) + 2);
+	i = 0;
+	while (env[i])
+	{
+		tmp[i] = env[i];
+		i++;
+	}
+	tmp[i] = str;
+	tmp[i + 1] = NULL;
+	return (tmp);
+}
+
+char	**my_exp(char *str)
 {
 	extern char **environ;
 	int			i;
@@ -86,7 +101,8 @@ int	my_exp(char *str)
 	c = 0;
 	i = 6;
 	tmp = NULL;
-	while (str[++i])
+	environ = sort_env(environ);
+	while (str[i])
 	{
 		if (str[i] != ' ')
 		{
@@ -105,14 +121,15 @@ int	my_exp(char *str)
 				c++;
 				i++;
 			}
-			return(printf("env: %s: No such file or directory\n", tmp));
+			environ = add_env(environ, tmp);
+			return (environ);
 		}
+		i++;
 	}
-	environ = sort_env(environ);
 	while (*environ)
 	{
 		printf("%s\n", *environ);
 		environ++;
 	}
-	return (0);
+	return (environ);
 }
