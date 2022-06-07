@@ -27,5 +27,7 @@ int		check_semicolon(char *str, char **mypath);
 int		check_strcmp(char *str, char **mypath);
 int		my_env(char *str);
 int		my_exp(char *str);
+char	*ret_word(char *str);
+int		my_unset(char *str);
 
 #endif

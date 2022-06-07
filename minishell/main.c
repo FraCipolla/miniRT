@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/07 12:11:00 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/07 13:29:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,9 @@ int	check_strcmp(char *str, char **mypath)
 	else if (strncmp(str, "env", 3) == 0)
 		return (my_env(str));
 	else if (strncmp(str, "export", 6) == 0)
-	{
-		my_exp(str);
-		return (0);
-	}
+		return (my_exp(str));
+	else if (strncmp(str, "unset", 5) == 0)
+		return (my_unset(str + 5));
 	else if (check_command(str, mypath) == 0)
 	{
 		if (strncmp(str, "cat", 3) == 0)

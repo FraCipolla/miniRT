@@ -6,11 +6,31 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/06 18:33:56 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/07 13:29:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ret_word(char *str)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	ret = NULL;
+	while (str[i] != ' ' && str[i])
+		i++;
+	ret = malloc(sizeof(char) * i + 1);
+	ret[i] = '\0';
+	i = 0;
+	while (str[i] != ' ' && str[i])
+	{
+		ret[i] = str[i];
+		i++;
+	}
+	return (ret);
+}
 
 int	check_semicolon(char *str, char **mypath)
 {
