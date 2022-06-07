@@ -26,6 +26,6 @@ char	*quotes_resolve(char *str, int q);
 int		check_semicolon(char *str, char **mypath);
 int		check_strcmp(char *str, char **mypath);
 int		my_env(char *str);
-char	**my_exp(char *str);
+int		my_exp(char *str);
 
 #endif

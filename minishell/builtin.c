@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/06 22:15:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/07 12:28:27 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,9 @@ int	my_env(char *str)
 		}
 		i++;
 	}
-	while (*environ)
-	{
-		printf("%s\n", *environ);
-		environ++;
-	}
+	i = -1;
+	while (environ[++i])
+		printf("%s\n", environ[i]);
 	return (0);
 }
 
@@ -91,45 +89,66 @@ char	**add_env(char **env, char *str)
 	return (tmp);
 }
 
-char	**my_exp(char *str)
+char	**cpy_matrix(char **matrix)
+{
+	int		i;
+	char	**ret;
+
+	i = 0;
+	ret = malloc(sizeof(char *) * strlen(*matrix) + 1);
+	while (matrix[i])
+	{
+		ret[i] = ft_strjoin(ret[i], matrix[i]);
+		i++;
+	}
+	ret[i] = NULL;
+	return (ret);
+}
+
+char	*ret_word(char *str)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	ret = NULL;
+	while (str[i] != ' ' && str[i])
+		i++;
+	ret = malloc(sizeof(char) * i + 1);
+	ret[i] = '\0';
+	i = 0;
+	while (str[i] != ' ' && str[i])
+	{
+		ret[i] = str[i];
+		i++;
+	}
+	return (ret);
+}
+
+int	my_exp(char *str)
 {
 	extern char **environ;
 	int			i;
 	int			c;
-	char		*tmp;	
+	char		*tmp;
+	static char	**export;
 
 	c = 0;
 	i = 6;
-	tmp = NULL;
-	environ = sort_env(environ);
+	export = cpy_matrix(environ);
+	export = sort_env(export);
 	while (str[i])
 	{
 		if (str[i] != ' ')
 		{
-			while (str[i] != ' ' && str[i])
-			{
-				c++;
-				i++;
-			}
-			tmp = malloc(sizeof(char) * c + 1);
-			tmp[c] = '\0';
-			i -= c;
-			c = 0;
-			while (str[i] != ' ' && str[i])
-			{
-				tmp[c] = str[i];
-				c++;
-				i++;
-			}
+			tmp = ret_word(str + i);			
 			environ = add_env(environ, tmp);
-			return (environ);
+			return (0);
 		}
 		i++;
 	}
-	while (*environ)
-	{
-		printf("%s\n", *environ);
-		environ++;
-	}
-	return (environ);
+	i = -1;
+	while (export[++i])
+		printf("%s\n", export[i]);
+	return (0);
 }
