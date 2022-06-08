@@ -6,48 +6,61 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/07 13:29:48 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/08 19:40:24 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_redir(char **str)
+int	check_dot(char *str, char **environ)
 {
-	while (*str)
+	int		i;
+	char	**tmp;
+
+	i = 0;
+	while (str[i])
 	{
-		if (strcmp(*str, ">") == 0)
-			return (0);
-		str++;
+		if(strncmp(str + i, "./", 2) == 0)
+		{
+			tmp = ft_split(str + i, ' ');
+			if (access(tmp[0], R_OK) == 0)
+				execve(tmp[0], tmp, environ);
+			printf("zsh: no such file or directory: %s\n", str);
+			exit (0);
+		}
+		i++;
 	}
 	return (-1);
 }
 
-void	make_echo(char **str)
+void	my_exec(char *str, char **mypath, char **environ)
 {
-	int		fd;
-	char	*cmd;
-	int		i;
+	char		*cmd;
+	char		**tmp;
 
-	i = 1;
-	cmd = NULL;
-	while (strncmp(str[i], ">", 1) != 0 && str[i] != NULL)
+
+	if (check_dot(str, environ) == -1)
 	{
-		cmd = ft_strjoin(cmd, str[i]);
-		cmd = ft_strjoin(cmd, " ");
-		i++;
+		tmp = ft_split(str, ' ');
+		if (strcmp(tmp[0], "echo") == 0)
+			my_echo(tmp);
+		while (*mypath)
+		{
+			cmd = ft_strjoin(*mypath, tmp[0]);
+			if (access(cmd, R_OK) == 0)
+			{
+				execve(cmd, tmp, environ);
+			}
+			mypath++;
+		}
+		printf("zsh: command not found: %s\n", str);
 	}
-	i++;
-	fd = open(str[i], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	write(fd, cmd, strlen(cmd));
-	exit (0);
+	exit(0);
 }
 
 int	check_command(char *str, char **mypath)
 {
-	char		**tmp;
-	char		*cmd;
-	extern char **environ;
+	extern char	**environ;
 	pid_t		pid;
 
 	pid = fork();
@@ -56,21 +69,9 @@ int	check_command(char *str, char **mypath)
 		waitpid(-1, NULL, 0);
 		return (0);
 	}
-	tmp = ft_split(str, ' ');
 	if (pid == 0)
 	{
-		while (*mypath)
-		{
-			cmd = ft_strjoin(*mypath, tmp[0]);
-			if (access(cmd, R_OK) == 0)
-			{
-				if (strcmp(tmp[0], "echo") == 0 && check_redir(tmp) == 0)
-					make_echo(tmp);
-				execve(cmd, tmp, environ);
-			}
-			mypath++;
-		}
-		printf("zsh: command not found: %s\n", str);
+		my_exec(str, mypath, environ);
 		exit(0);
 	}
 	return (-1);
@@ -129,19 +130,21 @@ int	check_strcmp(char *str, char **mypath)
 	return (-1);
 }
 
-// void	new_line()
-// {
-// 	write(1, "\n", 1);
-// 	printf("CIAO");
-// }
+void	handler(int	sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		printf("CIAO");
+	}
+}
 
 // struct sigaction	sig_init(struct sigaction *sa)
 // {
 // 	sigemptyset(&sa->sa_mask);
-// 	sa->sa_sigaction = new_line;
+// 	sa->sa_sigaction = new_signal;
 // 	sa->sa_flags = SA_SIGINFO;
 // 	sigaddset(&sa->sa_mask, SIGINT);
-// 	// sa->sa_handler = SIG_IGN;
 	
 // 	return (*sa);
 // }
@@ -151,16 +154,14 @@ int main()
 	char	*buff;
 	char	**mypath;
 	int		i;
-	// struct sigaction	sa;
 
-	// sa = sig_init(&sa);
+	signal(SIGINT, handler);
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
 		mypath[i] = ft_strjoin(mypath[i], "/");
 	while (1)
 	{
-		// sigaction(SIGINT, &sa, NULL);
 		buff = readline("minishell: ");
 		if (buff != NULL && strncmp(buff, "\0", 1) != 0)
 			add_history(buff);

@@ -6,11 +6,25 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/07 13:29:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/07 14:13:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_empty_env(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
 
 char	*ret_word(char *str)
 {

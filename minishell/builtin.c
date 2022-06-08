@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/07 13:39:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/07 17:01:03 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ int	my_env(char *str)
 	}
 	i = -1;
 	while (environ[++i])
-		printf("%s\n", environ[i]);
+	{
+		if (check_empty_env(environ[i]) == -1)
+			printf("%s\n", environ[i]);
+	}
 	return (0);
 }
 
@@ -61,7 +64,10 @@ char	**add_env(char **env, char *str)
 	int		i;
 	char	**tmp;
 
-	tmp = malloc(sizeof(char *) * strlen(*env) + 2);
+	i = 0;
+	while (env[i])
+		i++;
+	tmp = malloc(sizeof(char *) * i + 2);
 	i = 0;
 	while (env[i])
 	{
@@ -79,10 +85,13 @@ char	**cpy_matrix(char **matrix)
 	char	**ret;
 
 	i = 0;
-	ret = malloc(sizeof(char *) * strlen(*matrix) + 1);
+	while (matrix[i])
+		i++;
+	ret = malloc(sizeof(char *) * i + 1);
+	i = 0;
 	while (matrix[i])
 	{
-		ret[i] = ft_strjoin(ret[i], matrix[i]);
+		ret[i] = ft_strdup(matrix[i]);
 		i++;
 	}
 	ret[i] = NULL;
@@ -94,7 +103,7 @@ int	my_exp(char *str)
 	extern char **environ;
 	int			i;
 	char		*tmp;
-	static char	**export;
+	char		**export;
 
 	i = 6;
 	export = cpy_matrix(environ);
@@ -111,7 +120,13 @@ int	my_exp(char *str)
 	}
 	i = -1;
 	while (export[++i])
+	{
+		if (check_empty_env(export[i]) == 0)
+			export[i] = ft_strjoin(export[i], "=''");
 		printf("%s\n", export[i]);
+		// free(export[i]);
+	}
+	// free(export);
 	return (0);
 }
 
@@ -123,10 +138,10 @@ char	**remove_env(char **env, char *search)
 
 	i = 0;
 	c = 0;
-	ret = malloc(sizeof(char *) * strlen(*env));
+	ret = malloc(sizeof(char *) * ft_strlen(*env));
 	while (env[i])
 	{
-		if (strncmp(search, env[i], strlen(search)) != 0)
+		if (strncmp(search, env[i], ft_strlen(search)) != 0)
 		{
 			ret[c] = ft_strjoin(ret[c], env[i]);
 			c++;
@@ -154,7 +169,7 @@ int	my_unset(char *str)
 	i = 0;
 	while (environ[i])
 	{
-		if (strncmp(environ[i], tmp, strlen(tmp)) == 0)
+		if (strncmp(environ[i], tmp, ft_strlen(tmp)) == 0)
 			environ = remove_env(environ, tmp);
 		i++;
 	}
