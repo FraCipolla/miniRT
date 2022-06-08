@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/08 19:40:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/08 20:04:37 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	my_exec(char *str, char **mypath, char **environ)
 	{
 		tmp = ft_split(str, ' ');
 		if (strcmp(tmp[0], "echo") == 0)
-			my_echo(tmp);
+			my_echo(str + 5, tmp);
 		while (*mypath)
 		{
 			cmd = ft_strjoin(*mypath, tmp[0]);
