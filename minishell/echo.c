@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/08 20:25:07 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/08 20:44:54 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ void	my_echo(char *str, char **str2)
 		while (str[++i])
 			if (check_char(str + i) == 0)
 				write(1, &str[i], 1);
-		if (strncmp(str, "-n", 2) != 0)
-			printf("\n");
-		else
-			printf("%%\n");
+		if (strncmp(str, "-n", 2) == 0)
+			printf("%%");
+		printf("\n");
 	}
 	else
 	{
@@ -69,6 +68,8 @@ void	my_echo(char *str, char **str2)
 			cmd = ft_strjoin(cmd, " ");
 			str2++;
 		}
+		cmd[ft_strlen(cmd)] = '\n';
+		cmd = ft_strjoin(cmd, "\0");
 		str2++;
 		fd = open(*str2, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		write(fd, cmd, strlen(cmd));
