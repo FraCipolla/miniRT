@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/08 20:44:54 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/09 12:33:22 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,42 @@ int	check_char(char *str)
 	return (-1);
 }
 
+char	*str_to_print(char **str2)
+{
+	char	*ret;
+	int		i;
+
+	i = 0;
+	ret = NULL;
+	while (strcmp(str2[i], "echo") != 0)
+		i++;
+	if (strcmp(str2[i + 1], "-n") == 0)
+		i++;
+	i++;
+	while (str2[i])
+	{
+		ret = ft_strjoin(ret, str2[i]);
+		ret = ft_strjoin(ret, " ");
+		i++;
+	}
+	return (ret);
+}
+
 void	my_echo(char *str, char **str2)
 {
 	int		fd;
 	char	*cmd;
 	int		i;
 
-	if (strncmp(str, "-n", 2) == 0)
-		i = 2;
-	else
-		i = -1;
+	i = -1;
+	str = NULL;
+	cmd = str_to_print(str2);
 	if (check_redir(str2) == -1)
 	{
-		while (str[++i])
-			if (check_char(str + i) == 0)
-				write(1, &str[i], 1);
-		if (strncmp(str, "-n", 2) == 0)
-			printf("%%");
-		printf("\n");
+		while (str2[++i])
+			if (strcmp(str2[i], "-n") == 0)
+				cmd[ft_strlen(cmd) - 1] = '%';
+		printf("%s\n", cmd);
 	}
 	else
 	{
