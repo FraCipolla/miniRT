@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/09 12:27:40 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/09 13:55:01 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_dot(char *str, char **environ)
 	{
 		if(strncmp(str + i, "./", 2) == 0)
 		{
-			tmp = ft_split(str + i, ' ');
+			tmp = ft_split(str, ' ');
 			if (access(tmp[0], R_OK) == 0)
 				execve(tmp[0], tmp, environ);
 			printf("zsh: no such file or directory: %s\n", str);
@@ -44,7 +44,7 @@ void	my_exec(char *str, char **mypath, char **environ)
 	while (tmp[++i])
 	{
 		if (strcmp(tmp[i], "echo") == 0)
-			my_echo(str, tmp);
+			my_echo(tmp);
 	}
 	if (check_dot(str, environ) == -1)
 	{

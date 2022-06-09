@@ -32,6 +32,6 @@ int		my_unset(char *str);
 int		check_empty_env(char *str);
 char	*ft_strdup(const char *s1);
 void	my_exit(int	status);
-void	my_echo(char *str, char **str2);
+void	my_echo(char **str2);
 
 #endif

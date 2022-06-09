@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/09 12:33:22 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/09 14:17:22 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*str_to_print(char **str2)
 	if (strcmp(str2[i + 1], "-n") == 0)
 		i++;
 	i++;
-	while (str2[i])
+	while (str2[i] && str2[i][0] != '>')
 	{
 		ret = ft_strjoin(ret, str2[i]);
 		ret = ft_strjoin(ret, " ");
@@ -58,14 +58,13 @@ char	*str_to_print(char **str2)
 	return (ret);
 }
 
-void	my_echo(char *str, char **str2)
+void	my_echo(char **str2)
 {
 	int		fd;
 	char	*cmd;
 	int		i;
 
 	i = -1;
-	str = NULL;
 	cmd = str_to_print(str2);
 	if (check_redir(str2) == -1)
 	{
@@ -76,16 +75,8 @@ void	my_echo(char *str, char **str2)
 	}
 	else
 	{
-		cmd = NULL;
-		str2++;
-		if (strcmp(*str2, "-n") == 0)
-			str2++;
 		while (strncmp(*str2, ">", 1) != 0 && *str2 != NULL)
-		{
-			cmd = ft_strjoin(cmd, *str2);
-			cmd = ft_strjoin(cmd, " ");
 			str2++;
-		}
 		cmd[ft_strlen(cmd)] = '\n';
 		cmd = ft_strjoin(cmd, "\0");
 		str2++;
