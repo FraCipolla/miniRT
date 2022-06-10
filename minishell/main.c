@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/09 13:55:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/10 13:09:13 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,24 @@ int	check_dot(char *str, char **environ)
 
 void	my_exec(char *str, char **mypath, char **environ)
 {
-	char		*cmd;
-	char		**tmp;
-	int			i;
+	char	*cmd;
+	char	**tmp;
+	int		i;
+	int		fd;
 
-	i = -1;
+	i = 0;
 	tmp = ft_split(str, ' ');
 	while (tmp[++i])
-	{
 		if (strcmp(tmp[i], "echo") == 0)
 			my_echo(tmp);
+	if (check_redir(tmp) == 0)
+	{
+		i = 0;
+		while (tmp[i] && strcmp(tmp[i], ">") != 0)
+			i++;
+		fd = open(tmp[i + 1], O_CREAT | O_RDWR, 0644);
+		tmp = cpy_matrix(tmp, 2);
+		dup2(fd, 1);
 	}
 	if (check_dot(str, environ) == -1)
 	{
@@ -126,11 +134,7 @@ int	check_strcmp(char *str, char **mypath)
 	else if (strncmp(str, "unset", 5) == 0)
 		return (my_unset(str + 5));
 	else if (check_command(str, mypath) == 0)
-	{
-		if (strncmp(str, "cat", 3) == 0)
-			write(1, "%\n", 2);
 		return (0);
-	}
 	return (-1);
 }
 

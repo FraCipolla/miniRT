@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/07 17:01:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/10 13:07:53 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	**add_env(char **env, char *str)
 	return (tmp);
 }
 
-char	**cpy_matrix(char **matrix)
+char	**cpy_matrix(char **matrix, int	offset)
 {
 	int		i;
 	char	**ret;
@@ -87,9 +87,9 @@ char	**cpy_matrix(char **matrix)
 	i = 0;
 	while (matrix[i])
 		i++;
-	ret = malloc(sizeof(char *) * i + 1);
+	ret = malloc(sizeof(char *) * (i + 1 - offset));
 	i = 0;
-	while (matrix[i])
+	while (matrix[i + offset])
 	{
 		ret[i] = ft_strdup(matrix[i]);
 		i++;
@@ -106,7 +106,7 @@ int	my_exp(char *str)
 	char		**export;
 
 	i = 6;
-	export = cpy_matrix(environ);
+	export = cpy_matrix(environ, 0);
 	export = sort_env(export);
 	while (str[i])
 	{
