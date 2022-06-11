@@ -6,28 +6,46 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/10 13:07:53 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/11 20:31:54 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	my_env(char *str)
+int	check_env_path(char *str, char **environ)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+		{
+			while (*environ)
+			{ 
+				if (strncmp(*environ, str, i) == 0)
+					return (0);
+				environ++;
+			}
+			break ;
+		}
+		i++;
+	}
+	return (-1);
+}
+
+void	my_env( char **tmp)
 {
 	extern char **environ;
 	int			i;
-	char		*tmp;	
 
-	i = 4;
-	tmp = NULL;
-	while (str[i])
+	if (tmp[1] != NULL)
 	{
-		if (str[i] != ' ')
+		if (check_env_path(tmp[1], environ) == -1)
 		{
-			tmp = ret_word(str + i);
-			return(printf("env: %s: No such file or directory\n", tmp));
+			printf("env: %s: No such file or directory\n", tmp[1]);
+			exit (0);
 		}
-		i++;
 	}
 	i = -1;
 	while (environ[++i])
@@ -35,7 +53,7 @@ int	my_env(char *str)
 		if (check_empty_env(environ[i]) == -1)
 			printf("%s\n", environ[i]);
 	}
-	return (0);
+	exit (0);
 }
 
 char	**sort_env(char **env)
@@ -65,10 +83,7 @@ char	**add_env(char **env, char *str)
 	char	**tmp;
 
 	i = 0;
-	while (env[i])
-		i++;
-	tmp = malloc(sizeof(char *) * i + 2);
-	i = 0;
+	tmp = cpy_matrix(env, -1);
 	while (env[i])
 	{
 		tmp[i] = env[i];
@@ -102,21 +117,17 @@ int	my_exp(char *str)
 {
 	extern char **environ;
 	int			i;
-	char		*tmp;
+	char		**tmp;
 	char		**export;
 
-	i = 6;
+	i = 0;
+	tmp = ft_split(str, ' ');
 	export = cpy_matrix(environ, 0);
 	export = sort_env(export);
-	while (str[i])
+	if (tmp[++i] != NULL)
 	{
-		if (str[i] != ' ')
-		{
-			tmp = ret_word(str + i);
-			environ = add_env(environ, tmp);
-			return (0);
-		}
-		i++;
+		environ = add_env(environ, tmp[i]);
+		return (0);
 	}
 	i = -1;
 	while (export[++i])

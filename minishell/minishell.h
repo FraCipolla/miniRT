@@ -25,15 +25,18 @@ int		check_quotes(char *str, int flag);
 char	*quotes_resolve(char *str, int q);
 int		check_semicolon(char *str, char **mypath);
 int		check_strcmp(char *str, char **mypath);
-int		my_env(char *str);
-int		my_exp(char *str);
 char	*ret_word(char *str);
-int		my_unset(char *str);
 int		check_empty_env(char *str);
 char	*ft_strdup(const char *s1);
-void	my_exit(int	status);
-void	my_echo(char **str2);
 int		check_redir(char **str);
 char	**cpy_matrix(char **matrix, int	offset);
+void	ft_increase_shlvl();
+char	*ft_itoa(int n);
+int		check_pwd(char *str);
+int		my_pwd(char *str);
+void	my_echo(char **str2);
+void	my_env(char **tmp);
+int		my_exp(char *str);
+int		my_unset(char *str);
 
 #endif

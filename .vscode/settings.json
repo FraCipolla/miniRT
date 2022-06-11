@@ -1,9 +1,11 @@
 {
     "files.associations": {
-        "fcntl.h": "c",
-        "pipex_bonus.h": "c",
-        "locale": "c",
-        "history.h": "c",
-        "stdlib.h": "c"
-    }
+		"fcntl.h": "c",
+		"pipex_bonus.h": "c",
+		"locale": "c",
+		"history.h": "c",
+		"stdlib.h": "c",
+		"sstream": "c",
+		"stdio.h": "c"
+	}
 }

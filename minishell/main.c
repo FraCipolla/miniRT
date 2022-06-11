@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/10 13:09:13 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/11 20:29:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ int	check_dot(char *str, char **environ)
 		{
 			tmp = ft_split(str, ' ');
 			if (access(tmp[0], R_OK) == 0)
+			{
+				if (strncmp(str + i, "./minishell", 11) == 0)
+					ft_increase_shlvl();
 				execve(tmp[0], tmp, environ);
+			}
 			printf("zsh: no such file or directory: %s\n", str);
 			exit (0);
 		}
@@ -33,26 +37,20 @@ int	check_dot(char *str, char **environ)
 	return (-1);
 }
 
-void	my_exec(char *str, char **mypath, char **environ)
+void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 {
 	char	*cmd;
-	char	**tmp;
 	int		i;
-	int		fd;
-
-	i = 0;
-	tmp = ft_split(str, ' ');
+	
+	if (check_redir(tmp) == 0)
+		tmp = cpy_matrix(tmp, 2);
+	i = -1;
 	while (tmp[++i])
+	{
+		if (strcmp(tmp[i], "env") == 0)
+			my_env(tmp);
 		if (strcmp(tmp[i], "echo") == 0)
 			my_echo(tmp);
-	if (check_redir(tmp) == 0)
-	{
-		i = 0;
-		while (tmp[i] && strcmp(tmp[i], ">") != 0)
-			i++;
-		fd = open(tmp[i + 1], O_CREAT | O_RDWR, 0644);
-		tmp = cpy_matrix(tmp, 2);
-		dup2(fd, 1);
 	}
 	if (check_dot(str, environ) == -1)
 	{
@@ -60,9 +58,7 @@ void	my_exec(char *str, char **mypath, char **environ)
 		{
 			cmd = ft_strjoin(*mypath, tmp[0]);
 			if (access(cmd, R_OK) == 0)
-			{
 				execve(cmd, tmp, environ);
-			}
 			mypath++;
 		}
 		printf("zsh: command not found: %s\n", str);
@@ -74,8 +70,10 @@ int	check_command(char *str, char **mypath)
 {
 	extern char	**environ;
 	pid_t		pid;
+	char		**tmp;
 
 	pid = fork();
+	tmp = ft_split(str, ' ');
 	if (pid > 0)
 	{
 		waitpid(-1, NULL, 0);
@@ -83,52 +81,31 @@ int	check_command(char *str, char **mypath)
 	}
 	if (pid == 0)
 	{
-		my_exec(str, mypath, environ);
+		my_exec(str, mypath, environ, tmp);
 		exit(0);
 	}
 	return (-1);
 }
 
-int	check_pwd(char *str)
+int	check_strcmp(char *str, char **mypath)
 {
 	int	i;
 
-	i = 3;
-	while (str[i])
-	{
-		if (str[i] != ' ')
-		{
-			printf("pwd: too many arguments\n");
-			return (-1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	check_strcmp(char *str, char **mypath)
-{
-	char	path[1000];
-	
+	i = -1;
+	if (getenv("PATH") == NULL)
+		while (mypath[++i])
+			mypath[i] = NULL;
 	if (strncmp(str, "pwd", 3) == 0)
-	{
-		if (check_pwd(str) == 0)
-		{
-			getcwd(path, 1000);
-			printf("%s\n", path);
-			return (0);
-		}
-		else
-			return (0);
-	}
+		return(my_pwd(str));
 	else if (strncmp(str, "cd", 2) == 0)
 	{
 		if (str[2] == ' ' && chdir(str + 3) == -1)
-			printf("cd: no such file or directory: %s\n", str + 3);
-		return (0);
+			return (printf("cd: no such file or directory: %s\n", str + 3));
 	}
-	else if (strncmp(str, "env", 3) == 0)
-		return (my_env(str));
+	// else if (strncmp(str, "env", 3) == 0)
+	// 	return (my_env(str));
+	else if (strncmp(str, "unset", 6) == 0)
+		my_unset(str + 5);
 	else if (strncmp(str, "export", 6) == 0)
 		return (my_exp(str));
 	else if (strncmp(str, "unset", 5) == 0)
@@ -138,32 +115,12 @@ int	check_strcmp(char *str, char **mypath)
 	return (-1);
 }
 
-void	handler(int	sig)
-{
-	if (sig == SIGINT)
-	{
-		write(1, "\n", 1);
-		printf("CIAO");
-	}
-}
-
-// struct sigaction	sig_init(struct sigaction *sa)
-// {
-// 	sigemptyset(&sa->sa_mask);
-// 	sa->sa_sigaction = new_signal;
-// 	sa->sa_flags = SA_SIGINFO;
-// 	sigaddset(&sa->sa_mask, SIGINT);
-	
-// 	return (*sa);
-// }
-
 int main()
 {
 	char	*buff;
 	char	**mypath;
 	int		i;
 
-	signal(SIGINT, handler);
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])

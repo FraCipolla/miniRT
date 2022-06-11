@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/10 12:41:59 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/11 18:39:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,19 @@
 
 int	check_redir(char **str)
 {
-	while (*str)
+	int		i;
+	int		fd;
+
+	i = 0;
+	while (str[i])
 	{
-		if (strcmp(*str , ">") == 0)
+		if (strcmp(str[i] , ">") == 0)
+		{
+			fd = open(str[i + 1], O_CREAT | O_RDWR, 0644);
+			dup2(fd, 1);
 			return (0);
-		str++;
+		}
+		i++;
 	}
 	return (-1);
 }
@@ -60,7 +68,7 @@ char	*str_to_print(char **str2)
 
 void	my_echo(char **str2)
 {
-	int		fd;
+	// int		fd;
 	char	*cmd;
 	int		i;
 
@@ -73,15 +81,15 @@ void	my_echo(char **str2)
 				cmd[ft_strlen(cmd) - 1] = '%';
 		printf("%s\n", cmd);
 	}
-	else
-	{
-		while (strncmp(*str2, ">", 1) != 0 && *str2 != NULL)
-			str2++;
-		cmd[ft_strlen(cmd)] = '\n';
-		cmd = ft_strjoin(cmd, "\0");
-		str2++;
-		fd = open(*str2, O_CREAT | O_RDWR | O_TRUNC, 0644);
-		write(fd, cmd, strlen(cmd));
-	}
+	// else
+	// {
+	// 	while (strncmp(*str2, ">", 1) != 0 && *str2 != NULL)
+	// 		str2++;
+	// 	cmd[ft_strlen(cmd)] = '\n';
+	// 	cmd = ft_strjoin(cmd, "\0");
+	// 	str2++;
+	// 	fd = open(*str2, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	// 	write(fd, cmd, strlen(cmd));
+	// }
 	exit(0);
 }
