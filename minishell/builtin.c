@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/11 20:31:54 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/11 21:02:14 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,43 @@ char	**sort_env(char **env)
 	return (env);
 }
 
+/* CONTROLLARE QUESTA FUNZIONE*/
+
+char	*until_ugual(char *str)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	if (str[i] == '\0')
+		return (NULL);
+	ret = malloc(sizeof(char) * i);
+	ret[i] = '\0';
+	i = 0;
+	while (ret[i])
+	{
+		ret[i] = str[i];
+		i++;
+	}
+	return (ret);
+}
+
 char	**add_env(char **env, char *str)
 {
 	int		i;
 	char	**tmp;
 
+	i = -1;
+	while (env[++i])
+	{
+		if (strcmp(until_ugual(str), until_ugual(env[i])) == 0)
+		{
+			env[i] = ft_strdup(str);
+			return (env);
+		}
+	}
 	i = 0;
 	tmp = cpy_matrix(env, -1);
 	while (env[i])
