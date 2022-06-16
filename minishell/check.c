@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/11 20:23:06 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/16 16:59:31 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ int	check_empty_env(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '=')
+		if (str[i] == '=' && str[i + 1] == '\0')
+			return (-2);
+		else if (str[i] == '=')
 			return (-1);
 		i++;
 	}

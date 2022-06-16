@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/11 20:29:59 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/16 17:30:52 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,7 @@ int	check_strcmp(char *str, char **mypath)
 	if (strncmp(str, "pwd", 3) == 0)
 		return(my_pwd(str));
 	else if (strncmp(str, "cd", 2) == 0)
-	{
-		if (str[2] == ' ' && chdir(str + 3) == -1)
-			return (printf("cd: no such file or directory: %s\n", str + 3));
-	}
+		return (my_cd(str));
 	// else if (strncmp(str, "env", 3) == 0)
 	// 	return (my_env(str));
 	else if (strncmp(str, "unset", 6) == 0)

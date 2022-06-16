@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/11 21:02:14 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/16 17:06:13 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	my_env( char **tmp)
 {
 	extern char **environ;
 	int			i;
+	int			s;
 
 	if (tmp[1] != NULL)
 	{
@@ -50,7 +51,8 @@ void	my_env( char **tmp)
 	i = -1;
 	while (environ[++i])
 	{
-		if (check_empty_env(environ[i]) == -1)
+		s = check_empty_env(environ[i]);
+		if (s == -1 || s == -2)
 			printf("%s\n", environ[i]);
 	}
 	exit (0);
@@ -77,8 +79,6 @@ char	**sort_env(char **env)
 	return (env);
 }
 
-/* CONTROLLARE QUESTA FUNZIONE*/
-
 char	*until_ugual(char *str)
 {
 	int		i;
@@ -92,11 +92,12 @@ char	*until_ugual(char *str)
 	ret = malloc(sizeof(char) * i);
 	ret[i] = '\0';
 	i = 0;
-	while (ret[i])
+	while (str[i] != '=')
 	{
 		ret[i] = str[i];
 		i++;
 	}
+	ret[i] = str[i];
 	return (ret);
 }
 
@@ -108,11 +109,17 @@ char	**add_env(char **env, char *str)
 	i = -1;
 	while (env[++i])
 	{
-		if (strcmp(until_ugual(str), until_ugual(env[i])) == 0)
+		if (until_ugual(str) != NULL && until_ugual(env[i]) != NULL)
 		{
-			env[i] = ft_strdup(str);
-			return (env);
+			if (strcmp(until_ugual(str), until_ugual(env[i])) == 0)
+			{
+				env[i] = ft_strdup(str);
+				return (env);
+			}
 		}
+		if (strncmp(str, env[i], ft_strlen(str)) == 0)
+			if (env[i][ft_strlen(str)] == '=')
+				return (env);
 	}
 	i = 0;
 	tmp = cpy_matrix(env, -1);
@@ -164,12 +171,14 @@ int	my_exp(char *str)
 	i = -1;
 	while (export[++i])
 	{
-		if (check_empty_env(export[i]) == 0)
+		if (check_empty_env(export[i]) == -2)
+			export[i] = ft_strjoin(export[i], "''");
+		else if (check_empty_env(export[i]) == 0)
 			export[i] = ft_strjoin(export[i], "=''");
 		printf("%s\n", export[i]);
-		// free(export[i]);
+		free(export[i]);
 	}
-	// free(export);
+	free(export);
 	return (0);
 }
 

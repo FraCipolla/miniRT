@@ -38,5 +38,6 @@ void	my_echo(char **str2);
 void	my_env(char **tmp);
 int		my_exp(char *str);
 int		my_unset(char *str);
+int		my_cd(char *str);
 
 #endif
