@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/16 17:30:52 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:42:31 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 	char	*cmd;
 	int		i;
 	
-	if (check_redir(tmp) == 0)
-		tmp = cpy_matrix(tmp, 2);
+	tmp = check_redir(tmp);
 	i = -1;
 	while (tmp[++i])
 	{
@@ -89,24 +88,24 @@ int	check_command(char *str, char **mypath)
 
 int	check_strcmp(char *str, char **mypath)
 {
-	int	i;
+	int		i;
+	char	**cmd;
 
 	i = -1;
+	cmd = ft_split(str, ' ');
 	if (getenv("PATH") == NULL)
 		while (mypath[++i])
 			mypath[i] = NULL;
-	if (strncmp(str, "pwd", 3) == 0)
-		return(my_pwd(str));
-	else if (strncmp(str, "cd", 2) == 0)
+	if (strncmp(cmd[0], "pwd", 3) == 0)
+		return(my_pwd(cmd));
+	else if (strcmp(cmd[0], "cd") == 0)
 		return (my_cd(str));
 	// else if (strncmp(str, "env", 3) == 0)
 	// 	return (my_env(str));
-	else if (strncmp(str, "unset", 6) == 0)
-		my_unset(str + 5);
-	else if (strncmp(str, "export", 6) == 0)
+	else if (strcmp(cmd[0], "export") == 0)
 		return (my_exp(str));
-	else if (strncmp(str, "unset", 5) == 0)
-		return (my_unset(str + 5));
+	else if (strcmp(cmd[0], "unset") == 0)
+		return (my_unset(cmd[1]));
 	else if (check_command(str, mypath) == 0)
 		return (0);
 	return (-1);

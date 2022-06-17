@@ -6,17 +6,46 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 17:09:04 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/16 17:30:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/17 14:43:36 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*trunc_str(char *str, char c, int n)
+{
+	int		i;
+	int		x;
+	char	*ret;
+
+	i = 0;
+	x = 0;
+	while (x < n)
+	{
+		if (str[i] == c)
+			x++;
+		i++;
+	}
+	ret = malloc(sizeof(char) * i);
+	ret[i] = '\0';
+	i = 0;
+	x = 0;
+	while (x < n)
+	{
+		ret[i] = str[i];
+		if (str[i] == c)
+			x++;
+		i++;
+	}
+	return (ret);
+}
 
 int	my_cd(char *str)
 {
 	char	**tmp;
 	int		i;
 	char	path[1000];
+	char	*reset_path;
 	
 	i = 0;
 	tmp = ft_split(str, ' ');
@@ -25,6 +54,8 @@ int	my_cd(char *str)
 	if (i == 1)
 	{
 		getcwd(path, 1000);
+		reset_path = trunc_str(path, '/', 3);
+		chdir(reset_path);
 		return (0);
 	}
 	if (tmp[1] && chdir(tmp[1]) == -1)
@@ -34,7 +65,5 @@ int	my_cd(char *str)
 		else
 			return (printf("cd: no such file or directory: %s\n", tmp[1]));
 	}
-	else
-		return (0);
 	return (0);
 }
