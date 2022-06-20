@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/20 17:04:41 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/20 21:55:28 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ int	check_redir(char **args)
 		// else if (strcmp(args[i] , "<") == 0)
 		// {
 		// 	fd = open(args[i + 1], O_RDONLY, 0644);
+		// 	// inf = strdup(infile(args));
+		// 	// write(fd, inf, ft_strlen(inf));
 		// 	dup2(fd, 0);
+		// 	return (0);
 		// }
 	}
 	return (-1);
@@ -66,23 +69,31 @@ int	check_quotes(char *str, int flag)
 	int	count;
 	int	count2;
 
-	i = 0;
+	i = -1;
 	count = 0;
 	count2 = 0;
-	while (str[i])
+	while (str[++i])
+	{
+		if (str[i] == '\'')
+			count++;
+		if (str[i] == '"')
+			count2++;
+	}
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == 39)
-			count++;
+		{
+			if (count % 2 != 0 && flag != 34)
+				return (39);
+		}
 		if (str[i] == 34)
-			count2++;
-		i++;
+		{
+			if (count2 % 2 != 0 && flag != 39)
+			return (34);
+		}
 	}
-	if (count % 2 != 0 && flag != 34)
-		return (39);
-	else if (count2 % 2 != 0 && flag != 39)
-		return (34);
-	else
-		return (0);
+	return (0);
 }
 
 int	check_empty_env(char *str)

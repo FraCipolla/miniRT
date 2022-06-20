@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/06 17:46:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/20 23:05:18 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*rem_char(char *str, int r)
 	while (str[++i])
 		if (str[i] != r)
 			ret[++c] = str[i];
+	free(str);
 	return (ret);
 }
 

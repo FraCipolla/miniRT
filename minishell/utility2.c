@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/11 20:11:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/20 23:03:56 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ char	*ret_word(char *str)
 
 char	*quotes_resolve(char *str, int q)
 {
-	int		c;
 	char	*tmp;
 	int		i;
 
-	i = -1;
-	c = 0;
+	i = 0;
+	while (str[i] != q)
+		i++;
 	while (1)
 	{
 		tmp = readline("quote> ");
@@ -47,10 +47,12 @@ char	*quotes_resolve(char *str, int q)
 		str = ft_strjoin(str, tmp);
 		if (check_quotes(tmp, q) == q)
 		{
-			free (tmp);
-			return (rem_char(str, q));
+			str = rem_char(str, q);
+			free(tmp);
+			printf("%s\n", str + i);
+			break ;
 		}
-		free(tmp);
+		free (tmp);
 	}
 	return (str);
 }

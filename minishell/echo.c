@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/20 17:06:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/20 22:44:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,39 @@ int	check_char(char *str)
 	return (-1);
 }
 
+char	*ft_strjoin2(char *s1, char *s2)
+{
+	char	*str;
+	int		size;
+	int		i;
+	int		j;
+
+	i = 0;
+	if (s1 == NULL)
+		size = ft_strlen(s2);
+	else
+		size = ft_strlen(s1) + ft_strlen(s2);
+	if (size == 0)
+		return (NULL);
+	str = (char *) malloc (sizeof(char) * (size + 1));
+	if (str == NULL)
+		return (NULL);
+	str[size] = '\0';
+	if (s1 != NULL)
+		i += ft_strcpy(str, s1);
+	j = 0;
+	while (s2[j] != '\0')
+	{
+		if (s2[j] != '"' && s2[j] != '\'')
+		{
+			str[i] = s2[j];
+			i++;
+		}
+		j++;
+	}
+	return (str);
+}
+
 char	*str_to_print(char **str2)
 {
 	char	*ret;
@@ -63,30 +96,31 @@ char	*str_to_print(char **str2)
 
 	i = 0;
 	ret = NULL;
-	while (strcmp(str2[i], "echo") != 0)
+	while (strncmp(str2[i], "echo", 4) != 0)
 		i++;
 	if (strcmp(str2[i + 1], "-n") == 0)
 		i++;
 	i++;
-	while (str2[i] && str2[i][0] != '>')
+	while (str2[i])
 	{
-		ret = ft_strjoin(ret, str2[i]);
+		ret = ft_strjoin2(ret, str2[i]);
 		ret = ft_strjoin(ret, " ");
 		i++;
 	}
 	return (ret);
 }
 
-void	my_echo(char **args)
+int	my_echo(char **args)
 {
 	char	*cmd;
 	int		i;
 
 	i = -1;
-	cmd = str_to_print(cut_red(args));
+	args = cut_red(args);
+	cmd = str_to_print(args);
 	while (args[++i])
 		if (strcmp(args[i], "-n") == 0)
 			cmd[ft_strlen(cmd) - 1] = '%';
 	printf("%s\n", cmd);
-	exit(0);
+	return(0);
 }
