@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/17 17:05:47 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:06:24 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,42 +31,15 @@ char	**cut_red(char **args)
 	while (args[++i])
 	{
 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<')
-			i += 2;
-		if (args[i] == NULL)
-			break ;
-		ret[n] = ft_strdup(args[i]);
-		n++;
+			i++;
+		else
+		{
+			ret[n] = ft_strdup(args[i]);
+			n++;
+		}
 	}
 	ret[n] = NULL;
 	return (ret);
-}
-
-char	**check_redir(char **args)
-{
-	int		i;
-	int		fd;
-
-	i = 0;
-	while (args[i])
-	{
-		if (strcmp(args[i] , ">") == 0)
-		{
-			fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
-			dup2(fd, 1);
-		}
-		else if (strcmp(args[i] , ">>") == 0)
-		{
-			fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
-			dup2(fd, 1);
-		}
-		else if (strcmp(args[i] , "<") == 0)
-		{
-			fd = open(args[i + 1], O_RDONLY, 0644);
-			dup2(fd, 0);
-		}
-		i++;
-	}
-	return (cut_red(args));
 }
 
 int	check_char(char *str)

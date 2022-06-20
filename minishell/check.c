@@ -6,11 +6,38 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/16 16:59:31 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:04:41 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_redir(char **args)
+{
+	int		fd;
+	int		i;
+
+	i = -1;
+	while (args[++i])
+	{
+		if (strcmp(args[i] , ">") == 0)
+		{
+			fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+			dup2(fd, 1);
+		}
+		// else if (strcmp(args[i] , ">>") == 0)
+		// {
+		// 	fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+		// 	dup2(fd, 1);
+		// }
+		// else if (strcmp(args[i] , "<") == 0)
+		// {
+		// 	fd = open(args[i + 1], O_RDONLY, 0644);
+		// 	dup2(fd, 0);
+		// }
+	}
+	return (-1);
+}
 
 int	check_semicolon(char *str, char **mypath)
 {

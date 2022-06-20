@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/17 16:42:31 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:18:27 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,38 @@ int	check_dot(char *str, char **environ)
 	return (-1);
 }
 
+char	*infile(char **args)
+{
+	int		i;
+	char	*ret;
+	char	*buff;
+	int		fd;
+
+	i = -1;
+	ret = NULL;
+	while (args[++i])
+	{
+		if (args[i][0] == '<')
+		{
+			fd = open(args[i + 1], O_RDONLY, 0644);
+			buff = get_next_line (fd);
+			ret = ft_strjoin(ret, buff);
+			free (buff);
+		}
+	}
+	return (ret);
+}
+
 void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 {
 	char	*cmd;
-	int		i;
-	
-	tmp = check_redir(tmp);
-	i = -1;
-	while (tmp[++i])
-	{
-		if (strcmp(tmp[i], "env") == 0)
-			my_env(tmp);
-		if (strcmp(tmp[i], "echo") == 0)
-			my_echo(tmp);
-	}
+	char	*inf;
+	int		fd;
+
+	inf = strdup(infile(tmp));
+	fd = open(inf, O_RDONLY, 0644);
+	dup2(fd, 0);
+	tmp = cut_red(tmp);
 	if (check_dot(str, environ) == -1)
 	{
 		while (*mypath)
@@ -65,14 +83,14 @@ void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 	exit(0);
 }
 
-int	check_command(char *str, char **mypath)
+int	check_command(char *str, char **mypath, char **args)
 {
 	extern char	**environ;
 	pid_t		pid;
-	char		**tmp;
+	int			i;
 
 	pid = fork();
-	tmp = ft_split(str, ' ');
+	i = -1;
 	if (pid > 0)
 	{
 		waitpid(-1, NULL, 0);
@@ -80,7 +98,16 @@ int	check_command(char *str, char **mypath)
 	}
 	if (pid == 0)
 	{
-		my_exec(str, mypath, environ, tmp);
+		while (args[++i])
+		{
+			if (strcmp(args[i], "env") == 0)
+				my_env(args);
+			if (strcmp(args[i], "echo") == 0)
+				my_echo(args);
+			if (strcmp(args[i], "echo") == 0 || strcmp(args[i], "env") == 0)
+				exit(0);
+		}
+		my_exec(str, mypath, environ, args);
 		exit(0);
 	}
 	return (-1);
@@ -106,7 +133,7 @@ int	check_strcmp(char *str, char **mypath)
 		return (my_exp(str));
 	else if (strcmp(cmd[0], "unset") == 0)
 		return (my_unset(cmd[1]));
-	else if (check_command(str, mypath) == 0)
+	else if (check_command(str, mypath, cmd) == 0)
 		return (0);
 	return (-1);
 }
