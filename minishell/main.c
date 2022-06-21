@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/20 23:11:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/21 13:07:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,16 @@ char	*infile(char **args)
 void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 {
 	char	*cmd;
-	char	*inf;
-	int		fd;
+	// char	*inf;
+	// int		fd;
 
-	inf = strdup(infile(tmp));
-	printf("INF: %s\n", inf);
-	fd = open("TMPFD", O_CREAT | O_RDWR, 0644);
-	write (fd, inf, ft_strlen(inf));
-	dup2(fd, 0);
-	// check_redir(tmp);
+	// inf = strdup(infile(tmp));
+	// printf("INF: %s\n", inf);
+	// fd = open("TMPFD", O_CREAT | O_RDWR, 0644);
+	// write (fd, inf, ft_strlen(inf));
+	// dup2(fd, 0);
+	if (check_redir(tmp) == -1)
+		exit(0);
 	tmp = cut_red(tmp);
 	if (check_dot(str, environ) == -1)
 	{
@@ -154,6 +155,7 @@ int main()
         buff = readline("minishell: ");
         if (buff != NULL && strncmp(buff, "\0", 1) != 0)
 		{
+			add_history(buff);
 			buff = rem_char(buff, 92);
         	if (check_quotes(buff, 0) > 0)
 				buff = quotes_resolve(buff, check_quotes(buff, 0));

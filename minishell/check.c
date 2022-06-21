@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/20 21:55:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/21 14:39:33 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,25 @@ int	check_redir(char **args)
 {
 	int		fd;
 	int		i;
+	int		pid;
 
 	i = -1;
 	while (args[++i])
 	{
 		if (strcmp(args[i] , ">") == 0)
 		{
-			fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-			dup2(fd, 1);
+			pid = fork();
+			if (pid > 0)
+			{
+				waitpid(-1, NULL, 0);
+			}
+			if (pid == 0)
+			{
+				fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
+				close(1);
+				dup(fd);
+				return (0);
+			}
 		}
 		// else if (strcmp(args[i] , ">>") == 0)
 		// {
@@ -33,10 +44,8 @@ int	check_redir(char **args)
 		// else if (strcmp(args[i] , "<") == 0)
 		// {
 		// 	fd = open(args[i + 1], O_RDONLY, 0644);
-		// 	// inf = strdup(infile(args));
-		// 	// write(fd, inf, ft_strlen(inf));
-		// 	dup2(fd, 0);
-		// 	return (0);
+		// 	close(0);
+		// 	dup(fd);
 		// }
 	}
 	return (-1);
