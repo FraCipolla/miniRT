@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/21 13:07:58 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/22 17:28:46 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,38 +88,10 @@ void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 	exit(0);
 }
 
-int	check_command(char *str, char **mypath, char **args)
+int	check_strcmp(char *str, char **mypath, char **environ)
 {
-	extern char	**environ;
-	pid_t		pid;
 	int			i;
-
-	pid = fork();
-	i = -1;
-	if (pid > 0)
-	{
-		waitpid(-1, NULL, 0);
-		return (0);
-	}
-	if (pid == 0)
-	{
-		while (args[++i])
-		{
-			if (strcmp(args[i], "env") == 0)
-				my_env(args);
-			if (strcmp(args[i], "echo") == 0 || strcmp(args[i], "env") == 0)
-				exit(0);
-		}
-		my_exec(str, mypath, environ, args);
-		exit(0);
-	}
-	return (-1);
-}
-
-int	check_strcmp(char *str, char **mypath)
-{
-	int		i;
-	char	**cmd;
+	char		**cmd;
 
 	i = -1;
 	cmd = ft_split(str, ' ');
@@ -128,44 +100,65 @@ int	check_strcmp(char *str, char **mypath)
 			mypath[i] = NULL;
 	if (strncmp(cmd[0], "pwd", 3) == 0)
 		return(my_pwd(cmd));
+	if (strcmp(cmd[0], "env") == 0)
+		my_env(cmd);
 	else if (strcmp(cmd[0], "cd") == 0)
 		return (my_cd(str));
 	else if (strcmp(cmd[0], "echo") == 0)
-		return (my_echo(cmd));
+		return (my_echo(cmd, str));
 	else if (strcmp(cmd[0], "export") == 0)
 		return (my_exp(str));
 	else if (strcmp(cmd[0], "unset") == 0)
 		return (my_unset(cmd[1]));
-	else if (check_command(str, mypath, cmd) == 0)
-		return (0);
+	else 
+		my_exec(str, mypath, cmd, environ);
 	return (-1);
+}
+
+void	make_fork(char *str, char **mypath)
+{
+	int			pid;
+	extern char	**environ;
+
+	pid = fork();
+	if (pid > 0)
+		waitpid(-1, NULL, 0);
+	if (pid == 0)
+	{
+		if (check_semicolon(str, mypath) == -1)
+				if (check_strcmp(str, mypath, environ) == -1)
+					printf("zsh: command not found: %s\n", str);
+	}
 }
 
 int main()
 {
 	char    *buff;
-    char    **mypath;
-    int     i;
-    mypath = ft_split(getenv("PATH"), ':');
-    i = -1;
-    while (mypath[++i])
-        mypath[i] = ft_strjoin(mypath[i], "/");
-    while (1)
-    {
-        buff = readline("minishell: ");
-        if (buff != NULL && strncmp(buff, "\0", 1) != 0)
+	char    **mypath;
+	int     i;
+
+	mypath = ft_split(getenv("PATH"), ':');
+	i = -1;
+	while (mypath[++i])
+		mypath[i] = ft_strjoin(mypath[i], "/");
+	while (1)
+	{
+		buff = readline("minishell: ");
+		if (buff != NULL && strncmp(buff, "\0", 1) != 0)
 		{
 			add_history(buff);
 			buff = rem_char(buff, 92);
-        	if (check_quotes(buff, 0) > 0)
-				buff = quotes_resolve(buff, check_quotes(buff, 0));
-        	else if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
-        	    break ;
-        	else if (check_semicolon(buff, mypath) == -1)
-        	        if (check_strcmp(buff, mypath) == -1)
-        	            printf("zsh: command not found: %s\n", buff);
-        	free(buff);
+			if (check_quotes(buff, 0) > 0)
+			buff = quotes_resolve(buff, check_quotes(buff, 0));
+			if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
+				break ;
+			else
+				make_fork(buff, mypath);
+			// else if (check_semicolon(buff, mypath) == -1)
+			// 	if (check_strcmp(buff, mypath) == -1)
+			// 		printf("zsh: command not found: %s\n", buff);
+			free(buff);
 		}
-    }
-    return (0);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/20 23:05:18 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:31:41 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@ char	*rem_char(char *str, int r)
 	ret = malloc(sizeof(char) * c + 1);
 	ret[c] = '\0';
 	i = -1;
-	c = -1;
+	c = 0;
 	while (str[++i])
+	{
 		if (str[i] != r)
-			ret[++c] = str[i];
+		{
+			ret[c] = str[i];
+			c++;
+		}
+	}
 	free(str);
 	return (ret);
 }

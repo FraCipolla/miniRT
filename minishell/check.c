@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/21 14:39:33 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/22 17:16:23 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	check_redir(char **args)
 			if (pid > 0)
 			{
 				waitpid(-1, NULL, 0);
+				return (-1);
 			}
 			if (pid == 0)
 			{
 				fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
-				close(1);
-				dup(fd);
+				dup2(fd, 1);
 				return (0);
 			}
 		}
@@ -41,20 +41,21 @@ int	check_redir(char **args)
 		// 	fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
 		// 	dup2(fd, 1);
 		// }
-		// else if (strcmp(args[i] , "<") == 0)
-		// {
-		// 	fd = open(args[i + 1], O_RDONLY, 0644);
-		// 	close(0);
-		// 	dup(fd);
-		// }
+		else if (strcmp(args[i] , "<") == 0)
+		{
+			fd = open(args[i + 1], O_RDONLY, 0644);
+			close(0);
+			dup(fd);
+		}
 	}
-	return (-1);
+	return (0);
 }
 
 int	check_semicolon(char *str, char **mypath)
 {
-	int		i;
-	char	**cmds;
+	int			i;
+	char		**cmds;
+	extern char	**environ;
 
 	cmds = ft_split(str, ';');
 	if (cmds[0] == NULL)
@@ -64,7 +65,7 @@ int	check_semicolon(char *str, char **mypath)
 		i = 0;
 		while (cmds[i])
 		{
-			if (check_strcmp(cmds[i], mypath) == -1)
+			if (check_strcmp(cmds[i], mypath, environ) == -1)
 				printf("zsh: command not found: %s\n", cmds[i]);
 			i++;
 		}
@@ -97,10 +98,8 @@ int	check_quotes(char *str, int flag)
 				return (39);
 		}
 		if (str[i] == 34)
-		{
 			if (count2 % 2 != 0 && flag != 39)
-			return (34);
-		}
+				return (34);
 	}
 	return (0);
 }
