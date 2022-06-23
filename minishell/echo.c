@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 15:10:14 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/23 17:01:21 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ char	*str_to_print(char **str2, char *str)
 	i = 0;
 	ret = NULL;
 	tmp = ft_split(str, '\n');
-	q = check_quotes(tmp[0], 0);
+	q = 0;
+	// q = check_quotes(str, 0);
 	while (strncmp(str2[i], "echo", 4) != 0)
 		i++;
 	if (strcmp(str2[i + 1], "-n") == 0)

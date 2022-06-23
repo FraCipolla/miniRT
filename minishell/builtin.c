@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/20 17:10:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/23 16:06:33 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,9 +176,7 @@ int	my_exp(char *str)
 		else if (check_empty_env(export[i]) == 0)
 			export[i] = ft_strjoin(export[i], "=''");
 		printf("%s\n", export[i]);
-		free(export[i]);
 	}
-	free(export);
 	return (0);
 }
 

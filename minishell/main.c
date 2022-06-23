@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 15:30:13 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/23 17:31:29 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 	// fd = open("TMPFD", O_CREAT | O_RDWR, 0644);
 	// write (fd, inf, ft_strlen(inf));
 	// dup2(fd, 0);
-	if (check_redir(tmp) == -1)
-		exit(0);
-	tmp = cut_red(tmp);
+	// if (check_redir(tmp) == -1)
+	// 	exit(0);
+	// tmp = cut_red(tmp);
 	if (check_dot(str, environ) == -1)
 	{
 		while (*mypath)
@@ -111,7 +111,7 @@ int	check_strcmp(char *str, char **mypath, char **environ)
 	else if (strcmp(cmd[0], "unset") == 0)
 		return (my_unset(cmd[1]));
 	else 
-		my_exec(str, mypath, cmd, environ);
+		my_exec(str, mypath, environ, cmd);
 	return (-1);
 }
 
@@ -126,8 +126,10 @@ void	make_fork(char *str, char **mypath)
 	if (pid == 0)
 	{
 		if (check_semicolon(str, mypath) == -1)
+		{
 				if (check_strcmp(str, mypath, environ) == -1)
 					printf("zsh: command not found: %s\n", str);
+		}
 	}
 }
 
@@ -148,17 +150,18 @@ int main()
 		{
 			add_history(buff);
 			buff = rem_char(buff, 92);
-			if (check_quotes(buff, 0) > 0)
-			buff = quotes_resolve(buff, check_quotes(buff, 0));
+			if (check_quotes(ft_split(buff, ' '), 0) > 0)
+				buff = quotes_resolve(buff, check_quotes(ft_split(buff, ' '), 0));
 			if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
+			{
+				free(buff);
 				break ;
+			}
 			else
 				make_fork(buff, mypath);
-			// else if (check_semicolon(buff, mypath) == -1)
-			// 	if (check_strcmp(buff, mypath) == -1)
-			// 		printf("zsh: command not found: %s\n", buff);
 			free(buff);
 		}
 	}
+	my_free(mypath);
 	return (0);
 }

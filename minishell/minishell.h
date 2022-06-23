@@ -15,6 +15,7 @@
 # define RESET   "\001\e[0m\002"
 
 char	*get_next_line(int fd);
+void	my_free(char **mypath);
 char	**ft_split(char const *s, char c);
 int		quote_str(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
@@ -33,7 +34,7 @@ int		check_redir(char **args);
 int		check_pwd(char *str);
 int		check_semicolon(char *str, char **mypath);
 int		check_strcmp(char *str, char **mypath, char **environ);
-int		check_quotes(char *str, int flag);
+int		check_quotes(char **tmp, int flag);
 char	**cpy_matrix(char **matrix, int	offset);
 void	ft_increase_shlvl();
 char	*ft_itoa(int n);

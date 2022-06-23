@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 15:31:00 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/23 18:04:02 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,33 +73,33 @@ int	check_semicolon(char *str, char **mypath)
 	return (0);
 }
 
-int	check_quotes(char *str, int flag)
+int	check_quotes(char **tmp, int flag)
 {
-	int	i;
-	int	count;
-	int	count2;
+	int		i;
+	int		c;
+	int		store;
+	int		store2;
 
 	i = -1;
-	count = 0;
-	count2 = 0;
-	while (str[++i])
+	store = 0;
+	while (tmp[++i])
 	{
-		if (str[i] == '\'')
-			count++;
-		if (str[i] == '"')
-			count2++;
+		c = -1;
+		while (tmp[i][++c])
+		{
+			if (tmp[i][c] == flag)
+				return (flag);
+			else if (tmp[i][c] == store)
+				store = 0;
+			else if (tmp[i][c] == store2)
+				store2 = 0;	
+			else if (tmp[i][c] == 34)
+				store = 34;
+			else if (tmp[i][c] == 39)
+				store2 = 39;
+		}
 	}
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == 39)
-			if (count % 2 != 0 && flag != 34)
-				return (39);
-		if (str[i] == 34)
-			if (count2 % 2 != 0 && flag != 39)
-				return (34);
-	}
-	return (0);
+	return (store);
 }
 
 int	check_empty_env(char *str)
