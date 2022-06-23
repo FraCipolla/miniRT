@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/22 19:33:32 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/23 15:23:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ char	*quotes_resolve(char *str, int q)
 	int		i;
 
 	i = 0;
+	if (quote_str(str) > 0)
+		return (str);
 	while (str[i] != q)
 		i++;
 	if (q == 34)
@@ -53,6 +55,13 @@ char	*quotes_resolve(char *str, int q)
 			break ;
 	}
 	free (tmp);
+	// i = -1;
+	// while (str[++i])
+	// {
+	// 	if (str[i] == 34 || str[i] == 39)
+	// 		if (quote_str(str + i) > 0)
+	// 			return (str);
+	// }
 	return (str);
 }
 

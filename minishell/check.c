@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/22 17:16:23 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/23 15:31:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,8 @@ int	check_quotes(char *str, int flag)
 	while (str[++i])
 	{
 		if (str[i] == 39)
-		{
 			if (count % 2 != 0 && flag != 34)
 				return (39);
-		}
 		if (str[i] == 34)
 			if (count2 % 2 != 0 && flag != 39)
 				return (34);

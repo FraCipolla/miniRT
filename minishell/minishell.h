@@ -16,6 +16,7 @@
 
 char	*get_next_line(int fd);
 char	**ft_split(char const *s, char c);
+int		quote_str(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
