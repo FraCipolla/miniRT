@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 18:04:02 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/24 15:51:35 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ int	check_redir(char **args)
 			if (pid > 0)
 			{
 				waitpid(-1, NULL, 0);
-				return (-1);
+				fd = open(args[i + 1], O_RDONLY, 0644);
+				close(0);
+				dup(fd);
 			}
 			if (pid == 0)
 			{
 				fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
 				dup2(fd, 1);
-				return (0);
+				return (-1);
 			}
 		}
 		// else if (strcmp(args[i] , ">>") == 0)
@@ -58,7 +60,7 @@ int	check_semicolon(char *str, char **mypath)
 	extern char	**environ;
 
 	cmds = ft_split(str, ';');
-	if (cmds[0] == NULL)
+	if (cmds[1] == NULL)
 		return (-1);
 	else
 	{
@@ -82,6 +84,7 @@ int	check_quotes(char **tmp, int flag)
 
 	i = -1;
 	store = 0;
+	store2 = 0;
 	while (tmp[++i])
 	{
 		c = -1;
@@ -89,17 +92,20 @@ int	check_quotes(char **tmp, int flag)
 		{
 			if (tmp[i][c] == flag)
 				return (flag);
-			else if (tmp[i][c] == store)
+			else if (tmp[i][c] == store || tmp[i][c] == store2)
+			{
 				store = 0;
-			else if (tmp[i][c] == store2)
 				store2 = 0;	
+			}
 			else if (tmp[i][c] == 34)
 				store = 34;
 			else if (tmp[i][c] == 39)
 				store2 = 39;
 		}
 	}
-	return (store);
+	if (store > store2)
+		return (store);
+	return(store2);
 }
 
 int	check_empty_env(char *str)

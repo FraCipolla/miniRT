@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 18:01:27 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/24 14:42:42 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*quotes_resolve(char *str, int q)
 				break ;
 		}
 	}
+	printf("STR: %s\n", str);
 	return (str);
 }
 

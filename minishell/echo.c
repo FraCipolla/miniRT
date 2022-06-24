@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 17:01:21 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/24 14:49:29 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ char	*str_to_print(char **str2, char *str)
 	ret = NULL;
 	tmp = ft_split(str, '\n');
 	q = 0;
-	// q = check_quotes(str, 0);
 	while (strncmp(str2[i], "echo", 4) != 0)
 		i++;
 	if (strcmp(str2[i + 1], "-n") == 0)
@@ -124,10 +123,12 @@ int	my_echo(char **args, char *str)
 	char	*cmd;
 	int		i;
 
-	if (check_redir(args) == -1)
-		exit (0);
-	i = -1;
-	args = cut_red(args);
+	// if (check_redir(args) == -1)
+	// 	exit (0);
+	// i = -1;
+	// args = cut_red(args);
+	// printf("STR: %s\n", str);
+	i = 0;
 	cmd = str_to_print(args, str);
 	while (args[++i])
 		if (strcmp(args[i], "-n") == 0)

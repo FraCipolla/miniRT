@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 16:49:14 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/24 15:42:03 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	quote_str(const char *s)
 		while (s[i])
 		{
 			if (s[i] == flag)
-				return (i + 1);
+				return (i);
 			i++;
 		}
 	}

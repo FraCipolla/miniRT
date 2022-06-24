@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 17:31:29 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/06/24 15:50:33 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 	// dup2(fd, 0);
 	// if (check_redir(tmp) == -1)
 	// 	exit(0);
-	// tmp = cut_red(tmp);
+	tmp = cut_red(tmp);
 	if (check_dot(str, environ) == -1)
 	{
 		while (*mypath)
@@ -95,6 +95,8 @@ int	check_strcmp(char *str, char **mypath, char **environ)
 
 	i = -1;
 	cmd = ft_split(str, ' ');
+	if (check_redir(cmd) == 0)
+		exit (0);
 	if (getenv("PATH") == NULL)
 		while (mypath[++i])
 			mypath[i] = NULL;
@@ -125,11 +127,11 @@ void	make_fork(char *str, char **mypath)
 		waitpid(-1, NULL, 0);
 	if (pid == 0)
 	{
-		if (check_semicolon(str, mypath) == -1)
-		{
-				if (check_strcmp(str, mypath, environ) == -1)
-					printf("zsh: command not found: %s\n", str);
-		}
+		// if (check_semicolon(str, mypath) == -1)
+		// {
+			if (check_strcmp(str, mypath, environ) == -1)
+				printf("zsh: command not found: %s\n", str);
+		// }
 	}
 }
 
