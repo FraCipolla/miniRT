@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 16:06:33 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/04 19:11:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,12 @@ void	my_env( char **tmp)
 	{
 		s = check_empty_env(environ[i]);
 		if (s == -1 || s == -2)
-			printf("%s\n", environ[i]);
+		{
+			if (s == -2)
+				printf("%s''\n", environ[i]);
+			else
+				printf("%s\n", environ[i]);
+		}
 	}
 	exit (0);
 }
