@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/04 19:36:35 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/04 20:13:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,14 @@ int	check_strcmp(char *str, char **mypath, char **environ)
 
 	i = -1;
 	cmd = ft_split(str, ' ');
-	if (check_redir(cmd) == -1)
-		exit (0);
+	while (cmd[++i])
+	{
+		if (strcmp(cmd[i], ">") == 0)
+		{
+			if (fork() > 0)
+				check_redir(cmd, i);
+		}
+	}
 	if (getenv("PATH") == NULL)
 		while (mypath[++i])
 			mypath[i] = NULL;

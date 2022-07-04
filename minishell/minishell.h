@@ -30,7 +30,7 @@ char	*ret_word(char *str);
 char	*infile(char **args);
 char	*ft_strdup(const char *s1);
 int		check_empty_env(char *str);
-int		check_redir(char **args);
+int		check_redir(char **args, int i);
 int		check_pwd(char *str);
 int		check_semicolon(char *str, char **mypath);
 int		check_strcmp(char *str, char **mypath, char **environ);

@@ -6,20 +6,22 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/04 19:53:55 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/04 20:14:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_redir(char **args)
+int	check_redir(char **args, int i)
 {
 	int		fd;
-	int		i;
+	// int		i;
 	char	*buff;
 	int		end[2];
 
 	pipe(end);
+	fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
+	dup2(fd, 1);
 	i = -1;
 	while (args[++i])
 	{
@@ -31,33 +33,6 @@ int	check_redir(char **args)
 			free(buff);
 		}
 	}
-	i = -1;
-	while (args[++i])
-	{
-		if (strcmp(args[i], ">") == 0)
-			if (fork() > 0)
-			{
-				fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
-				dup2(fd, 1);
-				break;
-			}
-	}
-	// while (args[i])
-	// {
-	// 	printf("%s\n", args[i + 1]);
-	// 	if (strcmp(args[i] , ">") == 0)
-	// 	{
-	// 		fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
-	// 		dup2(fd, 1);
-	// 		break;
-	// 	}
-	// 	i++;
-	// 	// else if (strcmp(args[i] , ">>") == 0)
-	// 	// {
-	// 	// 	fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
-	// 	// 	dup2(fd, 1);
-	// 	// }
-	// }
 	close(end[1]);
 	dup2(end[0], 0);
 	return (0);
