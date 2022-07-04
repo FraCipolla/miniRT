@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/24 15:51:35 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/04 19:53:55 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,40 +16,50 @@ int	check_redir(char **args)
 {
 	int		fd;
 	int		i;
-	int		pid;
+	char	*buff;
+	int		end[2];
 
+	pipe(end);
 	i = -1;
 	while (args[++i])
 	{
-		if (strcmp(args[i] , ">") == 0)
+		if (strcmp(args[i] , "<") == 0)
 		{
-			pid = fork();
-			if (pid > 0)
-			{
-				waitpid(-1, NULL, 0);
-				fd = open(args[i + 1], O_RDONLY, 0644);
-				close(0);
-				dup(fd);
-			}
-			if (pid == 0)
+			fd = open(args[i + 1], O_RDONLY, 0644);
+			buff = get_next_line(fd);
+			write(end[1], buff, ft_strlen(buff));
+			free(buff);
+		}
+	}
+	i = -1;
+	while (args[++i])
+	{
+		if (strcmp(args[i], ">") == 0)
+			if (fork() > 0)
 			{
 				fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
 				dup2(fd, 1);
-				return (-1);
+				break;
 			}
-		}
-		// else if (strcmp(args[i] , ">>") == 0)
-		// {
-		// 	fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
-		// 	dup2(fd, 1);
-		// }
-		else if (strcmp(args[i] , "<") == 0)
-		{
-			fd = open(args[i + 1], O_RDONLY, 0644);
-			close(0);
-			dup(fd);
-		}
 	}
+	// while (args[i])
+	// {
+	// 	printf("%s\n", args[i + 1]);
+	// 	if (strcmp(args[i] , ">") == 0)
+	// 	{
+	// 		fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
+	// 		dup2(fd, 1);
+	// 		break;
+	// 	}
+	// 	i++;
+	// 	// else if (strcmp(args[i] , ">>") == 0)
+	// 	// {
+	// 	// 	fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+	// 	// 	dup2(fd, 1);
+	// 	// }
+	// }
+	close(end[1]);
+	dup2(end[0], 0);
 	return (0);
 }
 
