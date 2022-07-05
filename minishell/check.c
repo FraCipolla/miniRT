@@ -6,22 +6,20 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/04 20:14:00 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/05 18:14:35 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_redir(char **args, int i)
+void	check_infile(char **args)
 {
 	int		fd;
-	// int		i;
-	char	*buff;
+	int		i;
 	int		end[2];
+	char	*buff;
 
 	pipe(end);
-	fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
-	dup2(fd, 1);
 	i = -1;
 	while (args[++i])
 	{
@@ -33,8 +31,26 @@ int	check_redir(char **args, int i)
 			free(buff);
 		}
 	}
-	close(end[1]);
-	dup2(end[0], 0);
+	if (fd > 0)
+	{
+		close(end[1]);
+		dup2(end[0], 0);
+	}
+}
+
+int	check_redir(char **args, int i)
+{
+	int		fd;
+
+	if (i != -1 && (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
+	{
+		if (strcmp(args[i], ">") == 0)
+			fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
+		else
+			fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+		dup2(fd, 1);
+	}
+	check_infile(args);
 	return (0);
 }
 

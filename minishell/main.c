@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/04 20:13:26 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/05 18:13:06 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,10 @@ int	check_dot(char *str, char **environ)
 	return (-1);
 }
 
-char	*infile(char **args)
-{
-	int		i;
-	char	*ret;
-	char	*buff;
-	int		fd;
-
-	i = -1;
-	ret = NULL;
-	while (args[++i])
-	{
-		if (args[i][0] == '<')
-		{
-			fd = open(args[i + 1], O_RDONLY, 0644);
-			buff = get_next_line (fd);
-			printf("buff: %s\n", buff);
-			ret = ft_strjoin(ret, buff);
-			close (fd);
-		}
-	}
-	return (ret);
-}
-
 void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 {
 	char	*cmd;
-	// char	*inf;
-	// int		fd;
-
-	// inf = strdup(infile(tmp));
-	// printf("INF: %s\n", inf);
-	// fd = open("TMPFD", O_CREAT | O_RDWR, 0644);
-	// write (fd, inf, ft_strlen(inf));
-	// dup2(fd, 0);
-	// if (check_redir(tmp) == -1)
-	// 	exit(0);
+	
 	tmp = cut_red(tmp);
 	if (check_dot(str, environ) == -1)
 	{
@@ -83,7 +51,7 @@ void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 				execve(cmd, tmp, environ);
 			mypath++;
 		}
-		printf("zsh: command not found: %s\n", str);
+		printf("zsh: command not found: %s\n", tmp[0]);
 	}
 	exit(0);
 }
@@ -95,14 +63,6 @@ int	check_strcmp(char *str, char **mypath, char **environ)
 
 	i = -1;
 	cmd = ft_split(str, ' ');
-	while (cmd[++i])
-	{
-		if (strcmp(cmd[i], ">") == 0)
-		{
-			if (fork() > 0)
-				check_redir(cmd, i);
-		}
-	}
 	if (getenv("PATH") == NULL)
 		while (mypath[++i])
 			mypath[i] = NULL;
@@ -127,17 +87,38 @@ void	make_fork(char *str, char **mypath)
 {
 	int			pid;
 	extern char	**environ;
+	int			i;
+	char		**cmd;
+
 
 	pid = fork();
 	if (pid > 0)
 		waitpid(-1, NULL, 0);
 	if (pid == 0)
 	{
+		i = -1;
+		cmd = ft_split(str, ' ');
+		check_infile(cmd);
+		while (cmd[++i])
+		{
+			if (strcmp(cmd[i], ">") == 0 || strcmp(cmd[i], ">>") == 0)
+			{
+				pid = fork();
+				if (pid == 0)
+				{
+					check_redir(cmd, i);
+					break ;
+				}
+			}
+		}
+		if (pid > 0)
+			exit (0);
 		// if (check_semicolon(str, mypath) == -1)
 		// {
 			if (check_strcmp(str, mypath, environ) == -1)
-				printf("zsh: command not found: %s\n", str);
+				printf("zsh: command not found: %s\n", cmd[0]);
 		// }
+		exit (0);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/24 14:49:29 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/05 15:42:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	my_echo(char **args, char *str)
 	// if (check_redir(args) == -1)
 	// 	exit (0);
 	// i = -1;
-	// args = cut_red(args);
+	args = cut_red(args);
 	// printf("STR: %s\n", str);
 	i = 0;
 	cmd = str_to_print(args, str);

@@ -35,6 +35,7 @@ int		check_pwd(char *str);
 int		check_semicolon(char *str, char **mypath);
 int		check_strcmp(char *str, char **mypath, char **environ);
 int		check_quotes(char **tmp, int flag);
+void	check_infile(char **args);
 char	**cpy_matrix(char **matrix, int	offset);
 void	ft_increase_shlvl();
 char	*ft_itoa(int n);
