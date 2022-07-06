@@ -6,42 +6,58 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/05 18:14:35 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/06 17:43:56 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	check_infile(char **args)
+char	*here_doc(char *limiter, char *ret)
+{
+	char	*buff;
+
+	while(1)
+	{
+		buff = readline("heredoc> ");
+		if (strcmp(buff, limiter) == 0)
+			break ;
+		ret = ft_strjoin(ret, buff);
+		ret = ft_strjoin(ret, "\n");
+	}
+	free(buff);
+	return (ret);
+}
+
+char	*check_infile(char **args)
 {
 	int		fd;
 	int		i;
-	int		end[2];
 	char	*buff;
+	char	*ret;
 
-	pipe(end);
 	i = -1;
+	ret = NULL;
 	while (args[++i])
 	{
 		if (strcmp(args[i] , "<") == 0)
 		{
 			fd = open(args[i + 1], O_RDONLY, 0644);
 			buff = get_next_line(fd);
-			write(end[1], buff, ft_strlen(buff));
+			ret = ft_strjoin(ret, buff);
 			free(buff);
 		}
+		if (strcmp(args[i] , "<<") == 0)
+			ret = here_doc(args[i + 1], ret);
 	}
-	if (fd > 0)
-	{
-		close(end[1]);
-		dup2(end[0], 0);
-	}
+	return (ret);
 }
 
-int	check_redir(char **args, int i)
+int	check_redir(char **args, int i, char *inf)
 {
 	int		fd;
+	int		end[2];
 
+	pipe(end);
 	if (i != -1 && (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
 	{
 		if (strcmp(args[i], ">") == 0)
@@ -50,7 +66,12 @@ int	check_redir(char **args, int i)
 			fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
 		dup2(fd, 1);
 	}
-	check_infile(args);
+	if (inf != NULL)
+	{
+		write(end[1], inf, ft_strlen(inf));
+		close(end[1]);
+		dup2(end[0], 0);
+	}
 	return (0);
 }
 
@@ -58,7 +79,6 @@ int	check_semicolon(char *str, char **mypath)
 {
 	int			i;
 	char		**cmds;
-	extern char	**environ;
 
 	cmds = ft_split(str, ';');
 	if (cmds[1] == NULL)
@@ -68,7 +88,7 @@ int	check_semicolon(char *str, char **mypath)
 		i = 0;
 		while (cmds[i])
 		{
-			if (check_strcmp(cmds[i], mypath, environ) == -1)
+			if (check_strcmp(cmds[i], mypath) == -1)
 				printf("zsh: command not found: %s\n", cmds[i]);
 			i++;
 		}

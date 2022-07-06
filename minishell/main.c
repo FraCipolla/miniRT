@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/05 18:13:06 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/06 17:45:21 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 	exit(0);
 }
 
-int	check_strcmp(char *str, char **mypath, char **environ)
+int	check_strcmp(char *str, char **mypath)
 {
 	int			i;
 	char		**cmd;
+	extern char	**environ;
 
 	i = -1;
 	cmd = ft_split(str, ' ');
@@ -86,9 +87,9 @@ int	check_strcmp(char *str, char **mypath, char **environ)
 void	make_fork(char *str, char **mypath)
 {
 	int			pid;
-	extern char	**environ;
 	int			i;
 	char		**cmd;
+	char 		*tmp;
 
 
 	pid = fork();
@@ -98,7 +99,8 @@ void	make_fork(char *str, char **mypath)
 	{
 		i = -1;
 		cmd = ft_split(str, ' ');
-		check_infile(cmd);
+		tmp = check_infile(cmd);
+		check_redir(cmd, i, tmp);
 		while (cmd[++i])
 		{
 			if (strcmp(cmd[i], ">") == 0 || strcmp(cmd[i], ">>") == 0)
@@ -106,7 +108,7 @@ void	make_fork(char *str, char **mypath)
 				pid = fork();
 				if (pid == 0)
 				{
-					check_redir(cmd, i);
+					check_redir(cmd, i, tmp);
 					break ;
 				}
 			}
@@ -115,25 +117,45 @@ void	make_fork(char *str, char **mypath)
 			exit (0);
 		// if (check_semicolon(str, mypath) == -1)
 		// {
-			if (check_strcmp(str, mypath, environ) == -1)
+			if (check_strcmp(str, mypath) == -1)
 				printf("zsh: command not found: %s\n", cmd[0]);
 		// }
 		exit (0);
 	}
 }
 
+// void	action(int sig, siginfo_t *info, void *context)
+// {
+// 	info = NULL;
+// 	context = NULL;
+// 	if (sig == SIGINT)
+// 		printf("ciao\n");
+// }
+
+// void	sig_init(struct sigaction *sa)
+// {
+// 	sa->sa_sigaction = action;
+// 	sigemptyset(&sa->sa_mask);
+// 	sigaddset(&sa->sa_mask, SIGQUIT);
+// 	sigaddset(&sa->sa_mask, SIGINT);
+// }
+
 int main()
 {
 	char    *buff;
 	char    **mypath;
 	int     i;
+	// struct sigaction	sa;
 
+	// sig_init(&sa);
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
 		mypath[i] = ft_strjoin(mypath[i], "/");
 	while (1)
 	{
+		// sigaction(SIGINT, &sa, NULL);
+		// sigaction(SIGTERM, &sa, NULL);
 		buff = readline("minishell: ");
 		if (buff != NULL && strncmp(buff, "\0", 1) != 0)
 		{

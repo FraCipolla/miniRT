@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/05 15:42:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/05 18:31:33 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**cut_red(char **args)
 	n = 0;
 	while (args[++i])
 	{
-		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<')
+		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
 			n++;
 	}
 	ret = malloc(sizeof(char *) * i - (n * 2) + 1);
@@ -30,7 +30,7 @@ char	**cut_red(char **args)
 	n = 0;
 	while (args[++i])
 	{
-		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<')
+		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
 			i++;
 		else
 		{
