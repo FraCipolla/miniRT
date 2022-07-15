@@ -6,11 +6,12 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/06 17:45:21 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/15 17:20:39 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+extern	void	rl_replace_line(const char *text, int clear_undo);
 
 int	check_dot(char *str, char **environ)
 {
@@ -89,8 +90,7 @@ void	make_fork(char *str, char **mypath)
 	int			pid;
 	int			i;
 	char		**cmd;
-	char 		*tmp;
-
+	// char 		*tmp;
 
 	pid = fork();
 	if (pid > 0)
@@ -99,68 +99,80 @@ void	make_fork(char *str, char **mypath)
 	{
 		i = -1;
 		cmd = ft_split(str, ' ');
-		tmp = check_infile(cmd);
-		check_redir(cmd, i, tmp);
-		while (cmd[++i])
-		{
-			if (strcmp(cmd[i], ">") == 0 || strcmp(cmd[i], ">>") == 0)
-			{
-				pid = fork();
-				if (pid == 0)
-				{
-					check_redir(cmd, i, tmp);
-					break ;
-				}
-			}
-		}
-		if (pid > 0)
-			exit (0);
-		// if (check_semicolon(str, mypath) == -1)
-		// {
-			if (check_strcmp(str, mypath) == -1)
-				printf("zsh: command not found: %s\n", cmd[0]);
-		// }
-		exit (0);
+		// tmp = check_infile(cmd);
+		check_redir(cmd);
+		// while (cmd[++i])
+		// 	if (strcmp(cmd[i], ">") == 0 || strcmp(cmd[i], ">>") == 0)
+		// 	{
+		// 		pid = fork();
+		// 		if (pid == 0)
+		// 		{
+		// 			check_redir(cmd, i, tmp);
+		// 			break ;
+		// 		}
+		// 	}
+		// if (pid > 0)
+		// 	exit (0);
+		if (check_strcmp(str, mypath) == -1)
+			printf("zsh: command not found: %s\n", cmd[0]);
 	}
 }
 
-// void	action(int sig, siginfo_t *info, void *context)
-// {
-// 	info = NULL;
-// 	context = NULL;
-// 	if (sig == SIGINT)
-// 		printf("ciao\n");
-// }
+void	action(int sig)
+{
+	// int	stdout_cpy;
 
-// void	sig_init(struct sigaction *sa)
-// {
-// 	sa->sa_sigaction = action;
-// 	sigemptyset(&sa->sa_mask);
-// 	sigaddset(&sa->sa_mask, SIGQUIT);
-// 	sigaddset(&sa->sa_mask, SIGINT);
-// }
+	// stdout_cpy = dup(1);
+	if (sig == SIGINT)
+	{
+		write(0, "\nminishell: ", 13);
+		close(1);
+	}
+	if (sig == SIGQUIT)
+	{
+		printf("");
+	}
+	// dup2(stdout_cpy, 1);
+	// close(stdout_cpy);
+}
+
+void	sig_init(struct sigaction *sa)
+{
+	signal(SIGQUIT, SIG_IGN);
+	sa->sa_handler = action;
+	sigemptyset(&sa->sa_mask);
+	sa->sa_flags = 0;
+	// sigaddset(&sa->sa_mask, SIGQUIT);
+	sigaddset(&sa->sa_mask, SIGINT);
+}
 
 int main()
 {
 	char    *buff;
 	char    **mypath;
 	int     i;
-	// struct sigaction	sa;
+	int		stdout_cpy;
 
-	// sig_init(&sa);
+	stdout_cpy = dup(1);
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
 		mypath[i] = ft_strjoin(mypath[i], "/");
 	while (1)
 	{
-		// sigaction(SIGINT, &sa, NULL);
-		// sigaction(SIGTERM, &sa, NULL);
+		signal(SIGINT, action);
+		signal(SIGQUIT, action);
 		buff = readline("minishell: ");
+		if (buff == NULL)
+		{
+			write(0, "logout\n", 8);
+			exit(1);
+		}
+		dup2(stdout_cpy, 1);
 		if (buff != NULL && strncmp(buff, "\0", 1) != 0)
 		{
 			add_history(buff);
-			buff = rem_char(buff, 92);
+			// buff = rem_char(buff, 92);
 			if (check_quotes(ft_split(buff, ' '), 0) > 0)
 				buff = quotes_resolve(buff, check_quotes(ft_split(buff, ' '), 0));
 			if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))

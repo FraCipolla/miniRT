@@ -10,10 +10,14 @@
 # include <stdio.h>
 # include <dirent.h>
 # include <signal.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include "readline/readline.h"
 
 # define CGREEN "\033[0;32m"
 # define RESET   "\001\e[0m\002"
 
+extern	void	rl_replace_line(const char *text, int clear_undo);
 char	*get_next_line(int fd);
 void	my_free(char **mypath);
 char	**ft_split(char const *s, char c);
@@ -30,7 +34,7 @@ char	*ret_word(char *str);
 char	*infile(char **args);
 char	*ft_strdup(const char *s1);
 int		check_empty_env(char *str);
-int		check_redir(char **args, int i, char *inf);
+int		check_redir(char **args);
 int		check_pwd(char *str);
 int		check_semicolon(char *str, char **mypath);
 int		check_strcmp(char *str, char **mypath);

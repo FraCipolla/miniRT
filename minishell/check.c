@@ -6,16 +6,18 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/06 17:43:56 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/07 14:44:36 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*here_doc(char *limiter, char *ret)
+void	here_doc(char *limiter, int *end)
 {
 	char	*buff;
-
+	char	*ret;
+	
+	ret = NULL;
 	while(1)
 	{
 		buff = readline("heredoc> ");
@@ -24,74 +26,37 @@ char	*here_doc(char *limiter, char *ret)
 		ret = ft_strjoin(ret, buff);
 		ret = ft_strjoin(ret, "\n");
 	}
+	write (end[1], ret, ft_strlen(ret));
+	close(end[1]);
+	dup2(end[0], 0);
 	free(buff);
-	return (ret);
 }
 
-char	*check_infile(char **args)
+int	check_redir(char **args)
 {
 	int		fd;
 	int		i;
-	char	*buff;
-	char	*ret;
+	int		end[2];
 
 	i = -1;
-	ret = NULL;
+	pipe(end);
 	while (args[++i])
 	{
+		if (i != -1 && (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
+		{
+			if (strcmp(args[i], ">") == 0)
+				fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+			else
+				fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+			dup2(fd, 1);
+		}
 		if (strcmp(args[i] , "<") == 0)
 		{
 			fd = open(args[i + 1], O_RDONLY, 0644);
-			buff = get_next_line(fd);
-			ret = ft_strjoin(ret, buff);
-			free(buff);
+			dup2(fd, 0);
 		}
 		if (strcmp(args[i] , "<<") == 0)
-			ret = here_doc(args[i + 1], ret);
-	}
-	return (ret);
-}
-
-int	check_redir(char **args, int i, char *inf)
-{
-	int		fd;
-	int		end[2];
-
-	pipe(end);
-	if (i != -1 && (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
-	{
-		if (strcmp(args[i], ">") == 0)
-			fd = open(args[i + 1], O_CREAT | O_RDWR, 0644);
-		else
-			fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
-		dup2(fd, 1);
-	}
-	if (inf != NULL)
-	{
-		write(end[1], inf, ft_strlen(inf));
-		close(end[1]);
-		dup2(end[0], 0);
-	}
-	return (0);
-}
-
-int	check_semicolon(char *str, char **mypath)
-{
-	int			i;
-	char		**cmds;
-
-	cmds = ft_split(str, ';');
-	if (cmds[1] == NULL)
-		return (-1);
-	else
-	{
-		i = 0;
-		while (cmds[i])
-		{
-			if (check_strcmp(cmds[i], mypath) == -1)
-				printf("zsh: command not found: %s\n", cmds[i]);
-			i++;
-		}
+			here_doc(args[i + 1], end);
 	}
 	return (0);
 }
