@@ -5,7 +5,7 @@ GNL = get_next_line.c get_next_line_utils.c
 GNLDIR = GNL/
 GNLPATH = $(addprefix $(GNLDIR), $(GNL))
 
-FLAG = -Wall -Wextra -Werror -lreadline 
+FLAG = -Wall -Wextra -Werror -lreadline -L/Users/$(USER)/.brew/opt/readline/lib 
 
 $(NAME): 
 		gcc $(FLAG) $(SRC) $(GNLPATH) -o $(NAME)

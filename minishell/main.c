@@ -6,12 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/15 17:20:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/17 20:45:24 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-extern	void	rl_replace_line(const char *text, int clear_undo);
 
 int	check_dot(char *str, char **environ)
 {
@@ -80,7 +79,7 @@ int	check_strcmp(char *str, char **mypath)
 		return (my_exp(str));
 	else if (strcmp(cmd[0], "unset") == 0)
 		return (my_unset(cmd[1]));
-	else 
+	else
 		my_exec(str, mypath, environ, cmd);
 	return (-1);
 }
@@ -118,32 +117,29 @@ void	make_fork(char *str, char **mypath)
 	}
 }
 
-void	action(int sig)
+void	action(int sig, siginfo_t *info, void *ucontext)
 {
-	// int	stdout_cpy;
-
-	// stdout_cpy = dup(1);
+	(void)info;
+	(void)ucontext;
 	if (sig == SIGINT)
 	{
-		write(0, "\nminishell: ", 13);
-		close(1);
+		write(0, "\n", 2);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 	if (sig == SIGQUIT)
-	{
-		printf("");
-	}
-	// dup2(stdout_cpy, 1);
-	// close(stdout_cpy);
+		write(1, "", 0);
 }
 
 void	sig_init(struct sigaction *sa)
 {
-	signal(SIGQUIT, SIG_IGN);
-	sa->sa_handler = action;
+	sa->sa_sigaction = action;
+
 	sigemptyset(&sa->sa_mask);
-	sa->sa_flags = 0;
-	// sigaddset(&sa->sa_mask, SIGQUIT);
 	sigaddset(&sa->sa_mask, SIGINT);
+	sigaction(SIGINT, sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 int main()
@@ -151,25 +147,17 @@ int main()
 	char    *buff;
 	char    **mypath;
 	int     i;
-	int		stdout_cpy;
+	struct	sigaction	sa;
 
-	stdout_cpy = dup(1);
+	sig_init(&sa);
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
 		mypath[i] = ft_strjoin(mypath[i], "/");
 	while (1)
 	{
-		signal(SIGINT, action);
-		signal(SIGQUIT, action);
 		buff = readline("minishell: ");
-		if (buff == NULL)
-		{
-			write(0, "logout\n", 8);
-			exit(1);
-		}
-		dup2(stdout_cpy, 1);
-		if (buff != NULL && strncmp(buff, "\0", 1) != 0)
+		if (buff[0] != '\0')
 		{
 			add_history(buff);
 			// buff = rem_char(buff, 92);
@@ -177,12 +165,10 @@ int main()
 				buff = quotes_resolve(buff, check_quotes(ft_split(buff, ' '), 0));
 			if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
 			{
-				free(buff);
 				break ;
 			}
 			else
 				make_fork(buff, mypath);
-			free(buff);
 		}
 	}
 	// my_free(mypath);
