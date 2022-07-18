@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/17 20:45:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/18 16:47:49 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,28 +117,24 @@ void	make_fork(char *str, char **mypath)
 	}
 }
 
-void	action(int sig, siginfo_t *info, void *ucontext)
+void	action(int sig)
 {
-	(void)info;
-	(void)ucontext;
 	if (sig == SIGINT)
 	{
-		write(0, "\n", 2);
+		write(0, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (sig == SIGQUIT)
-		write(1, "", 0);
 }
 
 void	sig_init(struct sigaction *sa)
 {
-	sa->sa_sigaction = action;
-
+	// sa->sa_sigaction = action;
+	
 	sigemptyset(&sa->sa_mask);
-	sigaddset(&sa->sa_mask, SIGINT);
-	sigaction(SIGINT, sa, NULL);
+	sigdelset(&sa->sa_mask, SIGINT);
+	signal(SIGINT, action);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -157,6 +153,13 @@ int main()
 	while (1)
 	{
 		buff = readline("minishell: ");
+		if (ft_strcmp(rl_line_buffer, "^C") == 0)
+			printf("ENTRA");
+		if (buff == NULL)
+		{
+			write(0, "logout\n", 7);
+			exit(0);
+		}
 		if (buff[0] != '\0')
 		{
 			add_history(buff);

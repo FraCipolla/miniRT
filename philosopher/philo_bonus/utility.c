@@ -3,19 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   utility.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabasset <mabasset@student.42roma.it>      +#+  +:+       +#+        */
+/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/15 11:39:49 by mabasset          #+#    #+#             */
-/*   Updated: 2022/04/15 11:39:49 by mabasset         ###   ########.fr       */
+/*   Created: 2022/07/18 18:19:00 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/07/18 18:19:00 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-void	ft_error(char *str)
+int	ft_error(void)
 {
-	printf("%s error\n", str);
-	exit(1);
+	write(2, "error\n", 6);
+	return (1);
+}
+
+int	ft_limits(long long nb)
+{
+	if (nb < 0 || nb > 2147483647)
+		return (0);
+	return (1);
 }
 
 int	ft_checker(int argc, char *argv[])
@@ -27,34 +34,27 @@ int	ft_checker(int argc, char *argv[])
 	while (i < argc)
 	{
 		j = 0;
-		while (ft_isspace(argv[i][j]) == 1)
+		while (argv[i][j] == ' ' || (argv[i][j] >= 9 && argv[i][j] <= 13))
 			j++;
 		if (argv[i][j] == '+')
 			j++;
-		if (argv[i][j] <= '0' || argv[i][j] > '9')	
+		if (argv[i][j] <= '0' || argv[i][j] > '9')
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int	ft_isspace(char c)
+long long	ft_atoi(const char *str)
 {
-	if (c == ' ' || (c >= 9 && c <= 13))
-		return (1);
-	return (0);
-}
-
-int	ft_atoi(const char *str)
-{
-	long long int	nb;
-	int	i;
-	int	sign;
+	long long	nb;
+	int			i;
+	int			sign;
 
 	i = 0;
 	nb = 0;
 	sign = 1;
-	while (ft_isspace(str[i]) && str[i] != '\0')
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
@@ -69,7 +69,26 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	nb *= sign;
-	if (nb > 2147483647 || nb < -2147483648)
-		ft_error("Arg");
-	return ((int) nb);
+	return (nb);
+}
+
+void	ft_exit(t_rules *rules)
+{
+	int		i;
+
+	i = 0;
+	while (i < rules->n_ph)
+	{
+		kill(rules->philo[i].pid, SIGKILL);
+		i++;
+	}
+	sem_close(rules->fork);
+	sem_unlink("/forks");
+	sem_close(rules->msg);
+	sem_unlink("/message");
+	sem_close(rules->dead);
+	sem_unlink("/dead");
+	sem_close(rules->finish);
+	sem_unlink("/must_eat");
+	free(rules->philo);
 }
