@@ -35,7 +35,7 @@ int				check_empty_env(char *str);
 int				check_redir(char **args);
 int				check_pwd(char *str);
 int				check_semicolon(char *str, char **mypath);
-int				check_strcmp(char *str, char **mypath);
+int				check_strcmp(char *str, char **cmd, char **mypath);
 int				check_quotes(char **tmp, int flag);
 char			*check_infile(char **args);
 char			**cpy_matrix(char **matrix, int	offset);
