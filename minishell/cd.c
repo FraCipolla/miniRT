@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 17:09:04 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/17 14:43:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/19 18:37:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	*trunc_str(char *str, char c, int n)
 		i++;
 	}
 	ret = malloc(sizeof(char) * i);
-	ret[i] = '\0';
 	i = 0;
 	x = 0;
 	while (x < n)
@@ -37,6 +36,7 @@ char	*trunc_str(char *str, char c, int n)
 			x++;
 		i++;
 	}
+	ret[i - 1] = '\0';
 	return (ret);
 }
 
@@ -44,7 +44,7 @@ int	my_cd(char *str)
 {
 	char	**tmp;
 	int		i;
-	char	path[1000];
+	char	path[99999];
 	char	*reset_path;
 	
 	i = 0;
@@ -53,7 +53,7 @@ int	my_cd(char *str)
 		i++;
 	if (i == 1)
 	{
-		getcwd(path, 1000);
+		getcwd(path, 99999);
 		reset_path = trunc_str(path, '/', 3);
 		chdir(reset_path);
 		return (0);

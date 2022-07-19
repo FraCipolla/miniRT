@@ -6,36 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/18 16:47:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/19 18:37:56 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_dot(char *str, char **environ)
-{
-	int		i;
-	char	**tmp;
-
-	i = 0;
-	while (str[i])
-	{
-		if(strncmp(str + i, "./", 2) == 0)
-		{
-			tmp = ft_split(str, ' ');
-			if (access(tmp[0], R_OK) == 0)
-			{
-				if (strncmp(str + i, "./minishell", 11) == 0)
-					ft_increase_shlvl();
-				execve(tmp[0], tmp, environ);
-			}
-			printf("zsh: no such file or directory: %s\n", str);
-			exit (0);
-		}
-		i++;
-	}
-	return (-1);
-}
 
 void	my_exec(char *str, char **mypath, char **environ, char **tmp)
 {
@@ -89,7 +64,6 @@ void	make_fork(char *str, char **mypath)
 	int			pid;
 	int			i;
 	char		**cmd;
-	// char 		*tmp;
 
 	pid = fork();
 	if (pid > 0)
@@ -98,63 +72,60 @@ void	make_fork(char *str, char **mypath)
 	{
 		i = -1;
 		cmd = ft_split(str, ' ');
-		// tmp = check_infile(cmd);
 		check_redir(cmd);
-		// while (cmd[++i])
-		// 	if (strcmp(cmd[i], ">") == 0 || strcmp(cmd[i], ">>") == 0)
-		// 	{
-		// 		pid = fork();
-		// 		if (pid == 0)
-		// 		{
-		// 			check_redir(cmd, i, tmp);
-		// 			break ;
-		// 		}
-		// 	}
-		// if (pid > 0)
-		// 	exit (0);
 		if (check_strcmp(str, mypath) == -1)
 			printf("zsh: command not found: %s\n", cmd[0]);
+		exit(0);
 	}
 }
 
 void	action(int sig)
 {
-	if (sig == SIGINT)
-	{
-		write(0, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	write(0, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	signal(sig, action);
 }
 
-void	sig_init(struct sigaction *sa)
+char	**init(char **mypath)
 {
-	// sa->sa_sigaction = action;
-	
-	sigemptyset(&sa->sa_mask);
-	sigdelset(&sa->sa_mask, SIGINT);
-	signal(SIGINT, action);
-	signal(SIGQUIT, SIG_IGN);
+	int	i;
+	int	pid;
+	extern char	**environ;
+	char	**stty;
+
+	stty = malloc(sizeof(char *) * 3);
+	stty[0] = ft_strdup("stty");
+	stty[1] = ft_strdup("-ctlecho");
+	stty[2] = NULL;
+	pid = fork();
+	if (pid == 0)
+		execve("/bin/stty", stty, environ);
+	if (pid > 0)
+	{
+		waitpid(-1, NULL, 0);
+		mypath = ft_split(getenv("PATH"), ':');
+		i = -1;
+		while (mypath[++i])
+			mypath[i] = ft_strjoin(mypath[i], "/");
+		signal(SIGINT, action);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	return(mypath);
 }
 
 int main()
 {
 	char    *buff;
 	char    **mypath;
-	int     i;
-	struct	sigaction	sa;
 
-	sig_init(&sa);
-	mypath = ft_split(getenv("PATH"), ':');
-	i = -1;
-	while (mypath[++i])
-		mypath[i] = ft_strjoin(mypath[i], "/");
+	mypath = NULL;
+	mypath = init(mypath);
 	while (1)
 	{
+		signal(SIGINT, action);
 		buff = readline("minishell: ");
-		if (ft_strcmp(rl_line_buffer, "^C") == 0)
-			printf("ENTRA");
 		if (buff == NULL)
 		{
 			write(0, "logout\n", 7);
@@ -168,6 +139,7 @@ int main()
 				buff = quotes_resolve(buff, check_quotes(ft_split(buff, ' '), 0));
 			if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
 			{
+				write(1, "exit\n", 5);
 				break ;
 			}
 			else

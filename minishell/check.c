@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/07 14:44:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/18 19:07:01 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,29 @@ int	check_empty_env(char *str)
 		i++;
 	}
 	return (0);
+}
+
+int	check_dot(char *str, char **environ)
+{
+	int		i;
+	char	**tmp;
+
+	i = 0;
+	while (str[i])
+	{
+		if(strncmp(str + i, "./", 2) == 0)
+		{
+			tmp = ft_split(str, ' ');
+			if (access(tmp[0], R_OK) == 0)
+			{
+				if (strncmp(str + i, "./minishell", 11) == 0)
+					ft_increase_shlvl();
+				execve(tmp[0], tmp, environ);
+			}
+			printf("zsh: no such file or directory: %s\n", str);
+			exit (0);
+		}
+		i++;
+	}
+	return (-1);
 }
