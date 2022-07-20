@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/20 17:09:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/20 23:14:46 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	child_one(t_px *pipex, char *argv[], char **envp, int *end)
 		i++;
 	}
 	dup2(pipex->stdout_cpy, 1);
-	printf("ERROR: invalid command\n");
+	write(1, "ERROR: invalid command\n", 24);
 	exit(0);
 }
 
@@ -78,7 +78,7 @@ void	child_two(t_px *pipex, char *argv[], char **envp, int *end)
 		i++;
 	}
 	dup2(pipex->stdout_cpy, 1);
-	printf("ERROR: invalid command, unexpected behavior\n");
+	write(1, "ERROR: invalid command, unexpected behavior\n", 45);
 	exit(0);
 }
 
@@ -111,14 +111,14 @@ int	main(int argc, char *argv[], char **envp)
 
 	if (argc != 5)
 	{
-		printf("You have to input 4 arguments\n");
+		write(1, "You have to input 4 arguments\n", 31);
 		return (-1);
 	}
 	px.f1 = open(argv[1], O_RDONLY);
 	if (px.f1 < 0)
 	{
-		printf("Error: invalid FD\n");
-		exit (0);
+		write(1, "Error: invalid FD\n", 19);
+		return (-1);
 	}
 	px.f2 = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (px.f1 < 0 || px.f2 < 0)

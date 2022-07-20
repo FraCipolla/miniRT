@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/20 18:25:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/20 23:20:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	heredoc_child(t_px *pipex, char **envp, int i, char **cmdargs)
 		close(pipex->end[i][1]);
 		exec_cmd(pipex, cmdargs, envp);
 		dup2(pipex->stdout_cpy, 1);
-		printf("ERROR: invalid command\n");
+		write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
@@ -44,7 +44,7 @@ void	child_1(t_px *pipex, char **envp, int i, char **cmdargs)
 		close(pipex->end[i][1]);
 		exec_cmd(pipex, cmdargs, envp);
 		dup2(pipex->stdout_cpy, 1);
-		printf("ERROR: invalid command\n");
+		write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
@@ -66,7 +66,7 @@ void	child_mid(t_px *pipex, char **envp, int i, char **cmdargs)
 		close(pipex->end[i][1]);
 		exec_cmd(pipex, cmdargs, envp);
 		dup2(pipex->stdout_cpy, 1);
-		printf("ERROR: invalid command\n");
+		write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
@@ -87,7 +87,8 @@ void	child_last(t_px *pipex, char **envp, int i, char **cmdargs)
 		close(pipex->end[i - 1][0]);
 		close(pipex->f2);
 		exec_cmd(pipex, cmdargs, envp);
-		printf("ERROR: invalid command\n");
+		dup2(pipex->stdout_cpy, 1);
+		write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else

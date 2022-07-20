@@ -9,20 +9,17 @@ UTILPATH = $(addprefix $(UTIL_DIR), $(UTIL))
 
 BONUS_NAME = pipex_bonus
 
-BONUS = pipex_bonus.c initialize.c childs.c
+BONUS_SRC = pipex_bonus.c initialize.c childs.c
 UTIL = ft_split.c ft_strlen.c ft_strncmp.c get_next_line.c get_next_line_utils.c utility.c
-BONUS_DIR = bonus/
-UTIL_DIR = utility/
-BONUSPATH = $(addprefix $(BONUS_DIR), $(BONUS))
-UTILPATH = $(addprefix $(UTIL_DIR), $(UTIL))
-# OBJ = $(SRCPATH:.c=.o)
+BONUS_DIR = px_bonus/
+BONUSPATH = $(addprefix $(BONUS_DIR), $(BONUS_SRC))
 
 FLAG = -Wall -Wextra -Werror -g
 
 $(NAME):
 		gcc $(FLAG) $(SRCPATH) $(UTILPATH) -o $(NAME)
 
-$(BONUS_NAME):
+bonus:
 		gcc $(FLAG) $(BONUSPATH) $(UTILPATH) -o $(BONUS_NAME)
 
 clean:
@@ -30,6 +27,6 @@ clean:
 
 fclean: clean
 
-all: $(NAME) $(BONUS_NAME)
+all: $(NAME) bonus
 
 re: fclean all
