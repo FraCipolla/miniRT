@@ -31,7 +31,6 @@ typedef struct s_philo
 	int				n_eat;
 	long long		strv;
 	struct s_rules	*rules;
-	pid_t			pid;
 	pthread_t		death;
 }				t_philo;
 
@@ -44,6 +43,7 @@ typedef struct s_rules
 	long long		must_eat;
 	long long		start;
 	pthread_t		finish_eat;
+	pid_t			*pid;
 	sem_t			*msg;
 	sem_t			*fork;
 	sem_t			*finish;
@@ -60,6 +60,6 @@ int			ft_limits(long long nb);
 long long	ft_time(void);
 void		my_sleep(long long time, t_rules *rules);
 void		ft_thread(t_rules *rules);
-void		ft_exit(t_rules *rules);
+void		kill_all(t_rules *rules);
 
 #endif

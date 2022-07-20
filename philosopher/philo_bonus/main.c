@@ -39,6 +39,7 @@ int	ft_init_rules(t_rules *rules, char *argv[])
 	rules->philo = (t_philo *) malloc (sizeof(t_philo) * rules->n_ph);
 	if (rules->philo == NULL)
 		return (0);
+	rules->pid = malloc(sizeof(pid_t) * rules->n_ph);
 	return (1);
 }
 

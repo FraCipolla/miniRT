@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/24 14:42:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/20 19:15:12 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,12 @@ char	*quotes_resolve(char *str, int q)
 				break ;
 		}
 	}
-	printf("STR: %s\n", str);
 	return (str);
 }
 
-void	ft_increase_shlvl()
+void	ft_increase_shlvl(void)
 {
-	extern char **environ;
+	extern char	**environ;
 	int			i;
 	int			tmp;
 	char		*cpy;
@@ -78,10 +77,44 @@ void	ft_increase_shlvl()
 		if (strncmp(environ[i], "SHLVL", 5) == 0)
 		{
 			cpy = strncpy(cpy, environ[i], 6);
-			break;
+			break ;
 		}
 	}
 	tmp = atoi(environ[i] + 6) + 1;
 	environ[i] = ft_strjoin(cpy, ft_itoa(tmp));
-	
+}
+
+void	msg_exit(char *str)
+{
+	write(0, str, sizeof(str));
+	exit(0);
+}
+
+char	*first_check(char *readline)
+{
+	int		i;
+	int		flag;
+	char	*ret;
+
+	i = -1;
+	flag = 0;
+	while (readline[++i])
+	{
+		if (readline[i] == 34 || readline[i] == 39)
+			flag += 1;
+		else if (readline[i] == '>' && flag % 2 == 0)
+			break ;
+	}
+	if (readline[i] == '\0')
+		return (readline);
+	ret = malloc(sizeof(char) * ft_strlen(readline) + 2);
+	flag = -1;
+	while (++flag < i)
+		ret[flag] = readline[flag];
+	ret[flag] = ' ';
+	ret[++flag] = '>';
+	ret[++flag] = ' ';
+	ret = ft_strjoin(ret, readline + (i + 1));
+	free(readline);
+	return (ret);
 }

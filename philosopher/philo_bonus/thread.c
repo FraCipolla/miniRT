@@ -22,7 +22,7 @@ int	ft_finish(t_philo *ph)
 		sem_wait(ph->rules->msg);
 		printf("%lld %d died\n", ft_time() - ph->rules->start, ph->id);
 		sem_post(ph->rules->dead);
-		return (1);
+		exit(0);
 	}
 	if (ph->n_eat == ph->rules->must_eat)
 	{
@@ -87,11 +87,6 @@ void	*ft_must_eat(void *rules)
 		i++;
 	}
 	i = 0;
-	while (i < ru->n_ph)
-	{
-		kill(ru->philo[i].pid, SIGKILL);
-		i++;
-	}
 	sem_post(ru->dead);
 	return (NULL);
 }
@@ -106,11 +101,14 @@ void	ft_thread(t_rules *rules)
 	i = 0;
 	while (i < rules->n_ph)
 	{
-		philo[i].pid = fork();
-		if (philo[i].pid == 0)
+		philo->rules->pid[i] = fork();
+		if (philo->rules->pid[i] == 0)
+		{
 			ft_meal(&rules->philo[i]);
+			return ;
+		}
 		i++;
 	}
-	sem_wait(rules->dead);
-	exit (0);
+	kill_all(rules);
+	exit(0);
 }

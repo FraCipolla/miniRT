@@ -72,23 +72,20 @@ long long	ft_atoi(const char *str)
 	return (nb);
 }
 
-void	ft_exit(t_rules *rules)
+void	kill_all(t_rules *rules)
 {
-	int		i;
+	int	i;
 
-	i = 0;
-	while (i < rules->n_ph)
-	{
-		kill(rules->philo[i].pid, SIGKILL);
-		i++;
-	}
+	i = -1;
+	sem_wait(rules->dead);
+	while (++i < rules->n_ph)
+		kill(rules->pid[i], SIGTERM);
 	sem_close(rules->fork);
 	sem_unlink("/forks");
 	sem_close(rules->msg);
 	sem_unlink("/message");
 	sem_close(rules->dead);
 	sem_unlink("/dead");
-	sem_close(rules->finish);
-	sem_unlink("/must_eat");
 	free(rules->philo);
+	exit(0);
 }

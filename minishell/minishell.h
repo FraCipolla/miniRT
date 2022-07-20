@@ -16,6 +16,8 @@
 
 extern	void	rl_replace_line(const char *text, int clear_undo);
 char			*get_next_line(int fd);
+void			msg_exit(char *str);
+char			*first_check(char *readline);
 void			my_free(char **mypath);
 char			**ft_split(char const *s, char c);
 int				quote_str(const char *s);
