@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:56:46 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/31 17:56:47 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/20 17:05:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_px
 	int		f1;
 	int		f2;
 	int		status;
+	int		stdout_cpy;
 }	t_px;
 
 char	**ft_split(char const *s, char c);

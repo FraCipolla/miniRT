@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/31 18:01:14 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/20 17:09:36 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,13 @@ void	child_one(t_px *pipex, char *argv[], char **envp, int *end)
 	{
 		cmd = ft_strjoin(mypath[i], mycmdargs[0]);
 		if (access(cmd, R_OK) == 0)
-			break ;
-		else
-			free(cmd);
+			execve(cmd, mycmdargs, envp);
+		free(cmd);
 		i++;
 	}
-	execve(cmd, mycmdargs, envp);
+	dup2(pipex->stdout_cpy, 1);
+	printf("ERROR: invalid command\n");
+	exit(0);
 }
 
 void	child_two(t_px *pipex, char *argv[], char **envp, int *end)
@@ -59,7 +60,6 @@ void	child_two(t_px *pipex, char *argv[], char **envp, int *end)
 	int		i;
 	char	*cmd;
 
-	waitpid(-1, &pipex->status, 0);
 	dup2(end[0], STDIN_FILENO);
 	dup2(pipex->f2, STDOUT_FILENO);
 	close(end[1]);
@@ -73,12 +73,13 @@ void	child_two(t_px *pipex, char *argv[], char **envp, int *end)
 	{
 		cmd = ft_strjoin(mypath[i], mycmdargs[0]);
 		if (access(cmd, R_OK) == 0)
-			break ;
-		else
-			free(cmd);
+			execve(cmd, mycmdargs, envp);
+		free(cmd);
 		i++;
 	}
-	execve(cmd, mycmdargs, envp);
+	dup2(pipex->stdout_cpy, 1);
+	printf("ERROR: invalid command, unexpected behavior\n");
+	exit(0);
 }
 
 void	pipex(t_px *px, char *argv[], char **envp)
@@ -109,11 +110,20 @@ int	main(int argc, char *argv[], char **envp)
 	t_px	px;
 
 	if (argc != 5)
+	{
+		printf("You have to input 4 arguments\n");
 		return (-1);
+	}
 	px.f1 = open(argv[1], O_RDONLY);
+	if (px.f1 < 0)
+	{
+		printf("Error: invalid FD\n");
+		exit (0);
+	}
 	px.f2 = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (px.f1 < 0 || px.f2 < 0)
 		return (-1);
+	px.stdout_cpy = dup(1);
 	pipex(&px, argv, envp);
 	return (0);
 }

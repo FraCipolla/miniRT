@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 17:12:52 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/31 17:58:02 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/20 18:24:52 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ int	main(int argc, char *argv[], char **envp)
 {
 	t_px	px;
 
-	if (init(argc, argv, envp, &px) == -1 || argc < 5)
+	if (init(argc, argv, envp, &px) == -1)
 		return (-1);
 	if (ft_strcmp(argv[1], "here_doc") == 0)
 	{
 		px.n_cmd -= 1;
 		if (px.n_cmd < 2)
-			return (msgerror("Need at least 2 commands"));
+			return (msgerror("Need at least 2 commands\n"));
 		px.f2 = open(argv[argc - 1], O_CREAT | O_RDWR | O_APPEND, 0644);
 		px.limiter = argv[2];
 		here_doc_pipex(&px);
@@ -53,8 +53,9 @@ int	main(int argc, char *argv[], char **envp)
 	{
 		px.f1 = open(argv[1], O_RDONLY);
 		if (px.f1 < 0 || px.f2 < 0)
-			return (-1);
+			return (msgerror("Error: invalid fd\n"));
 	}
+	px.stdout_cpy = dup(1);
 	create_pipes(&px);
 	pipex(&px, envp);
 	return (0);

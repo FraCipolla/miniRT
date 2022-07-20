@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 16:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/05/31 18:09:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/20 18:08:01 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,25 @@ void	create_pipes(t_px *px)
 		pipe(px->end[i]);
 }
 
-char	*command_path(char **envp)
+char	**command_path(char **envp)
 {
+	char	**ret;
+	int		i;
+
+	ret = NULL;
 	while (*envp)
 	{
 		if (ft_strncmp(*envp, "PATH=", 5) == 0)
-			return (*envp + 5);
+		{
+			ret = ft_split(*envp + 5, ':');
+			break ;
+		}
 		envp++;
 	}
-	return (NULL);
+	i = -1;
+	while (ret[++i])
+		ret[i] = ft_strjoin(ret[i], "/");
+	return (ret);
 }
 
 int	init(int argc, char *argv[], char **envp, t_px *px)
@@ -88,12 +98,14 @@ int	init(int argc, char *argv[], char **envp, t_px *px)
 
 	i = 2;
 	j = 0;
+	if (argc < 5)
+		return (msgerror("Invalid number of arguments\n"));
 	px->n_cmd = argc - 3;
 	if (px->n_cmd < 2)
-		return (msgerror("need at least 2 commands"));
+		return (msgerror("need at least 2 commands\n"));
 	px->mycmdargs = malloc(sizeof(char **) * argc - 3);
 	px->mycmdargs[px->n_cmd] = NULL;
-	px->mypath = ft_split(command_path(envp), ':');
+	px->mypath = command_path(envp);
 	px->pid = malloc(sizeof(pid_t) * px->n_cmd);
 	if (ft_strcmp(argv[1], "here_doc") != 0)
 		px->f2 = open(argv[argc -1], O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -103,8 +115,5 @@ int	init(int argc, char *argv[], char **envp, t_px *px)
 		i++;
 		j++;
 	}
-	i = -1;
-	while (px->mypath[++i])
-		px->mypath[i] = ft_strjoin(px->mypath[i], "/");
 	return (0);
 }
