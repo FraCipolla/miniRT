@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 18:18:48 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/20 19:20:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/07/22 16:15:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,13 @@ long long	ft_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	my_sleep(long long time, t_rules *rules)
+void	my_sleep(long long time)
 {
 	long long	tmp;
 
 	tmp = ft_time();
 	while (time > ft_time() - tmp)
-	{
 		usleep(50);
-	}
-	if (rules->start == 1)
-		return ;
 }
 
 void	ft_philo_msg(t_rules *rules, int id, char *str)

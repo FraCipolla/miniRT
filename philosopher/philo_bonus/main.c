@@ -68,6 +68,7 @@ int	main(int argc, char *argv[])
 	ft_init_philo(&rules);
 	if (argc == 6)
 	{
+		rules.ac = argc;
 		rules.must_eat = ft_atoi(argv[5]);
 		if (ft_limits(rules.must_eat) == 0)
 			return (ft_error());
