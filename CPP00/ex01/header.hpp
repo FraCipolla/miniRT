@@ -1,43 +1,56 @@
 #ifndef HEADER_HPP
 #define HEADER_HPP
 
-class Contacts{
-	public:
-	void		setFirstName(std::string str);
-	void		setLastName(std::string str);
-	void		setNickName(std::string str);
-	void		setLogin(std::string str);
-	void		setAddress(std::string str);
-	void		setEmail(std::string str);
-	void		setPhone(std::string str);
-	void		setBirthday(std::string str);
-	void		setMeal(std::string str);
-	void		setUnderwear(std::string str);
-	void		setSecret(std::string str);
+# include <iostream>
+# include <iomanip>
+# include <string>
+# include <sstream>
 
-	std::string	getFirstName(void);
-	std::string	getLastName(void);
-	std::string	getNickName(void);
-	std::string	getLogin(void);
-	std::string	getAddress(void);
-	std::string	getEmail(void);
-	std::string	getPhone(void);
-	std::string	getBirthday(void);
-	std::string	getMeal(void);
-	std::string	getUnderwear(void);
-	std::string	getSecret(void);
-private:
-	std::string	_firstname;
-	std::string	_lastname;
-	std::string	_nickname;
-	std::string	_login;
-	std::string	_address;
-	std::string	_email;
-	std::string	_phone;
-	std::string	_birthday;
-	std::string	_meal;
-	std::string	_underwear;
-	std::string	_secret;
+class Contacts{
+	private:
+	int		index;
+
+	std::string	FirstName;
+	std::string	LastName;
+	std::string	Nickname;
+	std::string	Phone;
+	std::string	Secret;
+
+	public:
+
+	// Set
+	void		setFirstName(std::istream& str){
+		FirstName = str.good();
+	}
+	void		setLastName(std::istream& str){
+		LastName = str.good();
+	}
+	void		setNickname(std::istream& str){
+		Nickname = str.good();
+	}
+	void		setPhone(std::istream& str){
+		Phone = str.good();
+	}
+	void		setSecret(std::istream& str){
+		Secret = str.good();
+	}
+
+	// Get
+	std::string	get_FirstName(){
+		return (FirstName);
+	}
+	std::string	get_LastName(){
+		return (LastName);
+	}
+	std::string	get_Nickname(){
+		return (Nickname);
+	}
+	std::string get_Phone(){
+		return (Phone);
+	}
+	std::string get_Secret(){
+		return (Secret);
+	}
 };
 
 class PhoneBook{
