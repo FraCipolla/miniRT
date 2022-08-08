@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:26:22 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/07 18:15:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/07 18:19:45 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,52 @@ int	add_sphere(char **args, t_data *data)
 	return (0);
 }
 
+int	add_plane(char **args, t_data *data)
+{
+	t_plane	*new;
+	t_plane	*tmp;
+	
+	new = malloc(sizeof(t_plane));
+	new->pos = ret_vec(args[1]);
+	new->ori = ret_vec(args[2]);
+	new->colors = ret_vec(args[3]);
+	new->next = NULL;
+	if (data->plane == NULL)
+		data->plane = new;
+	else
+	{
+		tmp = data->plane;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+	return (0);
+}
+
+int	add_cylinder(char **args, t_data *data)
+{
+	t_cylind	*new;
+	t_cylind	*tmp;
+	
+	new = malloc(sizeof(t_cylind));
+	new->pos = ret_vec(args[1]);
+	new->ori = ret_vec(args[2]);
+	new->diam = ft_atof(args[3]);
+	new->height = ft_atof(args[4]);
+	new->colors = ret_vec(args[5]);
+	new->next = NULL;
+	if (data->cylinder == NULL)
+		data->cylinder = new;
+	else
+	{
+		tmp = data->cylinder;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+	return (0);
+}
+
 int	parse_primitive(char *buff, t_data *data)
 {
 	char **args;
@@ -41,9 +87,9 @@ int	parse_primitive(char *buff, t_data *data)
 	args = ft_split(buff, ' ');
 	if (ft_strcmp(args[0], "sp") == 0)
 		return (add_sphere(args, data));
-	// if (ft_strcmp(args[0], "pl") == 0)
-	// 	return (add_plane(args, data));
-	// if (ft_strcmp(args[0], "cy") == 0)
-	// 	return (add_cylinder(args, data));
+	if (ft_strcmp(args[0], "pl") == 0)
+		return (add_plane(args, data));
+	if (ft_strcmp(args[0], "cy") == 0)
+		return (add_cylinder(args, data));
 	return (1);
 }
