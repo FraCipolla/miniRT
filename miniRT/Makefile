@@ -1,5 +1,5 @@
 NAME = miniRT
-SRC = main.c utility.c ft_split.c ft_atof.c check.c primitives.c mlx_utility.c
+SRC = main.c utility.c ft_split.c ft_atof.c check.c primitives.c mlx_utility.c vec_op.c
 FLAGS = -Wall -Werror -Wextra
 MLX_FLAG = -l mlx -framework openGL -framework AppKit
 GNL = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c

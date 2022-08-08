@@ -106,5 +106,11 @@ int		ft_hooks(int keycode, t_data *data);
 /* PARSING */
 int		parse_buff(char *buff, t_data *data);
 int		parse_primitive(char *buff, t_data *data);
+t_vec3	get_direction(int x, int y);
+
+/* VEC OPERATIONS */
+
+double	doubleDot(double *v1, double *v2);
+double	*dim_vec(double *v1, double *v2);
 
 #endif

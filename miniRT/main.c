@@ -6,33 +6,79 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:12:57 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/08 17:50:48 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/08 19:15:41 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_vec3	direction(int x, int y)
+double	IntersectRaySphere(double *O, double *D, t_sphere *sphere)
+{
+	double	a;
+	double	b;
+	double	c;
+	double	ret;
+	
+	a = doubleDot(D, D);
+	b = 2 * doubleDot(dim_vec(O, sphere->pos.vec), D);
+	c = doubleDot(dim_vec(O, sphere->pos.vec), dim_vec(O, sphere->pos.vec)) - ((sphere->diam / 2) * (sphere->diam / 2));
+
+	ret = b*b - 4*a*c;
+	if (ret < 0)
+	{
+		printf("I");
+		return (INFINITY);
+	}
+	printf("N");
+	ret = (-b + sqrt(ret)) / (2*a);
+    // t2 = (-b - sqrt(discriminant)) / (2*a)
+    return (ret);
+}
+
+int	TraceRay(double *O, double *D, t_data *data)
+{
+	double	t1;
+	double 	closest = INFINITY;
+    t_sphere	*closest_sphere = NULL;
+	t_sphere	*new;
+
+	new = data->sphere;
+    while (new)
+	{
+		t1 = IntersectRaySphere(O, D, new);
+		if (t1 < closest)
+		{
+			closest = t1;
+			closest_sphere = new;
+		}
+		new = new->next;
+	}
+    if (closest_sphere == NULL)
+		return (create_trgb(0, 0, 0, 0));
+    return (create_trgb(0, 255, 0, 0));
+}
+
+t_vec3	get_direction(int x, int y)
 {
 	t_vec3	ret;
-	ret[0] = x - (640 / 2);
-	ret[1] = (640 / 2) - y;
-	ret[2] = -640;
+
+	ret.vec[0] = x - (640 / 2);
+	ret.vec[1] = (640 / 2) - y;
+	ret.vec[2] = -640;
 	return (ret);
 }
 
 void	ft_ray(t_data *data)
 {
 	int		closest_pixel;
-	t_vec3	direction;
 
 	closest_pixel = create_trgb(0, 0, 0, 0);
-	for (int x = 0; x++; x <= 640)
+	for (int x = 0; x < 640; x++)
 	{
-		for(int y = 0; y++; y <= 640)
+		for(int y = 0; y < 640; y++)
 		{
-			data->cam.dir = direction(x, y);
-			closest_pixel = TraceRay(data->cam.pos, data->cam.ori, 1, INFINITY);
+			data->cam.dir = get_direction(x, y);
+			closest_pixel = TraceRay(data->cam.pos.vec, data->cam.dir.vec, data);
 			my_mlx_pixel_put(data, x, y, closest_pixel);
 			}
 		}
