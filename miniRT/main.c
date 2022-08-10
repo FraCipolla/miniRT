@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:12:57 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/10 18:49:44 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/10 19:11:15 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ double	computeLighting(double *P, double *N, t_data *data)
 	// printf("I: %f\n", i);
 	L = dim_vec(data->light.pos.vec, P);
 	dot = doubleDot(N, L);
-	if (dot > 0)
-		i +=((data->ambLight.ratio * dot) / (doubleDot(normalize(N), normalize(L))));
+	// if (dot > 0)
+	// 	i +=((data->ambLight.ratio * dot) / (doubleDot(normalize(N), normalize(L))));
 	return (i);
 }
 
@@ -74,7 +74,7 @@ double	TraceRay(double *O, double *D, t_data *data)
 	double *P = add_vec(O, D);
 	double *N = dim_vec(P, closest_sphere->pos.vec);
 	N = normalize(N);
-    return (create_trgb(255 * computeLighting(P, N, data), closest_sphere->colors.vec[0], closest_sphere->colors.vec[1], closest_sphere->colors.vec[2]));
+    return (create_trgb(0, closest_sphere->colors.vec[0], closest_sphere->colors.vec[1], closest_sphere->colors.vec[2]));
 }
 
 double	*get_direction(int x, int y, t_data *data)
@@ -87,7 +87,7 @@ double	*get_direction(int x, int y, t_data *data)
 	ret[1] = -(y * (1 / data->height));
 	// ret[1] = (1 - 2 * ((y + 0.5) / data->height)) * tan(data->cam.FOV / 2 * M_PI / 180);
 	ret[2] = 1;
-	return (normalize(ret));
+	return ((ret));
 }
 
 void	ft_ray(t_data *data)

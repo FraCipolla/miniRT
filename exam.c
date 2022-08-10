@@ -92,7 +92,7 @@ int	ft_printf(const char *str, ...)
 }
 
 int main(){
-	int len = ft_printf("ciao %s prova %d  cioao %d dsf%d fds%dfds %d fds %x %x %x %x %x\n", "ciao", 10, 0 , -10, -2147483647, 2147483647, -16, 0, 16, 2147483647, -2147483647);
-	int len2 = printf("ciao %s prova %d  cioao %d dsf%d fds%dfds %d fds %x %x %x %x %x\n", "ciao", 10, 0 , -10, -2147483647, 2147483647, -16, 0, 16, 2147483647, -2147483647);
+	int len = ft_printf("ftPrintf: ciao %s prova %d  cioao %d dsf %d fds %d fds %d fds %x %x %x %x %x\n", "ciao", 10, 0 , -10,  -2147483648, 2147483647, -16, 0, 16, 2147483647,  -2147483648);
+	int len2 =   printf("Printf:   ciao %s prova %d  cioao %d dsf %d fds %d fds %d fds %x %x %x %x %x\n", "ciao", 10, 0 , -10,  -2147483648, 2147483647, -16, 0, 16, 2147483647,  -2147483648);
 	printf("%d - %d\n", len, len2);
 }
