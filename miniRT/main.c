@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:12:57 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/10 12:47:19 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/10 14:26:40 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,22 @@ double	IntersectRaySphere(double *O, double *D, t_sphere *sphere)
     return (ret);
 }
 
+int	computeLighting(double *P, double *N, t_data *data)
+{
+	double	i;
+	double	*L;
+	double dot;
+
+	i = 0.0;
+	i += data->ambLight.ratio;
+	L = dim_vec(data->light.pos.vec, P);
+	dot = doubleDot(N, L);
+	if (dot > 0)
+		i +=((data->ambLight.ratio * dot) / (get_lenght(data->cam.ori.vec, N), get_lenght(data->cam.ori.vec, L)));
+	// printf("I: %f\n", i);
+	return (i);
+}
+
 int	TraceRay(double *O, double *D, t_data *data)
 {
 	double	t1;
@@ -53,7 +69,15 @@ int	TraceRay(double *O, double *D, t_data *data)
 	}
     if (closest_sphere == NULL)
 		return (create_trgb(0, 0, 0, 0));
-    return (create_trgb(0, closest_sphere->colors.vec[0], closest_sphere->colors.vec[1], closest_sphere->colors.vec[2]));
+	D[0] = D[0] * t1;
+	D[1] = D[1] * t1;
+	D[2] = D[2] * t1;
+	double *P = add_vec(O, D);
+	double *N = dim_vec(P, closest_sphere->pos.vec);
+	N[0] = N[0] - get_lenght(data->cam.ori.vec, N);
+	N[1] = N[1] - get_lenght(data->cam.ori.vec, N);
+	N[2] = N[2] - get_lenght(data->cam.ori.vec, N);
+    return (create_trgb(computeLighting(P, N, data), closest_sphere->colors.vec[0], closest_sphere->colors.vec[1], closest_sphere->colors.vec[2]));
 }
 
 double	*get_direction(int x, int y, t_data *data)
@@ -132,7 +156,6 @@ int	main(int argc, char *argv[])
 	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length,
 								&data.endian);
 	ft_ray(&data);
-	// ft_draw(&data);
 	mlx_hook(data.mlx_win, 2, (1 >> 1L), ft_hooks, &data);
 	mlx_put_image_to_window(data.mlx, data.mlx_win, data.img, 0, 0);
 	mlx_loop(data.mlx);

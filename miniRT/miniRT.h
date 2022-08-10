@@ -80,6 +80,7 @@ typedef struct	s_data {
 	char	**martix;
 	double	width;
 	double	height;
+	int		*background;
 	t_AmbLight	ambLight;
 	t_cam		cam;
 	t_light		light;
@@ -93,7 +94,7 @@ typedef struct	s_data {
 
 int		ft_error(char *str);
 char	**ft_split(char const *s, char c);
-float	ft_atof(const char *str);
+double	ft_atof(const char *str);
 char	*ft_strjoin(char *s1, char *s2);
 int		check_arg(t_data *data);
 double	*ret_vec(char *args);
@@ -116,5 +117,8 @@ double	doubleDot(double *v1, double *v2);
 double	*dim_vec(double *v1, double *v2);
 double	*normalize(double *v1);
 double	*mult_vec(double *v1, double *v2);
+double	*add_vec(double *v1, double *v2);
+double	*div_vec(double *v1, double *v2);
+double	get_lenght(double *v1, double *v2);
 
 #endif

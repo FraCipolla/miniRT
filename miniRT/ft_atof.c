@@ -6,17 +6,17 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:34:46 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/07 15:44:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/10 14:22:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-float	ft_atof(const char *str)
+double	ft_atof(const char *str)
 {
 	int		i;
 	int		sign;
-	float	res;
+	double	res;
 
 	sign = 1;
 	i = 0;
