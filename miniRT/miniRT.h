@@ -13,7 +13,7 @@
 
 typedef struct s_vec3
 {
-	double	vec[3]; 
+	double	*vec;
 }	t_vec3;
 
 typedef struct s_AmbLight
@@ -78,6 +78,8 @@ typedef struct	s_data {
 	int		line_length;
 	int		endian;
 	char	**martix;
+	double	width;
+	double	height;
 	t_AmbLight	ambLight;
 	t_cam		cam;
 	t_light		light;
@@ -94,7 +96,7 @@ char	**ft_split(char const *s, char c);
 float	ft_atof(const char *str);
 char	*ft_strjoin(char *s1, char *s2);
 int		check_arg(t_data *data);
-t_vec3	ret_vec(char *args);
+double	*ret_vec(char *args);
 int		ft_strcmp(const char *s1, const char *s2);
 
 /* MLX_UTILITY */
@@ -106,11 +108,13 @@ int		ft_hooks(int keycode, t_data *data);
 /* PARSING */
 int		parse_buff(char *buff, t_data *data);
 int		parse_primitive(char *buff, t_data *data);
-t_vec3	get_direction(int x, int y);
+double	*get_direction(int x, int y, t_data *data);
 
 /* VEC OPERATIONS */
 
 double	doubleDot(double *v1, double *v2);
 double	*dim_vec(double *v1, double *v2);
+double	*normalize(double *v1);
+double	*mult_vec(double *v1, double *v2);
 
 #endif

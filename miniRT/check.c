@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:04:03 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/08 18:00:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/08 19:44:49 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ int	parse_buff(char *buff, t_data *data)
 	if (args[0][0] == 'A')
 	{
 		data->ambLight.ratio = ft_atof(args[1]);
-		data->ambLight.colors = ret_vec(args[2]);
+		data->ambLight.colors.vec = ret_vec(args[2]);
 	}
 	else if (args[0][0] == 'C')
 	{
-		data->cam.pos = ret_vec(args[1]);
-		data->cam.ori = ret_vec(args[2]);
+		data->cam.pos.vec = ret_vec(args[1]);
+		data->cam.ori.vec = ret_vec(args[2]);
 		data->cam.FOV = ft_atof(args[3]);
 	}
 	else if (args[0][0] == 'L')
 	{
-		data->light.pos = ret_vec(args[1]);
+		data->light.pos.vec = ret_vec(args[1]);
 		data->light.bright = ft_atof(args[2]);
-		data->light.colors = ret_vec(args[3]);
+		data->light.colors.vec = ret_vec(args[3]);
 	}
 	else
 		parse_primitive(buff, data);

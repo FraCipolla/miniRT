@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:26:22 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/07 18:19:45 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/08 19:46:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	add_sphere(char **args, t_data *data)
 	t_sphere	*tmp;
 	
 	new = malloc(sizeof(t_sphere));
-	new->pos = ret_vec(args[1]);
+	new->pos.vec = ret_vec(args[1]);
 	new->diam = ft_atof(args[2]);
-	new->colors = ret_vec(args[3]);
+	new->colors.vec = ret_vec(args[3]);
 	new->next = NULL;
 	if (data->sphere == NULL)
 		data->sphere = new;
@@ -40,9 +40,9 @@ int	add_plane(char **args, t_data *data)
 	t_plane	*tmp;
 	
 	new = malloc(sizeof(t_plane));
-	new->pos = ret_vec(args[1]);
-	new->ori = ret_vec(args[2]);
-	new->colors = ret_vec(args[3]);
+	new->pos.vec = ret_vec(args[1]);
+	new->ori.vec = ret_vec(args[2]);
+	new->colors.vec = ret_vec(args[3]);
 	new->next = NULL;
 	if (data->plane == NULL)
 		data->plane = new;
@@ -62,11 +62,11 @@ int	add_cylinder(char **args, t_data *data)
 	t_cylind	*tmp;
 	
 	new = malloc(sizeof(t_cylind));
-	new->pos = ret_vec(args[1]);
-	new->ori = ret_vec(args[2]);
+	new->pos.vec = ret_vec(args[1]);
+	new->ori.vec = ret_vec(args[2]);
 	new->diam = ft_atof(args[3]);
 	new->height = ft_atof(args[4]);
-	new->colors = ret_vec(args[5]);
+	new->colors.vec = ret_vec(args[5]);
 	new->next = NULL;
 	if (data->cylinder == NULL)
 		data->cylinder = new;
