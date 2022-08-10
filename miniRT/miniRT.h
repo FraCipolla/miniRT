@@ -103,7 +103,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 /* MLX_UTILITY */
 
 int		create_trgb(int t, int r, int g, int b);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	my_mlx_pixel_put(t_data *data, int x, int y, double color);
 int		ft_hooks(int keycode, t_data *data);
 
 /* PARSING */

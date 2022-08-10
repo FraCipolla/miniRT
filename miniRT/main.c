@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:12:57 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/10 14:26:40 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/10 18:49:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@ double	IntersectRaySphere(double *O, double *D, t_sphere *sphere)
 		return (INFINITY);
 	}
 	ret = ((-b - sqrt(ret)) / (2*a)) < ((-b + sqrt(ret)) / (2*a)) ? ((-b - sqrt(ret)) / (2*a)) : ((-b + sqrt(ret)) / (2*a));
-    // t2 = (-b - sqrt(discriminant)) / (2*a)
     return (ret);
 }
 
-int	computeLighting(double *P, double *N, t_data *data)
+double	computeLighting(double *P, double *N, t_data *data)
 {
 	double	i;
 	double	*L;
@@ -41,15 +40,15 @@ int	computeLighting(double *P, double *N, t_data *data)
 
 	i = 0.0;
 	i += data->ambLight.ratio;
+	// printf("I: %f\n", i);
 	L = dim_vec(data->light.pos.vec, P);
 	dot = doubleDot(N, L);
 	if (dot > 0)
-		i +=((data->ambLight.ratio * dot) / (get_lenght(data->cam.ori.vec, N), get_lenght(data->cam.ori.vec, L)));
-	// printf("I: %f\n", i);
+		i +=((data->ambLight.ratio * dot) / (doubleDot(normalize(N), normalize(L))));
 	return (i);
 }
 
-int	TraceRay(double *O, double *D, t_data *data)
+double	TraceRay(double *O, double *D, t_data *data)
 {
 	double	t1;
 	double 	closest = INFINITY;
@@ -69,15 +68,13 @@ int	TraceRay(double *O, double *D, t_data *data)
 	}
     if (closest_sphere == NULL)
 		return (create_trgb(0, 0, 0, 0));
-	D[0] = D[0] * t1;
-	D[1] = D[1] * t1;
-	D[2] = D[2] * t1;
+	D[0] = D[0] * closest;
+	D[1] = D[1] * closest;
+	D[2] = D[2] * closest;
 	double *P = add_vec(O, D);
 	double *N = dim_vec(P, closest_sphere->pos.vec);
-	N[0] = N[0] - get_lenght(data->cam.ori.vec, N);
-	N[1] = N[1] - get_lenght(data->cam.ori.vec, N);
-	N[2] = N[2] - get_lenght(data->cam.ori.vec, N);
-    return (create_trgb(computeLighting(P, N, data), closest_sphere->colors.vec[0], closest_sphere->colors.vec[1], closest_sphere->colors.vec[2]));
+	N = normalize(N);
+    return (create_trgb(255 * computeLighting(P, N, data), closest_sphere->colors.vec[0], closest_sphere->colors.vec[1], closest_sphere->colors.vec[2]));
 }
 
 double	*get_direction(int x, int y, t_data *data)
@@ -95,7 +92,7 @@ double	*get_direction(int x, int y, t_data *data)
 
 void	ft_ray(t_data *data)
 {
-	int		closest_pixel;
+	double		closest_pixel;
 
 	closest_pixel = create_trgb(0, 0, 0, 0);
 	for (int x = -(data->width / 2); x < (data->width / 2); x++)

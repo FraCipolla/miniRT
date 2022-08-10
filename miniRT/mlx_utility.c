@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 12:16:20 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/10 13:49:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/10 18:24:49 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_data *data, int x, int y, double color)
 {
 	char	*dst;
 
