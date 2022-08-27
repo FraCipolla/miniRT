@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:26:46 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/10 14:23:50 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/27 17:55:34 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,25 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	}
 	return (0);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	int		i;
+	char	*tab;
+
+	i = 0;
+	while (s1[i])
+		i++;
+	tab = (char *)malloc(sizeof(char) * i + 1);
+	if (!tab)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		tab[i] = s1[i];
+		i++;
+	}
+	tab[i] = '\0';
+	return (tab);
 }

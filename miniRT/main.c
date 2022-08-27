@@ -6,130 +6,122 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:12:57 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/10 19:11:15 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:10:28 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-double	IntersectRaySphere(double *O, double *D, t_sphere *sphere)
+double	*IntersectRaySphere(double *O, double *D, t_obj *sphere, double *t)
 {
 	double	a;
 	double	b;
 	double	c;
 	double	ret;
 	
-	a = doubleDot(D, D);
-	b = 2 * doubleDot(dim_vec(O, sphere->pos.vec), D);
-	c = doubleDot(dim_vec(O, sphere->pos.vec), dim_vec(O, sphere->pos.vec)) - ((sphere->diam / 2) * (sphere->diam / 2));
-
-	ret = b*b - 4*a*c;
+	a = dot(D, D);
+	b = 2 * dot(dim_vec(O, sphere->pos.vec), D);
+	c = dot(dim_vec(O, sphere->pos.vec), dim_vec(O, sphere->pos.vec)) - (sphere->diam / 2 * sphere->diam / 2);
+	ret = sqrtf(b * b - (4 * a * c));
 	if (ret < 0)
 	{
-		return (INFINITY);
+		t[0] = INFINITY;
+		t[1] = INFINITY;
 	}
-	ret = ((-b - sqrt(ret)) / (2*a)) < ((-b + sqrt(ret)) / (2*a)) ? ((-b - sqrt(ret)) / (2*a)) : ((-b + sqrt(ret)) / (2*a));
-    return (ret);
+	else{
+		t[0] = ((-b - (ret)) / (2 * a));
+		t[1] = ((-b + (ret)) / (2 * a));
+	}
+    return (t);
 }
 
-double	computeLighting(double *P, double *N, t_data *data)
+int	TraceRay(double *O, double *D, t_data *data)
 {
-	double	i;
-	double	*L;
-	double dot;
-
-	i = 0.0;
-	i += data->ambLight.ratio;
-	// printf("I: %f\n", i);
-	L = dim_vec(data->light.pos.vec, P);
-	dot = doubleDot(N, L);
-	// if (dot > 0)
-	// 	i +=((data->ambLight.ratio * dot) / (doubleDot(normalize(N), normalize(L))));
-	return (i);
-}
-
-double	TraceRay(double *O, double *D, t_data *data)
-{
-	double	t1;
-	double 	closest = INFINITY;
-    t_sphere	*closest_sphere = NULL;
-	t_sphere	*new;
-
-	new = data->sphere;
-    while (new)
+	double 		closest = INFINITY;
+    t_obj		*closest_obj = NULL;
+	double		l;
+	int			i;
+	
+	i = -1;
+    while (++i < data->obj_size)
 	{
-		t1 = IntersectRaySphere(O, D, new);
-		if (t1 < closest)
-		{
-			closest = t1;
-			closest_sphere = new;
-		}
-		new = new->next;
+		if (ft_strcmp(data->obj[i].id, "sp") == 0)
+			data->t = IntersectRaySphere(O, D, &data->obj[i], data->t);
+		if ((data->t[0] >= 1 && data->t[0] < closest) ||
+			(data->t[1] >= 1 && data->t[1] < closest))
+			{
+				closest = data->t[0] < data->t[1] ? data->t[0] : data->t[1];
+				closest_obj = &data->obj[i];
+			}
 	}
-    if (closest_sphere == NULL)
-		return (create_trgb(0, 0, 0, 0));
-	D[0] = D[0] * closest;
-	D[1] = D[1] * closest;
-	D[2] = D[2] * closest;
-	double *P = add_vec(O, D);
-	double *N = dim_vec(P, closest_sphere->pos.vec);
-	N = normalize(N);
-    return (create_trgb(0, closest_sphere->colors.vec[0], closest_sphere->colors.vec[1], closest_sphere->colors.vec[2]));
+	if (closest_obj == NULL){
+		return (create_trgb(0, 255, 255, 255));
+	}
+	D = mult_vec_d(D, closest);
+	double *N = normalize(dim_vec(add_vec(O, D), closest_obj->pos.vec));
+	l = computeLighting(add_vec(O, D), N, data, closest_obj);
+	return (create_trgb(0, closest_obj->RGB[0] * l, closest_obj->RGB[1] * l, closest_obj->RGB[2] * l));
 }
 
-double	*get_direction(int x, int y, t_data *data)
+double	**rotation(t_data *data)
+{
+	double	**matrix;
+	double	ori[4];
+
+	ori[1] = data->cam.ori.vec[0];
+	ori[2] = data->cam.ori.vec[1];
+	ori[3] = data->cam.ori.vec[2];
+	matrix = (double **)malloc(sizeof(double *) * 3);
+	matrix[0] = malloc(sizeof(double) * 3);
+	matrix[1] = malloc(sizeof(double) * 3);
+	matrix[2] = malloc(sizeof(double) * 3);
+	matrix[0][0] = 1 - 2 * pow(ori[2], 2) - 2 * pow(ori[3], 2);
+	matrix[1][0] = 2 * ori[1] * ori[2] + 2 * ori[3];
+	matrix[2][0] = 2 * ori[1] * ori[3] - 2 * ori[2];
+	matrix[0][1] = 2 * ori[1] * ori[2] - 2 * ori[3];
+	matrix[1][1] = 1 - 2 * pow(ori[1], 2) - 2 * pow(ori[3], 2);
+	matrix[2][1] = 2 * ori[2] * ori[3] + 2 * ori[1];
+	matrix[0][2] = 2 * ori[1] * ori[3] + 2 * ori[2];
+	matrix[1][2] = 2 * ori[2] * ori[3] - 2 * ori[1];
+	matrix[2][2] = 1 - 2 * pow(ori[1], 2) - 2 * pow(ori[1], 2) - 2 * pow(ori[2], 2);
+	// printf("%f %f %f\n", matrix[0][0], matrix[0][1], matrix[0][2]);
+	// printf("%f %f %f\n", matrix[1][0], matrix[1][1], matrix[1][2]);
+	// printf("%f %f %f\n", matrix[2][0], matrix[2][1], matrix[2][2]);
+	return (matrix);
+}
+
+double	*get_direction(int x, int y, t_data *data, double **matrix)
 {
 	double	*ret;
+	double	ori[3];
 
 	ret = malloc(sizeof(double) * 3);
-	ret[0] = x * (1 / data->width) * (data->width / data->height);
-	// ret[0] = ((2 * ((x + 0.5) / data->width) - 1) * tan(data->cam.FOV / 2 * M_PI / 180) * (data->width / data->height));
-	ret[1] = -(y * (1 / data->height));
-	// ret[1] = (1 - 2 * ((y + 0.5) / data->height)) * tan(data->cam.FOV / 2 * M_PI / 180);
-	ret[2] = 1;
+	ret[0] = x / data->width * (data->width / data->height);
+	ret[1] = -(y / data->height);
+	ret[2] = 1 / tan(data->cam.FOV / 2 * M_PI / 180);
+	ret = normalize(ret);
+	// ret[0] = ret[0] * matrix[0][0] + ret[1] * matrix[0][1] + ret[2] * matrix[0][2];
+	// ret[1] = ret[0] * matrix[1][0] + ret[1] * matrix[1][1] + ret[2] * matrix[1][2];
+	// ret[2] = ret[0] * matrix[2][0] + ret[1] * matrix[2][1] + ret[2] * matrix[2][2];
+	// printf("%f %f %f\n", ret[0], ret[1], ret[2]);
 	return ((ret));
 }
 
 void	ft_ray(t_data *data)
 {
-	double		closest_pixel;
-
-	closest_pixel = create_trgb(0, 0, 0, 0);
+	int		closest_pixel;
+	double **matrix = rotation(data);
+	
+	closest_pixel = create_trgb(0, 255, 255, 255);
 	for (int x = -(data->width / 2); x < (data->width / 2); x++)
 	{
 		for(int y = -(data->height / 2); y < (data->height / 2); y++)
 		{
-			data->cam.dir.vec = get_direction(x, y, data);
-			closest_pixel = TraceRay((data->cam.pos.vec), data->cam.dir.vec, data);
+			data->cam.dir.vec = get_direction(x, y, data, matrix);
+			closest_pixel = TraceRay(data->cam.pos.vec, data->cam.dir.vec, data);
 			my_mlx_pixel_put(data, (data->width / 2) + x, (data->height / 2) + y, closest_pixel);
 			}
 		}
-}
-
-int	ft_init(t_data *data, int fd)
-{
-	char	*buff;
-	char	*to_matrix;
-	int i;
-
-	while (fd > 0)
-	{
-		buff = get_next_line(fd);
-		if (buff == NULL)
-			break ;
-		to_matrix = ft_strjoin(to_matrix, buff);
-		free (buff);
-	}
-	data->martix = ft_split(to_matrix, '\n');
-	if (check_arg(data) == 0)
-		ft_error("Invalid Arguments\n");
-	i = -1;
-	while (data->martix[++i])
-	{
-		parse_buff(data->martix[i], data);
-		printf("%s\n", data->martix[i]);
-	}
-	return (1);
 }
 
 int	main(int argc, char *argv[])
@@ -142,7 +134,6 @@ int	main(int argc, char *argv[])
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return(ft_error("Error, Invalid Arguments\n"));
-	argv = NULL;
 	if (argc != 2)
 		return(ft_error("Error, Invalid Arguments\n"));
 	if (ft_init(&data, fd) != 1)
@@ -154,6 +145,7 @@ int	main(int argc, char *argv[])
 								&data.endian);
 	ft_ray(&data);
 	mlx_hook(data.mlx_win, 2, (1 >> 1L), ft_hooks, &data);
+	// mlx_hook(data.mlx_win, 17, 0, ft_error, &data);
 	mlx_put_image_to_window(data.mlx, data.mlx_win, data.img, 0, 0);
 	mlx_loop(data.mlx);
 }

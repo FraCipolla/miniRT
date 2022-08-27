@@ -9,7 +9,7 @@
 # include "mlx.h"
 # include "get_next_line/get_next_line.h"
 
-#define BACKGROUND s_vec3[0, 0, 0]
+#define BG int[0, 0, 0]
 
 typedef struct s_vec3
 {
@@ -19,7 +19,7 @@ typedef struct s_vec3
 typedef struct s_AmbLight
 {
 	double		ratio;
-	t_vec3		colors;
+	double		*RGB;
 }	t_AmbLight;
 
 typedef struct s_viewport
@@ -39,35 +39,27 @@ typedef struct s_light
 {
 	t_vec3	pos;
 	double	bright;
-	t_vec3	colors;
+	double	*RGB;
 }	t_light;
 
-typedef struct s_sphere
+typedef struct s_dir
 {
-	t_vec3			pos;
-	double			diam;
-	t_vec3			colors;
-	struct s_sphere *next;
+	t_vec3	pos;
+	double	bright;
+	double	*RGB;
+}	t_dir;
 
-}	t_sphere;
-
-typedef struct s_plane
+typedef struct s_obj
 {
+	char			*id;
 	t_vec3			pos;
 	t_vec3			ori;
-	t_vec3			colors;
-	struct s_plane	*next;
-}	t_plane;
-
-typedef struct s_cylinder
-{
-	t_vec3				pos;
-	t_vec3				ori;
-	double				diam;
-	double				height;
-	t_vec3				colors;
-	struct s_cylinder	*next;
-}	t_cylind;
+	double			diam;
+	double			*RGB;
+	double			height;
+	double			specular;
+	struct	s_obj	*next;
+}	t_obj;
 
 typedef struct	s_data {
 	void	*mlx;
@@ -77,17 +69,18 @@ typedef struct	s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-	char	**martix;
+	char	**matrix;
 	double	width;
 	double	height;
-	int		*background;
+	double	*t;
+	int		obj_size;
+
 	t_AmbLight	ambLight;
 	t_cam		cam;
 	t_light		light;
-	t_sphere	*sphere;
-	t_plane		*plane;
-	t_cylind	*cylinder;
+	t_dir		dir;
 	t_viewport	*viewport;
+	t_obj		*obj;
 }	t_data;
 
 /* UTILITY */
@@ -99,26 +92,34 @@ char	*ft_strjoin(char *s1, char *s2);
 int		check_arg(t_data *data);
 double	*ret_vec(char *args);
 int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strdup(const char *s1);
 
 /* MLX_UTILITY */
 
-int		create_trgb(int t, int r, int g, int b);
-void	my_mlx_pixel_put(t_data *data, int x, int y, double color);
-int		ft_hooks(int keycode, t_data *data);
+int			create_trgb(int t, int r, int g, int b);
+void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int			ft_hooks(int keycode, t_data *data);
+int			ft_init(t_data *data, int fd);
 
 /* PARSING */
+
 int		parse_buff(char *buff, t_data *data);
 int		parse_primitive(char *buff, t_data *data);
-double	*get_direction(int x, int y, t_data *data);
+double	*get_direction(int x, int y, t_data *data, double **matrix);
 
 /* VEC OPERATIONS */
 
-double	doubleDot(double *v1, double *v2);
+double	dot(double *v1, double *v2);
 double	*dim_vec(double *v1, double *v2);
 double	*normalize(double *v1);
 double	*mult_vec(double *v1, double *v2);
 double	*add_vec(double *v1, double *v2);
 double	*div_vec(double *v1, double *v2);
-double	get_lenght(double *v1, double *v2);
+double	get_lenght(double *v1);
+double	*mult_vec_d(double *v1, double d);
+
+/* TRACING */
+
+double	computeLighting(double *P, double *N, t_data *data, t_obj*closest);
 
 #endif

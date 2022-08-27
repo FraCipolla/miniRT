@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:04:03 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/10 14:23:13 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:03:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ int	check_arg(t_data *data)
 	A = 0;
 	C = 0;
 	L = 0;
-	while (data->martix[++i])
+	while (data->matrix[++i])
 	{
-		if (data->martix[i][0] == 'A')
+		if (data->matrix[i][0] == 'A')
 			A++;
-		if (data->martix[i][0] == 'C')
+		if (data->matrix[i][0] == 'C')
 			C++;
-		if (data->martix[i][0] == 'L')
+		if (data->matrix[i][0] == 'L')
 			L++;
 	}
 	if (A != 1 || C != 1 || L != 1)
@@ -45,8 +45,7 @@ int	parse_buff(char *buff, t_data *data)
 	if (args[0][0] == 'A')
 	{
 		data->ambLight.ratio = atof(args[1]);
-		printf("%f\n", data->ambLight.ratio);
-		data->ambLight.colors.vec = ret_vec(args[2]);
+		data->ambLight.RGB = ret_vec(args[2]);
 	}
 	else if (args[0][0] == 'C')
 	{
@@ -58,10 +57,47 @@ int	parse_buff(char *buff, t_data *data)
 	{
 		data->light.pos.vec = ret_vec(args[1]);
 		data->light.bright = atof(args[2]);
-		data->light.colors.vec = ret_vec(args[3]);
+		data->light.RGB = ret_vec(args[3]);
+	}
+	else if (args[0][0] == 'D')
+	{
+		data->dir.bright = atof(args[1]);
+		data->dir.pos.vec = ret_vec(args[2]);
+		data->dir.RGB = ret_vec(args[3]);
 	}
 	else
 		parse_primitive(buff, data);
 	free(args);
+	return (1);
+}
+
+int	ft_init(t_data *data, int fd)
+{
+	char	*buff;
+	char	*to_matrix;
+	int 	i;
+	
+	to_matrix = NULL;
+	data->dir.pos.vec = NULL;
+	data->obj_size = 0;
+	data->obj = (t_obj*)malloc(sizeof(t_obj) * 20);
+	data->t = malloc(sizeof(double) * 2);
+	while (fd > 0)
+	{
+		buff = get_next_line(fd);
+		if (buff == NULL)
+			break ;
+		to_matrix = ft_strjoin(to_matrix, buff);
+		free (buff);
+	}
+	data->matrix = ft_split(to_matrix, '\n');
+	if (check_arg(data) == 0)
+		ft_error("Invalid Arguments\n");
+	i = -1;
+	while (data->matrix[++i])
+	{
+		parse_buff(data->matrix[i], data);
+		printf("%s\n", data->matrix[i]);
+	}
 	return (1);
 }
