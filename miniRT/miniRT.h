@@ -117,9 +117,14 @@ double	*add_vec(double *v1, double *v2);
 double	*div_vec(double *v1, double *v2);
 double	get_lenght(double *v1);
 double	*mult_vec_d(double *v1, double d);
+double	*cross(double *v1, double *v2);
 
 /* TRACING */
 
+int		TraceRay(double *O, double *D, t_data *data);
+void	ft_ray(t_data *data);
+double	**rotation(t_data *data);
+double	*get_direction(int x, int y, t_data *data, double **matrix);
 double	computeLighting(double *P, double *N, t_data *data, t_obj*closest);
 
 #endif

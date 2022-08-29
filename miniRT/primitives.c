@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:26:22 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/27 18:07:50 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/29 15:34:07 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	add_plane(char **args, t_data *data)
 	data->obj[size].pos.vec = ret_vec(args[1]);
 	data->obj[size].ori.vec = ret_vec(args[2]);
 	data->obj[size].RGB = ret_vec(args[3]);
+	data->obj_size += 1;
 	return (0);
 }
 
@@ -52,6 +53,7 @@ int	add_cylinder(char **args, t_data *data)
 	data->obj[size].diam = atof(args[3]);
 	data->obj[size].height = atof(args[4]);
 	data->obj[size].RGB = ret_vec(args[5]);
+	data->obj_size += 1;
 	return (0);
 }
 

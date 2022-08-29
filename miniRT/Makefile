@@ -1,6 +1,6 @@
 NAME = miniRT
 CC = gcc
-SRC = main.c utility.c ft_split.c ft_atof.c check.c primitives.c mlx_utility.c vec_op.c lighting.c
+SRC = main.c utility.c ft_split.c ft_atof.c check.c primitives.c mlx_utility.c vec_op.c lighting.c ray.c
 MLX_FLAG = -l mlx -framework openGL -framework AppKit
 # MLX_FLAG = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 GNL_SRC = get_next_line.c get_next_line_utils.c
