@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 19:13:42 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/29 17:37:02 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/30 13:53:49 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ double	**rotation(t_data *data)
 	// matrix[0][2] = cos(ori[0] * 180) * sin(ori[1] * 180) * cos(ori[2] * 180) + sin(ori[0] * 180) * sin(ori[2] * 180);
 	// matrix[1][2] = sin(ori[0] * 180) * sin(ori[1] * 180) * cos(ori[2] * 180) - cos(ori[0] * 180) * sin(ori[2] * 180);
 	// matrix[2][2] = cos(ori[1] * 180) * cos(ori[2] * 180);
-	printf("%f %f %f\n", matrix[0][0], matrix[0][1], matrix[0][2]);
-	printf("%f %f %f\n", matrix[1][0], matrix[1][1], matrix[1][2]);
-	printf("%f %f %f\n", matrix[2][0], matrix[2][1], matrix[2][2]);
+	// printf("%f %f %f\n", matrix[0][0], matrix[0][1], matrix[0][2]);
+	// printf("%f %f %f\n", matrix[1][0], matrix[1][1], matrix[1][2]);
+	// printf("%f %f %f\n", matrix[2][0], matrix[2][1], matrix[2][2]);
 	return (matrix);
 }
 

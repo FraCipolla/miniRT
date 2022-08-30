@@ -74,6 +74,8 @@ typedef struct	s_data {
 	double	height;
 	double	*t;
 	int		obj_size;
+	double	closest_t;
+	double	closest_s;
 
 	t_AmbLight	ambLight;
 	t_cam		cam;
@@ -110,14 +112,15 @@ double	*get_direction(int x, int y, t_data *data, double **matrix);
 /* VEC OPERATIONS */
 
 double	dot(double *v1, double *v2);
-double	*dim_vec(double *v1, double *v2);
+double	*sub_vec(double *v1, double *v2);
 double	*normalize(double *v1);
 double	*mult_vec(double *v1, double *v2);
 double	*add_vec(double *v1, double *v2);
 double	*div_vec(double *v1, double *v2);
 double	get_lenght(double *v1);
-double	*mult_vec_d(double *v1, double d);
+double	*mult_vec_n(double *v1, double d);
 double	*cross(double *v1, double *v2);
+double	norm(double *v1);
 
 /* TRACING */
 

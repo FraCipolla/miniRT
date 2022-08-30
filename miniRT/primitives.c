@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:26:22 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/29 15:34:07 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/08/30 13:53:45 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	add_cylinder(char **args, t_data *data)
 	int	size;
 
 	size = data->obj_size;
-	data->obj[size].id	= ft_strdup("pl");
+	data->obj[size].id	= ft_strdup("cy");
 	data->obj[size].pos.vec = ret_vec(args[1]);
 	data->obj[size].ori.vec = ret_vec(args[2]);
 	data->obj[size].diam = atof(args[3]);
