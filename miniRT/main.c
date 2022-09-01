@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:12:57 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/30 16:02:50 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:24:16 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-double	*IntersectRaySphere(double *O, double *D, t_obj *sphere, double *t)
+double	*IntersectRaySphere(t_v3 O, t_v3 D, t_obj *sphere, double *t)
 {
 	double	a;
 	double	b;
@@ -20,8 +20,8 @@ double	*IntersectRaySphere(double *O, double *D, t_obj *sphere, double *t)
 	double	ret;
 	
 	a = dot(D, D);
-	b = 2 * dot(sub_vec(O, sphere->pos.vec), D);
-	c = dot(sub_vec(O, sphere->pos.vec), sub_vec(O, sphere->pos.vec)) - (sphere->diam / 2 * sphere->diam / 2);
+	b = 2 * dot(sub_vec(O, sphere->pos), D);
+	c = dot(sub_vec(O, sphere->pos), sub_vec(O, sphere->pos)) - (sphere->r * sphere->r);
 	ret = sqrtf(b * b - (4 * a * c));
 	if (ret < 0)
 	{
@@ -35,22 +35,22 @@ double	*IntersectRaySphere(double *O, double *D, t_obj *sphere, double *t)
 	return (t);
 }
 
-double	*find_edges(t_obj *cyl, double *O, double *D, double *t)
+double	*find_edges(t_obj *cyl, t_v3 O, t_v3 D, double *t)
 {
 	double	t2;
 	double	max;
-	double	*point;
-	double	*len;
+	t_v3	point;
+	t_v3	len;
 
 	t2 = t[0] < t[1] ? t[0] : t[1];
-	max = sqrtf(pow(cyl->height / 2, 2) + pow(cyl->diam / 2, 2));
+	max = sqrtf(pow(cyl->h / 2, 2) + pow(cyl->r, 2));
 	point = add_vec(O, mult_vec_n(D, t2));
-	len = sub_vec(point, cyl->pos.vec);
+	len = sub_vec(point, cyl->pos);
 	if (sqrtf(dot(len, len)) > max)
 	{
 		t2 = t2 == t[0] ? t[1] : t[0];
 		point = add_vec(O, mult_vec_n(D, t2));
-		len = sub_vec(point, cyl->pos.vec);
+		len = sub_vec(point, cyl->pos);
 		if (dot(len, len) > max)
 			{
 				t[0] = INFINITY;
@@ -60,23 +60,22 @@ double	*find_edges(t_obj *cyl, double *O, double *D, double *t)
 	return (t);
 }
 
-double	*IntersectCylinder(double *O, double *D, t_obj *cyl, double *t)
+double	*IntersectCylinder(t_v3 O, t_v3 D, t_obj *cyl, double *t)
 {
-	double	*inter;
+	t_v3	inter;
 	double	ret;
-	double	*R;
-	double	*c_to_o;
+	t_v3	R;
+	t_v3	c_to_o;
 	
-	inter = malloc(sizeof(double) * 3);
-	R = cross(D, cyl->ori.vec);
-	c_to_o = sub_vec(O, cyl->pos.vec);
+	R = cross(D, cyl->ori);
+	c_to_o = sub_vec(O, cyl->pos);
 	// inter[0] = dot(R, R);
-	// inter[1] = 2 * dot(D, cross(c_to_o, cyl->ori.vec));
-	// inter[2] = dot(cross(c_to_o, cyl->ori.vec), cross(c_to_o, cyl->ori.vec)) - pow(cyl->diam / 2, 2);
-	inter[0] = dot(R, R);
-	inter[1] = 2 * dot(sub_vec(O, cyl->pos.vec), D);
-	inter[2] = dot(sub_vec(O, cyl->pos.vec), sub_vec(O, cyl->pos.vec)) - (cyl->diam / 2 * cyl->diam / 2);
-	ret = sqrtf(inter[1] * inter[1] - (4 * inter[0] * inter[2]));
+	// inter[1] = 2 * dot(D, cross(c_to_o, cyl->ori));
+	// inter[2] = dot(cross(c_to_o, cyl->ori), cross(c_to_o, cyl->ori)) - pow(cyl->diam / 2, 2);
+	inter.x = dot(R, R);
+	inter.y = 2 * dot(sub_vec(O, cyl->pos), D);
+	inter.z = dot(sub_vec(O, cyl->pos), sub_vec(O, cyl->pos)) - (cyl->r * cyl->r);
+	ret = sqrtf(inter.x * inter.y - (4 * inter.x * inter.z));
 	if (ret < 0)
 	{
 		t[0] = INFINITY;
@@ -84,17 +83,17 @@ double	*IntersectCylinder(double *O, double *D, t_obj *cyl, double *t)
 	}
 	else
 	{
-		t[0] = ((-inter[1] - (ret)) / (2 * inter[0]));
-		t[1] = ((-inter[1] + (ret)) / (2 * inter[0]));
+		t[0] = ((-inter.y - (ret)) / (2 * inter.z));
+		t[1] = ((-inter.y + (ret)) / (2 * inter.z));
 	}
 	return (find_edges(cyl, O, D, t));
 }
 
-double	*IntersectPlane(double *O, double *D, t_obj *plane, double *t)
+double	*IntersectPlane(t_v3 O, t_v3 D, t_obj *plane, double *t)
 {
-	if (dot(normalize(plane->ori.vec), D) > 0.0001)
+	if (dot(normalize(plane->ori), D) > 0.0001)
 	{
-		t[0] = (dot(sub_vec(plane->ori.vec, O), normalize(plane->ori.vec))) / ((dot(normalize(plane->ori.vec), D)));
+		t[0] = (dot(sub_vec(plane->ori, O), normalize(plane->ori))) / ((dot(normalize(plane->ori), D)));
 		if (t[0] <= 0)
 			t[0] = INFINITY;
 		t[1] = t[0];
@@ -102,43 +101,47 @@ double	*IntersectPlane(double *O, double *D, t_obj *plane, double *t)
 	return (t);
 }
 
-t_obj	*closest_intersect(double *O, double *D, t_data *data)
+t_obj	*closest_intersect(t_v3 O, t_v3 D, t_data *data)
 {
-	double 		closest = INFINITY;
-	t_obj		*closest_obj = NULL;
-	int			i;
-	
-	i = -1;
-    while (++i < data->obj_size)
+	t_obj		*closest_obj;
+	t_obj		*new;
+
+	new = data->obj;
+	closest_obj = NULL;
+	data->closest_t = INFINITY;
+	data->t[0] = INFINITY;
+	data->t[0] = INFINITY;
+    while (new)
 	{
-		if (ft_strcmp(data->obj[i].id, "sp") == 0)
-			data->t = IntersectRaySphere(O, D, &data->obj[i], data->t);
-		else if (ft_strcmp(data->obj[i].id, "pl") == 0)
-			data->t = IntersectPlane(O, D, &data->obj[i], data->t);
-		else if (ft_strcmp(data->obj[i].id, "cy") == 0)
-			data->t = IntersectCylinder(O, D, &data->obj[i], data->t);	
-		if ((data->t[0] >= 1 && data->t[0] < closest) || (data->t[1] >= 1 && data->t[1] < closest))
+		if (ft_strcmp(new->id, "sp") == 0)
+			data->t = IntersectRaySphere(O, D, new, data->t);
+		else if (ft_strcmp(new->id, "pl") == 0)
+			data->t = IntersectPlane(O, D, new, data->t);
+		else if (ft_strcmp(new->id, "cy") == 0)
+			data->t = IntersectCylinder(O, D, new, data->t);	
+		if ((data->t[0] >= 1 && data->t[0] < data->closest_t) || (data->t[1] >= 1 && data->t[1] < data->closest_t))
 		{
 				data->closest_t = data->t[0] < data->t[1] ? data->t[0] : data->t[1];
-				closest_obj = &data->obj[i];
+				closest_obj = new;
 		}
+		new = new->next;
 	}
 	return (closest_obj);
 }
 
-int	TraceRay(double *O, double *D, t_data *data)
+int	TraceRay(t_v3 O, t_v3 D, t_data *data)
 {
-    t_obj		*closest_obj = NULL;
+    t_obj		*closest_obj;
 	double		l;
-	
+
 	closest_obj = closest_intersect(O, D, data);
 	if (closest_obj == NULL)
 		return (create_trgb(0, 255, 255, 255));
-	double *P = add_vec(O, mult_vec_n(D, data->closest_t));
-	double *N = sub_vec(P, closest_obj->pos.vec);
+	t_v3	P = add_vec(O, mult_vec_n(D, data->closest_t));
+	t_v3	N = sub_vec(P, closest_obj->pos);
 	N = normalize(N);
 	l = computeLighting(add_vec(O, D), N, data, closest_obj);
-	return (create_trgb(0, closest_obj->RGB[0] * l, closest_obj->RGB[1] * l, closest_obj->RGB[2] * l));
+	return (create_trgb(0, closest_obj->RGB.x * l, closest_obj->RGB.y * l, closest_obj->RGB.z * l));
 }
 
 int	main(int argc, char *argv[])

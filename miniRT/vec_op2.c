@@ -6,63 +6,58 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 15:06:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/30 13:55:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/01 15:47:52 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-double	*sub_vec(double *v1, double *v2)
+t_v3	sub_vec(t_v3 v1, t_v3 v2)
 {
-	double	*ret;
+	t_v3	ret;
 
-	ret = malloc(sizeof(double) * 3);
-	ret[0] = v1[0] - v2[0];
-	ret[1] = v1[1] - v2[1];
-	ret[2] = v1[2] - v2[2];
+	ret.x = v1.x - v2.x;
+	ret.y = v1.y - v2.y;
+	ret.z = v1.z - v2.z;
 	return (ret);
 }
 
-double	*mult_vec(double *v1, double *v2)
+t_v3	mult_vec(t_v3 v1, t_v3 v2)
 {
-	double	*ret;
+	t_v3	ret;
 	
-	ret = malloc(sizeof(double) * 3);
-	ret[0] = v1[0] * v2[0];
-	ret[0] = v1[1] * v2[1];
-	ret[0] = v1[2] * v2[2];
+	ret.x = v1.x * v2.x;
+	ret.y = v1.y * v2.y;
+	ret.z = v1.z * v2.z;
 	return (ret);
 }
 
-double	*div_vec(double *v1, double *v2)
+t_v3	div_vec(t_v3 v1, t_v3 v2)
 {
-	double	*ret;
+	t_v3	ret;
 	
-	ret = malloc(sizeof(double) * 3);
-	ret[0] = v1[0] / v2[0];
-	ret[0] = v1[1] / v2[1];
-	ret[0] = v1[2] / v2[2];
+	ret.x = v1.x / v2.x;
+	ret.y = v1.y / v2.y;
+	ret.z = v1.z / v2.z;
 	return (ret);
 }
 
-double	*mult_vec_n(double *v1, double d)
+t_v3	mult_vec_n(t_v3 v1, double d)
 {
-	double	*ret;
+	t_v3	ret;
 	
-	ret = malloc(sizeof(double) * 3);
-	ret[0] = v1[0] * d;
-	ret[1] = v1[1] * d;
-	ret[2] = v1[2] * d;
+	ret.x = v1.x * d;
+	ret.y = v1.y * d;
+	ret.z = v1.z * d;
 	return (ret);
 }
 
-double	*cross(double *v1, double *v2)
+t_v3	cross(t_v3 v1, t_v3 v2)
 {
-	double	*ret;
+	t_v3	ret;
 
-	ret = malloc(sizeof(double) * 3);
-	ret[0] = v1[1] * v2[2] - v1[2] * v2[1];
-	ret[1] = v1[2] * v2[0] - v1[0] * v2[2];
-	ret[2] = v1[0] * v2[1] - v1[1] * v2[0];
+	ret.x = v1.y * v2.z - v1.z * v2.y;
+	ret.y = v1.z * v2.x - v1.x * v2.z;
+	ret.z = v1.x * v2.y - v1.y * v2.x;
 	return (ret);
 }

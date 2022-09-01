@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:04:03 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/30 13:53:08 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/01 17:22:41 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,38 +37,30 @@ int	check_arg(t_data *data)
 	return (1);
 }
 
-int	parse_buff(char *buff, t_data *data)
+void	parse_buff(char *buff, t_data *data)
 {
-	char **args;
+	char	**args;
+	char	**args2;
 
 	args = ft_split(buff, ' ');
-	if (args[0][0] == 'A')
+	args2 = ft_split(buff, ' ');
+	if (args[0][0] == 'C')
 	{
-		data->ambLight.ratio = atof(args[1]);
-		data->ambLight.RGB = ret_vec(args[2]);
-	}
-	else if (args[0][0] == 'C')
-	{
-		data->cam.pos.vec = ret_vec(args[1]);
-		data->cam.ori.vec = ret_vec(args[2]);
+		data->cam.pos = ret_vec(args[1]);
+		data->cam.ori = ret_vec(args[2]);
 		data->cam.FOV = atof(args[3]);
 	}
-	else if (args[0][0] == 'L')
-	{
-		data->light.pos.vec = ret_vec(args[1]);
-		data->light.bright = atof(args[2]);
-		data->light.RGB = ret_vec(args[3]);
-	}
-	else if (args[0][0] == 'D')
-	{
-		data->dir.bright = atof(args[1]);
-		data->dir.pos.vec = ret_vec(args[2]);
-		data->dir.RGB = ret_vec(args[3]);
-	}
 	else
-		parse_primitive(buff, data);
+	{
+		if (ft_strcmp(args[0], "pl") == 0 ||
+			ft_strcmp(args[0], "sp") == 0 ||
+			ft_strcmp(args[0], "cy") == 0)
+			add_obj(args2, data);
+		else
+			add_light(args2, data);
+	}
 	free(args);
-	return (1);
+	free(args2);
 }
 
 int	ft_init(t_data *data, int fd)
@@ -78,9 +70,6 @@ int	ft_init(t_data *data, int fd)
 	int 	i;
 	
 	to_matrix = NULL;
-	data->dir.pos.vec = NULL;
-	data->obj_size = 0;
-	data->obj = (t_obj*)malloc(sizeof(t_obj) * 20);
 	data->t = malloc(sizeof(double) * 2);
 	while (fd > 0)
 	{
@@ -92,7 +81,7 @@ int	ft_init(t_data *data, int fd)
 	}
 	data->matrix = ft_split(to_matrix, '\n');
 	if (check_arg(data) == 0)
-		ft_error("Invalid Arguments\n");
+		return(ft_error("Invalid Arguments\n"));
 	i = -1;
 	while (data->matrix[++i])
 	{

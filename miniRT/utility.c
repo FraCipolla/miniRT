@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:26:46 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/30 13:53:47 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/01 17:38:39 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,15 @@ int	ft_error(char *str)
 	return (-1);
 }
 
-double	*ret_vec(char *args)
+t_v3	ret_vec(char *args)
 {
-	double	*vec;
+	t_v3	vec;
 	char	**xyz;
 
-	vec = malloc(sizeof(double) * 3);
 	xyz = ft_split(args, ',');
-	vec[0] = atof(xyz[0]);
-	vec[1] = atof(xyz[1]);
-	vec[2] = atof(xyz[2]);
+	vec.x = atof(xyz[0]);
+	vec.y = atof(xyz[1]);
+	vec.z = atof(xyz[2]);
 	return (vec);
 }
 

@@ -6,40 +6,40 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 15:06:18 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/30 13:56:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:22:16 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-double	dot(double *v1, double *v2)
+double	dot(t_v3 v1, t_v3 v2)
 {
-	return (v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]);
+	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
-double	norm(double *v1)
+double	norm(t_v3 v1)
 {
 	return (sqrtf(dot(v1, v1)));
 }
 
-double	*add_vec(double *v1, double *v2)
+t_v3	add_vec(t_v3 v1, t_v3 v2)
 {
-	double	*ret;
+	t_v3	ret;
 
-	ret = malloc(sizeof(double) * 3);
-	ret[0] = v1[0] + v2[0];
-	ret[1] = v1[1] + v2[1];
-	ret[2] = v1[2] + v2[2];
+	ret.x = v1.x + v2.x;
+	ret.y = v1.y + v2.y;
+	ret.z = v1.z + v2.z;
 	return (ret);
 }
 
-double	*normalize(double *v1)
+t_v3	normalize(t_v3 v1)
 {
-	double	*ret;
+	t_v3	ret;
+	double	magnitude;
 
-	ret = malloc(sizeof(double) * 3);
-	ret[0] = v1[0] / norm(v1);
-	ret[1] = v1[1] / norm(v1);
-	ret[2] = v1[2] / norm(v1);
+	magnitude = norm(v1);
+	ret.x = v1.x / magnitude;
+	ret.y = v1.y / magnitude;
+	ret.z = v1.z / magnitude;
 	return (ret);
 }

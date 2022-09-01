@@ -11,78 +11,68 @@
 
 #define BG int[0, 0, 0]
 
-typedef struct s_vec3
+typedef struct s_v3
 {
-	double	*vec;
-}	t_vec3;
-
-typedef struct s_AmbLight
-{
-	double		ratio;
-	double		*RGB;
-}	t_AmbLight;
-
-typedef struct s_viewport
-{
-	t_vec3 vec;
-}	t_viewport;
-
-typedef struct s_camera
-{
-	t_vec3	pos;
-	t_vec3	ori;
-	t_vec3	dir;
-	int		FOV;
-}	t_cam;
+	double	x;
+	double	y;
+	double	z;
+}	t_v3;
 
 typedef struct s_light
 {
-	t_vec3	pos;
-	double	bright;
-	double	*RGB;
+	char			t;
+	double			ratio;
+	t_v3			pos;
+	t_v3			RGB;
+	struct s_light	*next;
 }	t_light;
 
-typedef struct s_dir
+typedef struct s_camera
 {
-	t_vec3	pos;
-	double	bright;
-	double	*RGB;
-}	t_dir;
+	t_v3			pos;
+	t_v3			ori;
+	t_v3			dir;
+	int				FOV;
+}	t_cam;
 
 typedef struct s_obj
 {
 	char			*id;
-	t_vec3			pos;
-	t_vec3			ori;
-	double			diam;
-	double			*RGB;
-	double			height;
-	double			specular;
+	t_v3			pos;
+	t_v3			ori;	
+	t_v3			RGB;
+	double			r;
+	double			h;
+	double			spec;
 	struct	s_obj	*next;
 }	t_obj;
 
-typedef struct	s_data {
-	void	*mlx;
-	void	*mlx_win;
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	char	**matrix;
-	double	width;
-	double	height;
-	double	*t;
-	int		obj_size;
-	double	closest_t;
-	double	closest_s;
+typedef struct ray
+{
+	t_v3	o;
+	t_v3	d;
+}	t_ray;
 
-	t_AmbLight	ambLight;
-	t_cam		cam;
-	t_light		light;
-	t_dir		dir;
-	t_viewport	*viewport;
-	t_obj		*obj;
+
+typedef struct	s_data {
+	void			*mlx;
+	void			*mlx_win;
+	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+	char			**matrix;
+	double			width;
+	double			height;
+	double			*t;
+	int				obj_size;
+	double			closest_t;
+	double			closest_s;
+
+	t_cam			cam;
+	t_light			*light;
+	t_obj			*obj;
 }	t_data;
 
 /* UTILITY */
@@ -92,7 +82,7 @@ char	**ft_split(char const *s, char c);
 double	ft_atof(const char *str);
 char	*ft_strjoin(char *s1, char *s2);
 int		check_arg(t_data *data);
-double	*ret_vec(char *args);
+t_v3	ret_vec(char *args);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strdup(const char *s1);
 
@@ -105,29 +95,29 @@ int			ft_init(t_data *data, int fd);
 
 /* PARSING */
 
-int		parse_buff(char *buff, t_data *data);
-int		parse_primitive(char *buff, t_data *data);
-double	*get_direction(int x, int y, t_data *data, double **matrix);
+void	parse_buff(char *buff, t_data *data);
+void	add_light(char	**args, t_data *data);
+void	add_obj(char **args, t_data *data);
 
 /* VEC OPERATIONS */
 
-double	dot(double *v1, double *v2);
-double	*sub_vec(double *v1, double *v2);
-double	*normalize(double *v1);
-double	*mult_vec(double *v1, double *v2);
-double	*add_vec(double *v1, double *v2);
-double	*div_vec(double *v1, double *v2);
-double	get_lenght(double *v1);
-double	*mult_vec_n(double *v1, double d);
-double	*cross(double *v1, double *v2);
-double	norm(double *v1);
+t_v3	sub_vec(t_v3 v1, t_v3 v2);
+t_v3	normalize(t_v3 v1);
+t_v3	mult_vec(t_v3 v1, t_v3 v2);
+t_v3	add_vec(t_v3 v1, t_v3 v2);
+t_v3	div_vec(t_v3 v1, t_v3 v2);
+t_v3	mult_vec_n(t_v3 v1, double d);
+t_v3	cross(t_v3 v1, t_v3 v2);
+double	get_lenght(t_v3 *v1);
+double	dot(t_v3 v1, t_v3 v2);
+double	norm(t_v3 v1);
 
 /* TRACING */
 
-int		TraceRay(double *O, double *D, t_data *data);
+int		TraceRay(t_v3 O, t_v3 D, t_data *data);
 void	ft_ray(t_data *data);
 double	**rotation(t_data *data);
-double	*get_direction(int x, int y, t_data *data, double **matrix);
-double	computeLighting(double *P, double *N, t_data *data, t_obj*closest);
+t_v3	get_direction(int x, int y, t_data *data);
+double	computeLighting(t_v3 P, t_v3 N, t_data *data, t_obj *closest);
 
 #endif

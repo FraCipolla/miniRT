@@ -6,67 +6,85 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:26:22 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/08/30 13:53:45 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/01 18:14:37 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int	add_sphere(char **args, t_data *data)
+t_light	*last_light(t_light *light)
 {
-	int	size;
+	if (!light)
+		return (NULL);
+	while (light->next)
+		light = light->next;
+	return (light);
+}
 
-	size = data->obj_size;
-	data->obj[size].id = ft_strdup("sp");
-	data->obj[size].pos.vec = ret_vec(args[1]);
-	data->obj[size].diam = atof(args[2]);
-	data->obj[size].RGB = ret_vec(args[3]);
-	if (args[4] != NULL)
-		data->obj[size].specular = atof(args[4]);
+void	add_light(char	**args, t_data *data)
+{
+	t_light	*new;
+
+	new = malloc(sizeof(t_light));
+	new->t = args[0][0];
+	if (args[0][0] == 'A')
+		new->ratio = atof(args[1]);
 	else
-		data->obj[size].specular = -1;
-	data->obj_size += 1;
-	return (0);
+		new->ratio = atof(args[2]);
+	if (args[0][0] == 'A')
+		new->RGB = ret_vec(args[2]);
+	else
+		new->RGB = ret_vec(args[3]);
+	new->next = NULL;
+	if (new == NULL)
+		return ;
+	if (data->light == NULL)
+		data->light = new;
+	else
+		last_light(data->light)->next = new;
 }
 
-int	add_plane(char **args, t_data *data)
+t_obj	*last_obj(t_obj	*obj)
 {
-	int	size;
-
-	size = data->obj_size;
-	data->obj[size].id	= ft_strdup("pl");
-	data->obj[size].pos.vec = ret_vec(args[1]);
-	data->obj[size].ori.vec = ret_vec(args[2]);
-	data->obj[size].RGB = ret_vec(args[3]);
-	data->obj_size += 1;
-	return (0);
+	if (!obj)
+		return (NULL);
+	while (obj->next)
+		obj = obj->next;
+	return (obj);
 }
 
-int	add_cylinder(char **args, t_data *data)
+void	add_obj(char **args, t_data *data)
 {
-	int	size;
-
-	size = data->obj_size;
-	data->obj[size].id	= ft_strdup("cy");
-	data->obj[size].pos.vec = ret_vec(args[1]);
-	data->obj[size].ori.vec = ret_vec(args[2]);
-	data->obj[size].diam = atof(args[3]);
-	data->obj[size].height = atof(args[4]);
-	data->obj[size].RGB = ret_vec(args[5]);
-	data->obj_size += 1;
-	return (0);
-}
-
-int	parse_primitive(char *buff, t_data *data)
-{
-	char **args;
-
-	args = ft_split(buff, ' ');
-	if (ft_strcmp(args[0], "sp") == 0)
-		return (add_sphere(args, data));
-	if (ft_strcmp(args[0], "pl") == 0)
-		return (add_plane(args, data));
-	if (ft_strcmp(args[0], "cy") == 0)
-		return (add_cylinder(args, data));
-	return (1);
+	t_obj	*new;
+	
+	new = malloc(sizeof(t_obj));
+	new->id = ft_strdup(args[0]);
+	new->pos = ret_vec(args[1]);
+	if (ft_strcmp(new->id, "pl") == 0)
+	{
+		new->ori = ret_vec(args[2]);
+		new->RGB = ret_vec(args[3]);
+	}
+	else if (ft_strcmp(new->id, "sp") == 0)
+	{
+		new->r = atof(args[2]) / 2;
+		new->RGB = ret_vec(args[3]);
+		new->spec = atof(args[4]);
+	}
+	else if (ft_strcmp(new->id, "cy") == 0)
+	{
+		new->ori = ret_vec(args[2]);
+		new->r = atof(args[3]);
+		new->h = atof(args[4]);
+		new->RGB = ret_vec(args[5]);
+		if (args[6])
+			new->spec = atof(args[6]);
+	}
+	new->next = NULL;
+	if (new == NULL)
+		return ;
+	if (data->obj == NULL)
+		data->obj = new;
+	else
+		last_obj(data->obj)->next = new;
 }
