@@ -18,6 +18,11 @@ typedef struct s_v3
 	double	z;
 }	t_v3;
 
+typedef struct s_mat4x4
+{
+	double	m[4][4];
+}	t_mat4x4;
+
 typedef struct s_light
 {
 	char			t;
@@ -32,8 +37,27 @@ typedef struct s_camera
 	t_v3			pos;
 	t_v3			ori;
 	t_v3			dir;
-	int				FOV;
+	t_v3			up;
+	t_v3			u;
+	t_v3			v;
+	t_v3			w;
+	t_v3			screen_center;
+	t_mat4x4		world;
+	double			lenght;
+	double			horizontal_size;
+	double			aspectRatio;
+	double			FOV;
+	double			view_range;
+	t_v3			lookAt;
 }	t_cam;
+
+typedef struct s_ray
+{
+	t_v3		origin;
+	t_v3		dir;
+	double		min;
+	double		max;
+}	t_ray;
 
 typedef struct s_obj
 {
@@ -46,13 +70,6 @@ typedef struct s_obj
 	double			spec;
 	struct	s_obj	*next;
 }	t_obj;
-
-typedef struct ray
-{
-	t_v3	o;
-	t_v3	d;
-}	t_ray;
-
 
 typedef struct	s_data {
 	void			*mlx;
@@ -69,7 +86,8 @@ typedef struct	s_data {
 	int				obj_size;
 	double			closest_t;
 	double			closest_s;
-
+	t_ray			ray;
+	t_obj			*closest_obj;
 	t_cam			cam;
 	t_light			*light;
 	t_obj			*obj;
@@ -98,6 +116,7 @@ int			ft_init(t_data *data, int fd);
 void	parse_buff(char *buff, t_data *data);
 void	add_light(char	**args, t_data *data);
 void	add_obj(char **args, t_data *data);
+int		camera_init(char **args, t_cam *cam);
 
 /* VEC OPERATIONS */
 
@@ -112,12 +131,23 @@ double	get_lenght(t_v3 *v1);
 double	dot(t_v3 v1, t_v3 v2);
 double	norm(t_v3 v1);
 
+/* MATRIX OPERATIONS */
+
+t_v3	mult_vec_by_matrix(t_v3 vec, double **matrix);
+double	**rot_matrix(t_v3 rot, t_v3 dir);
+t_mat4x4	mat4x4(t_v3 origin, t_v3 forward, t_v3 right, t_v3 up);
+t_mat4x4	look_at(t_v3 origin, t_v3 dir);
+t_v3	mat4_get(t_mat4x4 m4, int get);
+t_v3	mat4_mult_dir(t_mat4x4 matrix, t_v3 dir);
+
 /* TRACING */
 
 int		TraceRay(t_v3 O, t_v3 D, t_data *data);
 void	ft_ray(t_data *data);
 double	**rotation(t_data *data);
-t_v3	get_direction(int x, int y, t_data *data);
+t_ray	get_direction(int x, int y, t_data *data);
 double	computeLighting(t_v3 P, t_v3 N, t_data *data, t_obj *closest);
-
+double	*IntersectPlane(t_v3 O, t_v3 D, t_obj *plane, double *t);
+double	*IntersectCylinder(t_v3 O, t_v3 D, t_obj *cyl, double *t);
+double	*IntersectRaySphere(t_v3 O, t_v3 D, t_obj *sphere, double *t);
 #endif

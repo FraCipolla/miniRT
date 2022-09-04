@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/05 17:12:57 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/01 18:24:16 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/04 17:59:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,14 @@ double	*IntersectRaySphere(t_v3 O, t_v3 D, t_obj *sphere, double *t)
 	a = dot(D, D);
 	b = 2 * dot(sub_vec(O, sphere->pos), D);
 	c = dot(sub_vec(O, sphere->pos), sub_vec(O, sphere->pos)) - (sphere->r * sphere->r);
-	ret = sqrtf(b * b - (4 * a * c));
+	ret = b * b - (4 * a * c);
 	if (ret < 0)
 	{
 		t[0] = INFINITY;
 		t[1] = INFINITY;
 	}
-	else{
-		t[0] = ((-b - (ret)) / (2 * a));
-		t[1] = ((-b + (ret)) / (2 * a));
-	}
+	t[0] = ((-b - sqrtf(ret)) / (2 * a));
+	t[1] = ((-b + sqrtf(ret)) / (2 * a));
 	return (t);
 }
 
@@ -67,15 +65,18 @@ double	*IntersectCylinder(t_v3 O, t_v3 D, t_obj *cyl, double *t)
 	t_v3	R;
 	t_v3	c_to_o;
 	
-	R = cross(D, cyl->ori);
+	// R = cross(D, cyl->ori);
 	c_to_o = sub_vec(O, cyl->pos);
-	// inter[0] = dot(R, R);
-	// inter[1] = 2 * dot(D, cross(c_to_o, cyl->ori));
-	// inter[2] = dot(cross(c_to_o, cyl->ori), cross(c_to_o, cyl->ori)) - pow(cyl->diam / 2, 2);
-	inter.x = dot(R, R);
-	inter.y = 2 * dot(sub_vec(O, cyl->pos), D);
-	inter.z = dot(sub_vec(O, cyl->pos), sub_vec(O, cyl->pos)) - (cyl->r * cyl->r);
-	ret = sqrtf(inter.x * inter.y - (4 * inter.x * inter.z));
+	// inter.x = dot(R, R);
+	// inter.y = 2 * dot(D, cross(c_to_o, cyl->ori));
+	// inter.z = dot(cross(c_to_o, cyl->ori), cross(c_to_o, cyl->ori)) - pow(cyl->r / 2, 2);
+	// inter.x = dot(R, R);
+	// inter.y = 2 * dot(sub_vec(O, cyl->pos), D);
+	// inter.z = dot(sub_vec(O, cyl->pos), sub_vec(O, cyl->pos)) - (cyl->r * cyl->r);
+	inter.x = pow(D.x, 2) + pow(D.y, 2);
+	inter.y = 2 * (O.x * D.x + O.y * D.y);
+	inter.z = (pow(O.x, 2) + pow(O.y, 2)) - pow(cyl->r, 2);
+	ret = sqrtf(inter.y * inter.y - (4 * inter.x * inter.z));
 	if (ret < 0)
 	{
 		t[0] = INFINITY;
@@ -83,17 +84,18 @@ double	*IntersectCylinder(t_v3 O, t_v3 D, t_obj *cyl, double *t)
 	}
 	else
 	{
-		t[0] = ((-inter.y - (ret)) / (2 * inter.z));
-		t[1] = ((-inter.y + (ret)) / (2 * inter.z));
+		t[0] = ((-inter.y - (ret)) / (2 * inter.x));
+		t[1] = ((-inter.y + (ret)) / (2 * inter.x));
 	}
 	return (find_edges(cyl, O, D, t));
 }
 
 double	*IntersectPlane(t_v3 O, t_v3 D, t_obj *plane, double *t)
 {
-	if (dot(normalize(plane->ori), D) > 0.0001)
+	plane->ori = normalize(plane->ori);
+	if (dot(plane->ori, D) > 0.0001)
 	{
-		t[0] = (dot(sub_vec(plane->ori, O), normalize(plane->ori))) / ((dot(normalize(plane->ori), D)));
+		t[0] = (dot(sub_vec(plane->ori, O), plane->ori)) / ((dot(plane->ori, D)));
 		if (t[0] <= 0)
 			t[0] = INFINITY;
 		t[1] = t[0];
@@ -138,8 +140,7 @@ int	TraceRay(t_v3 O, t_v3 D, t_data *data)
 	if (closest_obj == NULL)
 		return (create_trgb(0, 255, 255, 255));
 	t_v3	P = add_vec(O, mult_vec_n(D, data->closest_t));
-	t_v3	N = sub_vec(P, closest_obj->pos);
-	N = normalize(N);
+	t_v3	N = normalize(sub_vec(P, closest_obj->pos));
 	l = computeLighting(add_vec(O, D), N, data, closest_obj);
 	return (create_trgb(0, closest_obj->RGB.x * l, closest_obj->RGB.y * l, closest_obj->RGB.z * l));
 }

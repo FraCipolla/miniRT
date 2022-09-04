@@ -68,6 +68,7 @@
 		"typeinfo": "cpp",
 		"utility": "cpp",
 		"iomanip": "cpp",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"minirt.h": "c"
 	}
 }

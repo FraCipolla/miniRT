@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:04:03 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/01 17:22:41 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/04 18:47:54 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ void	parse_buff(char *buff, t_data *data)
 	args2 = ft_split(buff, ' ');
 	if (args[0][0] == 'C')
 	{
-		data->cam.pos = ret_vec(args[1]);
-		data->cam.ori = ret_vec(args[2]);
-		data->cam.FOV = atof(args[3]);
+		if (camera_init(args, &data->cam) == -1)
+			exit(0);
 	}
 	else
 	{

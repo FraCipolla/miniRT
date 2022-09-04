@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:26:22 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/01 18:14:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/04 15:50:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	add_light(char	**args, t_data *data)
 	if (args[0][0] == 'A')
 		new->ratio = atof(args[1]);
 	else
+	{
+		new->pos = ret_vec(args[1]);
 		new->ratio = atof(args[2]);
+	}
 	if (args[0][0] == 'A')
 		new->RGB = ret_vec(args[2]);
 	else
@@ -64,12 +67,19 @@ void	add_obj(char **args, t_data *data)
 	{
 		new->ori = ret_vec(args[2]);
 		new->RGB = ret_vec(args[3]);
+		if (args[4])
+			new->spec = atof(args[4]);
+		else
+			new->spec = -1;
 	}
 	else if (ft_strcmp(new->id, "sp") == 0)
 	{
 		new->r = atof(args[2]) / 2;
 		new->RGB = ret_vec(args[3]);
-		new->spec = atof(args[4]);
+		if (args[4])
+			new->spec = atof(args[4]);
+		else
+			new->spec = -1;
 	}
 	else if (ft_strcmp(new->id, "cy") == 0)
 	{
@@ -79,6 +89,8 @@ void	add_obj(char **args, t_data *data)
 		new->RGB = ret_vec(args[5]);
 		if (args[6])
 			new->spec = atof(args[6]);
+		else
+			new->spec = -1;
 	}
 	new->next = NULL;
 	if (new == NULL)
