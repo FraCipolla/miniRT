@@ -69,6 +69,10 @@
 		"utility": "cpp",
 		"iomanip": "cpp",
 		"unistd.h": "c",
-		"minirt.h": "c"
-	}
+		"minirt.h": "c",
+		"deque": "cpp",
+		"fstream": "cpp",
+		"stack": "cpp"
+	},
+	"C_Cpp.errorSquiggles": "Disabled"
 }

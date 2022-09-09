@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/20 19:01:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/05 17:59:08 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,9 @@ int main()
 		if (buff[0] != '\0')
 		{
 			add_history(buff);
-			buff = first_check(buff);
-			if (check_quotes(ft_split(buff, ' '), 0) > 0)
-				buff = quotes_resolve(buff, check_quotes(ft_split(buff, ' '), 0));
+			// buff = first_check(buff);
+			// if (check_quotes(ft_split(buff, ' '), 0) > 0)
+			// 	buff = quotes_resolve(buff, check_quotes(ft_split(buff, ' '), 0));
 			if (strncmp(buff, "exit", 4) == 0 && (buff[4] == ' ' || buff[4] == '\0'))
 			{
 				write(1, "exit\n", 5);

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:04:03 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/04 18:47:54 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/05 16:26:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	ft_init(t_data *data, int fd)
 	int 	i;
 	
 	to_matrix = NULL;
-	data->t = malloc(sizeof(double) * 2);
 	while (fd > 0)
 	{
 		buff = get_next_line(fd);

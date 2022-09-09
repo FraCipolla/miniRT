@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 17:26:22 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/04 15:50:20 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/05 15:42:34 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	add_obj(char **args, t_data *data)
 	}
 	else if (ft_strcmp(new->id, "cy") == 0)
 	{
-		new->ori = ret_vec(args[2]);
+		new->ori = normalize(ret_vec(args[2]));
 		new->r = atof(args[3]);
 		new->h = atof(args[4]);
 		new->RGB = ret_vec(args[5]);

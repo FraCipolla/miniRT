@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/22 17:02:10 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/05 17:16:33 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,15 @@ int	check_redir(char **args)
 
 	i = -1;
 	pipe(end);
+	fd = 0;
 	while (args[++i])
 	{
-		if (i != -1 && (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
+		if (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0)
 		{
-			if (strcmp(args[i], ">") == 0)
-				fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-			else
+			if (strcmp(args[i], ">>") == 0)
 				fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+			else
+				fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
 			dup2(fd, 1);
 		}
 		if (strcmp(args[i] , "<") == 0)

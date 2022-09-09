@@ -82,7 +82,6 @@ typedef struct	s_data {
 	char			**matrix;
 	double			width;
 	double			height;
-	double			*t;
 	int				obj_size;
 	double			closest_t;
 	double			closest_s;
@@ -147,7 +146,7 @@ void	ft_ray(t_data *data);
 double	**rotation(t_data *data);
 t_ray	get_direction(int x, int y, t_data *data);
 double	computeLighting(t_v3 P, t_v3 N, t_data *data, t_obj *closest);
-double	*IntersectPlane(t_v3 O, t_v3 D, t_obj *plane, double *t);
-double	*IntersectCylinder(t_v3 O, t_v3 D, t_obj *cyl, double *t);
-double	*IntersectRaySphere(t_v3 O, t_v3 D, t_obj *sphere, double *t);
+double	IntersectPlane(t_v3 O, t_v3 D, t_obj *plane, double t);
+double	IntersectCylinder(t_v3 O, t_v3 D, t_obj *cyl, double t);
+double	IntersectRaySphere(t_v3 O, t_v3 D, t_obj *sphere, double t);
 #endif

@@ -6,16 +6,39 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/01/29 22:24:34 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/05 17:10:41 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
 int	ft_sep(char s, char c)
 {
 	if (s == c)
 		return (1);
+	return (0);
+}
+
+int	quote_str(const char *s)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	if (s[i] == 34 || s[i] == 39)
+	{
+		if (s[i] == 34)
+			flag = 34;
+		else
+			flag = 39;
+		i++;
+		while (s[i])
+		{
+			if (s[i] == flag)
+				return (i);
+			i++;
+		}
+	}
 	return (0);
 }
 
@@ -25,7 +48,11 @@ int	ft_len(const char *s, char c)
 
 	i = 0;
 	while (s[i] && ft_sep(s[i], c) == 0)
+	{
+		if (quote_str(s + i) > 0)
+			return (i);
 		i++;
+	}
 	return (i);
 }
 
@@ -38,8 +65,15 @@ int	ft_find_size(const char *s, char c)
 	x = 0;
 	while (*s)
 	{
+		i = quote_str(s);
+		if (i)
+			x++;
 		if (ft_sep (*s, c) == 1)
 			s++;
+		i = quote_str(s);
+		if (i)
+			x++;
+		s += i;
 		i = ft_len(s, c);
 		s += i;
 		if (i)
@@ -85,8 +119,16 @@ char	**ft_split(char const *s, char c)
 	{
 		while (ft_sep(*s, c))
 			s++;
-		i = ft_len(s, c);
-		dst[x] = ft_malloc_strcpy(s, i);
+		i = quote_str(s);
+		if (i != 0)
+			dst[x] = ft_malloc_strcpy(s, i);
+		else
+		{
+			i = ft_len(s, c);
+			if (s[i] == 34 || s[i] == 39)
+				i += quote_str(s + i);
+			dst[x] = ft_malloc_strcpy(s, i);
+		}
 		s += i;
 		x++;
 	}
