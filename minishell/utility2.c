@@ -31,15 +31,16 @@ char	*ret_word(char *str)
 	}
 	return (ret);
 }
+//rimosso
+// int		i;
+// i = 0;
+// while (str[i] != q)
+// 	i++;
 
 char	*quotes_resolve(char *str, int q)
 {
 	char	*tmp;
-	int		i;
 
-	i = 0;
-	while (str[i] != q)
-		i++;
 	if (q == 34)
 		str = rem_char(str, 39);
 	else if (q == 39)
@@ -53,8 +54,7 @@ char	*quotes_resolve(char *str, int q)
 		{
 			while (*tmp != q)
 				tmp++;
-			tmp++;
-			if (check_quotes(ft_split(tmp, '\n'), 0) > 0)
+			if (check_quotes(ft_split(++tmp, '\n'), 0) > 0)
 				q = check_quotes(ft_split(tmp, '\n'), q);
 			else
 				break ;

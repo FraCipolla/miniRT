@@ -12,31 +12,37 @@
 
 #include "minishell.h"
 
-int	check_env_path(char *str, char **environ)
+int	my_exp(char *str)
 {
-	int	i;
+	extern char	**environ;
+	int			i;
+	char		**tmp;
+	char		**export;
 
 	i = 0;
-	while (str[i])
+	tmp = ft_split(str, ' ');
+	export = cpy_matrix(environ, 0);
+	export = sort_env(export);
+	if (tmp[++i] != NULL)
 	{
-		if (str[i] == '=')
-		{
-			while (*environ)
-			{ 
-				if (strncmp(*environ, str, i) == 0)
-					return (0);
-				environ++;
-			}
-			break ;
-		}
-		i++;
+		environ = add_env(environ, tmp[i]);
+		return (0);
 	}
-	return (-1);
+	i = -1;
+	while (export[++i])
+	{
+		if (check_empty_env(export[i]) == -2)
+			export[i] = ft_strjoin(export[i], "''");
+		else if (check_empty_env(export[i]) == 0)
+			export[i] = ft_strjoin(export[i], "=''");
+		printf("%s\n", export[i]);
+	}
+	return (0);
 }
 
 void	my_env( char **tmp)
 {
-	extern char **environ;
+	extern char	**environ;
 	int			i;
 	int			s;
 
@@ -126,107 +132,11 @@ char	**add_env(char **env, char *str)
 			if (env[i][ft_strlen(str)] == '=')
 				return (env);
 	}
-	i = 0;
 	tmp = cpy_matrix(env, -1);
-	while (env[i])
-	{
+	i = -1;
+	while (env[++i])
 		tmp[i] = env[i];
-		i++;
-	}
 	tmp[i] = str;
 	tmp[i + 1] = NULL;
 	return (tmp);
-}
-
-char	**cpy_matrix(char **matrix, int	offset)
-{
-	int		i;
-	char	**ret;
-
-	i = 0;
-	while (matrix[i])
-		i++;
-	ret = malloc(sizeof(char *) * (i + 1 - offset));
-	i = 0;
-	while (matrix[i])
-	{
-		ret[i] = ft_strdup(matrix[i]);
-		i++;
-	}
-	ret[i + 1] = NULL;
-	return (ret);
-}
-
-int	my_exp(char *str)
-{
-	extern char **environ;
-	int			i;
-	char		**tmp;
-	char		**export;
-
-	i = 0;
-	tmp = ft_split(str, ' ');
-	export = cpy_matrix(environ, 0);
-	export = sort_env(export);
-	if (tmp[++i] != NULL)
-	{
-		environ = add_env(environ, tmp[i]);
-		return (0);
-	}
-	i = -1;
-	while (export[++i])
-	{
-		if (check_empty_env(export[i]) == -2)
-			export[i] = ft_strjoin(export[i], "''");
-		else if (check_empty_env(export[i]) == 0)
-			export[i] = ft_strjoin(export[i], "=''");
-		printf("%s\n", export[i]);
-	}
-	return (0);
-}
-
-char	**remove_env(char **env, char *search)
-{
-	int		i;
-	int		c;
-	char	**ret;
-
-	i = 0;
-	c = 0;
-	ret = malloc(sizeof(char *) * ft_strlen(*env));
-	while (env[i])
-	{
-		if (strncmp(search, env[i], ft_strlen(search)) != 0)
-		{
-			ret[c] = ft_strjoin(ret[c], env[i]);
-			c++;
-		}
-		i++;
-	}
-	ret[c] = NULL;
-	return (ret);
-}
-
-int	my_unset(char *str)
-{
-	extern char **environ;
-	char		*tmp;
-	int			i;
-
-	i = 0;
-	while (str[i] && str[i] == ' ')
-		i++;
-	tmp = ret_word(str + i);
-	if (str[0] == '\0')
-		printf("unset: not enought arguments");
-	else if (str[0] != ' ')
-		printf("zsh: command not found: unset%s\n", tmp);
-	i = 0;
-	while (environ[i])
-	{
-		if (strncmp(environ[i], tmp, ft_strlen(tmp)) == 0)
-			environ = remove_env(environ, tmp);
-		i++;
-	}
-	return (0);
 }

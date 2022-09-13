@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/09/07 14:29:55 by mcipolla         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -14,8 +26,11 @@
 # include <sys/types.h>
 # include "readline/readline.h"
 
-extern	void	rl_replace_line(const char *text, int clear_undo);
+int	g_exit_value;
+
+extern void		rl_replace_line(const char *text, int clear_undo);
 char			*get_next_line(int fd);
+int				status(int n);
 void			msg_exit(char *str);
 char			*first_check(char *readline);
 void			my_free(char **mypath);
@@ -27,7 +42,7 @@ char			*ft_strjoin(char *s1, char *s2);
 int				ft_strcpy(char *s1, char *s2);
 size_t			ft_strlen(const char *s);
 char			*rem_char(char *str, int r);
-char			**cut_red(char **args);
+char			**cut_red(char **args, int n);
 char			*quotes_resolve(char *str, int q);
 char			*ret_word(char *str);
 char			*infile(char **args);
@@ -37,18 +52,36 @@ int				check_empty_env(char *str);
 int				check_redir(char **args);
 int				check_pwd(char *str);
 int				check_semicolon(char *str, char **mypath);
-int				check_strcmp(char *str, char **cmd, char **mypath);
+int				check_strcmp(char *str, char **cmd, char **mypath, int fd);
 int				check_quotes(char **tmp, int flag);
 char			*check_infile(char **args);
-char			**cpy_matrix(char **matrix, int	offset);
-void			ft_increase_shlvl();
+char			**cpy_matrix(char **matrix, int offset);
+void			ft_increase_shlvl(void);
 char			*ft_itoa(int n);
 int				ft_strrchr(const char *s, char c);
 int				my_pwd(char **tmp);
-int				my_echo(char **args, char *str);
+int				my_echo(char **args, char *str, int fd);
 void			my_env(char **tmp);
 int				my_exp(char *str);
 int				my_unset(char *str);
 int				my_cd(char *str);
+char			*ft_malloc_strcpy(const char *s, int n);
+void			*ft_calloc(size_t count, size_t size);
+char			**remove_env(char **env, char *search);
+int				my_exp(char *str);
+char			**cpy_matrix(char **matrix, int offset);
+char			**sort_env(char **env);
+char			**add_env(char **env, char *str);
+int				check_env_path(char *str, char **environ);
+void			here_doc(char *limiter, int *end);
+char			*manage_env(char *str);
+void			clt_echo(char *str);
+char			**remove_quotes(char **args);
+char			*resolve_env(char *str, int j);
+char			*get_env(char *str);
+int				memcmp_aux(int i, char **args);
+int				cut_red_aux(char **args);
+int				check_redir_aux1(char **args, int i);
+int				check_redir_aux2(char **args, int i, int *end);
 
 #endif

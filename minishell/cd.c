@@ -46,7 +46,7 @@ int	my_cd(char *str)
 	int		i;
 	char	path[99999];
 	char	*reset_path;
-	
+
 	i = 0;
 	tmp = ft_split(str, ' ');
 	while (tmp[i])

@@ -76,19 +76,3 @@ char	*get_next_line(int fd)
 	save[fd] = ft_save(str);
 	return (str);
 }
-
-/*#include <stdio.h>
-#include <fcntl.h>
-
-int	main()
-{
-	int	fd;
-
-	fd = open("asd.txt", O_RDONLY);
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-}*/

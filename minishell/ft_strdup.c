@@ -32,3 +32,21 @@ char	*ft_strdup(const char *s1)
 	tab[i] = '\0';
 	return (tab);
 }
+
+char	*ft_malloc_strcpy(const char *s, int n)
+{
+	char	*dst;
+	int		i;
+
+	i = 0;
+	dst = malloc((n + 1) * sizeof(char));
+	if (!dst)
+		return (0);
+	while (i < n && s[i])
+	{
+		dst[i] = s[i];
+		i++;
+	}
+	dst[i] = 0;
+	return (dst);
+}

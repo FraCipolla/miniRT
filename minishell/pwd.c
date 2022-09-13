@@ -15,7 +15,7 @@
 int	my_pwd(char **tmp)
 {
 	char	path[1000];
-	int	i;
+	int		i;
 
 	i = 0;
 	if (strcmp(tmp[0], "pwd") != 0)
@@ -33,4 +33,4 @@ int	my_pwd(char **tmp)
 	getcwd(path, 1000);
 	printf("%s\n", path);
 	return (0);
-	}
+}

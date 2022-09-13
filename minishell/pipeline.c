@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/28 17:35:56 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/01 21:41:18 by mcipolla         ###   ########.fr       */
+/*   Created: 2022/09/07 14:17:48 by mcipolla          #+#    #+#             */
+/*   Updated: 2022/09/07 14:20:17 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+int	status(int n)
 {
-	int	n;
+	int	exit_value;
 
-	if (s == NULL)
-		return (0);
-	n = 0;
-	while (s[n])
-		n++;
+	exit_value = n;
 	return (n);
 }
