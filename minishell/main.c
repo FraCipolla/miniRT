@@ -111,9 +111,10 @@ void	make_fork(char *str, char **mypath, char **cmd)
 	// free(cmd);
 }
 
-char	**init(char **mypath)
+char	**init()
 {
-	int			i;
+	int		i;
+	char	**mypath;
 
 	clt_echo("-ctlecho");
 	// waitpid(-1, NULL, 0);
@@ -152,8 +153,7 @@ int	main(void)
 	char	**mypath;
 	char	**args;
 
-	mypath = NULL;
-	mypath = init(mypath);
+	mypath = init();
 	while (1)
 	{
 		buff = readline("minishell: ");
@@ -166,14 +166,13 @@ int	main(void)
 			if (strncmp(args[0], "exit", 4) == 0)
 			{
 				write(1, "exit\n", 5);
-				free(buff);
 				break ;
 			}
 			else
 				initialize_fork(buff, mypath);
-			free(buff);
 		}
 	}
+	free(buff);
 	// my_free(mypath);
 	return (0);
 }
