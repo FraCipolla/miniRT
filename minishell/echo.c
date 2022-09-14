@@ -136,14 +136,13 @@ void	ft_putstr_fd(char *str, int fd)
 	}
 }
 
-int	my_echo(char **args, char *str, int fd)
+int	my_echo(char **args, int fd)
 {
 	int		i;
 	int		flag;
 
 	i = 0;
 	flag = 0;
-	str = NULL;
 	args = cut_echo(args);
 	while (strcmp(args[i], "-n") == 0)
 		i++;

@@ -85,24 +85,22 @@ int	check_empty_env(char *str)
 	return (0);
 }
 
-int	check_dot(char *str, char **environ)
+int	check_dot(char **cmd, char **environ)
 {
 	int		i;
-	char	**tmp;
 
 	i = 0;
-	while (str[i])
+	while (cmd[i])
 	{
-		if (strncmp(str + i, "./", 2) == 0)
+		if (strncmp(cmd[i], "./", 2) == 0)
 		{
-			tmp = ft_split(str, ' ');
-			if (access(tmp[0], R_OK) == 0)
+			if (access(cmd[0], R_OK) == 0)
 			{
-				if (strncmp(str + i, "./minishell", 11) == 0)
+				if (strncmp(cmd[i], "./minishell", 11) == 0)
 					ft_increase_shlvl();
-				execve(tmp[0], tmp, environ);
+				execve(cmd[0], cmd, environ);
 			}
-			printf("zsh: no such file or directory: %s\n", str);
+			printf("zsh: no such file or directory: %s\n", cmd[0]);
 			exit (0);
 		}
 		i++;

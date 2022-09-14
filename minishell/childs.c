@@ -10,90 +10,101 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "minishell.h"
 
-void	heredoc_child(t_px *pipex, char **envp, int i, char **cmdargs)
+void	child_1(int **end, int i, char **mypath, char **cmd)
 {
-	pipex->pid[i] = fork();
-	if (pipex->pid[i] == 0)
+	int	stdout_cpy;
+
+	stdout_cpy = dup(1);
+	if (fork() == 0)
 	{
-		close(pipex->end[i][0]);
-		dup2(pipex->heredoc_pipe[0], STDIN_FILENO);
-		dup2(pipex->end[i][1], STDOUT_FILENO);
-		close(pipex->end[i][1]);
-		exec_cmd(pipex, cmdargs, envp);
-		dup2(pipex->stdout_cpy, 1);
-		write(1, "ERROR: invalid command\n", 24);
+		close(end[i][0]);
+		// dup2(f1, STDIN_FILENO);
+		dup2(end[i][1], STDOUT_FILENO);
+		close(end[i][1]);
+		make_fork(mypath, cmd);
+		dup2(stdout_cpy, 1);
+		// write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
 	{
-		close(pipex->heredoc_pipe[0]);
-		close(pipex->end[0][1]);
+		// close(f1);
+		close(end[0][1]);
 	}
 }
 
-void	child_1(t_px *pipex, char **envp, int i, char **cmdargs)
+void	child_mid(int **end, int i, char **mypath, char **cmd)
 {
-	pipex->pid[i] = fork();
-	if (pipex->pid[i] == 0)
+	int	stdout_cpy;
+
+	stdout_cpy = dup(1);
+	if (fork() == 0)
 	{
-		close(pipex->end[i][0]);
-		dup2(pipex->f1, STDIN_FILENO);
-		dup2(pipex->end[i][1], STDOUT_FILENO);
-		close(pipex->end[i][1]);
-		exec_cmd(pipex, cmdargs, envp);
-		dup2(pipex->stdout_cpy, 1);
-		write(1, "ERROR: invalid command\n", 24);
+		close(end[i][0]);
+		dup2(end[i - 1][0], STDIN_FILENO);
+		dup2(end[i][1], STDOUT_FILENO);
+		close(end[i - 1][0]);
+		close(end[i][1]);
+		make_fork(mypath, cmd);
+		dup2(stdout_cpy, 1);
+		// write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
 	{
-		close(pipex->f1);
-		close(pipex->end[0][1]);
+		close(end[i - 1][0]);
+		close(end[i][1]);
 	}
 }
 
-void	child_mid(t_px *pipex, char **envp, int i, char **cmdargs)
+void	child_last(int **end, int i, char **mypath, char **cmd)
 {
-	pipex->pid[i] = fork();
-	if (pipex->pid[i] == 0)
+	int	stdout_cpy;
+
+	stdout_cpy = dup(1);
+	if (fork() == 0)
 	{
-		close(pipex->end[i][0]);
-		dup2(pipex->end[i - 1][0], STDIN_FILENO);
-		dup2(pipex->end[i][1], STDOUT_FILENO);
-		close(pipex->end[i - 1][0]);
-		close(pipex->end[i][1]);
-		exec_cmd(pipex, cmdargs, envp);
-		dup2(pipex->stdout_cpy, 1);
-		write(1, "ERROR: invalid command\n", 24);
+		close(end[i - 1][1]);
+		dup2(end[i - 1][0], STDIN_FILENO);
+		dup2(stdout_cpy, STDOUT_FILENO);
+		close(end[i - 1][0]);
+		// close(f2);
+		make_fork(mypath, cmd);
+		dup2(stdout_cpy, 1);
+		// write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
 	{
-		close(pipex->end[i - 1][0]);
-		close(pipex->end[i][1]);
+		// close(f2);
+		close(end[i - 1][0]);
 	}
 }
 
-void	child_last(t_px *pipex, char **envp, int i, char **cmdargs)
+void	pipex(int **end, char **pipes, char **mypath, int n_pipes)
 {
-	pipex->pid[i] = fork();
-	if (pipex->pid[i] == 0)
+	int	i;
+	char	**args;
+
+	i = 0;
+	args = ft_split(pipes[i], ' ');
+	args = remove_quotes(args);
+	child_1(end, i, mypath, args);
+	free(args);
+	while (++i < n_pipes - 1)
 	{
-		close(pipex->end[i - 1][1]);
-		dup2(pipex->end[i - 1][0], STDIN_FILENO);
-		dup2(pipex->f2, STDOUT_FILENO);
-		close(pipex->end[i - 1][0]);
-		close(pipex->f2);
-		exec_cmd(pipex, cmdargs, envp);
-		dup2(pipex->stdout_cpy, 1);
-		write(1, "ERROR: invalid command\n", 24);
-		exit(0);
+		args = ft_split(pipes[i], ' ');
+		args = remove_quotes(args);
+		child_mid(end, i, mypath, args);
+		free(args);
 	}
-	else
-	{
-		close(pipex->f2);
-		close(pipex->end[i - 1][0]);
-	}
+	args = ft_split(pipes[i], ' ');
+	args = remove_quotes(args);
+	child_last(end, i, mypath, args);
+	free(args);
+	i = -1;
+	while (++i < n_pipes)
+		waitpid(-1, NULL, 0);
 }

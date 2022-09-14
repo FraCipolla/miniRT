@@ -40,15 +40,13 @@ char	*trunc_str(char *str, char c, int n)
 	return (ret);
 }
 
-int	my_cd(char *str)
+int	my_cd(char **tmp)
 {
-	char	**tmp;
 	int		i;
 	char	path[99999];
 	char	*reset_path;
 
 	i = 0;
-	tmp = ft_split(str, ' ');
 	while (tmp[i])
 		i++;
 	if (i == 1)

@@ -12,30 +12,31 @@
 
 #include "minishell.h"
 
-void	my_exec(char *str, char **mypath, char **environ, char **tmp)
+void	my_exec(char **mypath, char **environ, char **cmd)
 {
-	char	*cmd;
+	char	*tmp;
 
-	tmp = cut_red(tmp, 0);
-	if (check_dot(str, environ) == -1)
+	cmd = cut_red(cmd, 0);
+	// SISTEMARE QUESTA FUNZIONE
+	if (check_dot(cmd, environ) == -1)
 	{
 		while (*mypath)
 		{
-			cmd = ft_strjoin(*mypath, tmp[0]);
-			if (access(cmd, R_OK) == 0)
+			tmp = ft_strjoin(*mypath, cmd[0]);
+			if (access(tmp, R_OK) == 0)
 			{
-				if (ft_strcmp(tmp[0], "cat") == 0)
+				if (ft_strcmp(cmd[0], "cat") == 0)
 				{
 					if (fork() == 0)
 						clt_echo("ctlecho");
 					else
 						waitpid(-1, NULL, 0);
 				}
-				execve(cmd, tmp, environ);
+				execve(tmp, cmd, environ);
 			}
 			mypath++;
 		}
-		printf("zsh2: command not found: %s\n", tmp[1]);
+		printf("bash: %s: command not found\n", cmd[1]);
 	}
 	exit(0);
 }
@@ -49,7 +50,7 @@ int	check_return(char *str)
 	return (1);
 }
 
-int	check_strcmp(char *str, char **cmd, char **mypath, int fd)
+int	check_strcmp(char **cmd, char **mypath, int fd)
 {
 	int			i;
 	extern char	**environ;
@@ -66,9 +67,9 @@ int	check_strcmp(char *str, char **cmd, char **mypath, int fd)
 	if (strcmp(cmd[0], "env") == 0)
 		my_env(cmd);
 	else if (strcmp(cmd[0], "echo") == 0)
-		return (my_echo(cmd, str, fd));
+		return (my_echo(cmd, fd));
 	else
-		my_exec(str, mypath, environ, cmd);
+		my_exec(mypath, environ, cmd);
 	return (-1);
 }
 
@@ -81,7 +82,7 @@ void	action(int sig)
 	signal(sig, action);
 }
 
-void	make_fork(char *str, char **mypath, char **cmd)
+void	make_fork(char **mypath, char **cmd)
 {
 	int			pid;
 
@@ -96,16 +97,16 @@ void	make_fork(char *str, char **mypath, char **cmd)
 		waitpid(-1, NULL, 0);
 		signal(SIGINT, action);
 		if (strcmp(cmd[0], "cd") == 0)
-			my_cd(str);
+			my_cd(cmd);
 		else if (strcmp(cmd[0], "export") == 0)
-			my_exp(str);
+			my_exp(cmd);
 		else if (strcmp(cmd[0], "unset") == 0)
-			my_unset(str + 5);
+			my_unset(cmd[1]);
 	}
 	if (pid == 0)
 	{
-		if (check_strcmp(str, cmd, mypath, check_redir(cmd)) == -1)
-			printf("zsh: command not found: %s\n", cmd[0]);
+		if (check_strcmp(cmd, mypath, check_redir(cmd)) == -1)
+			printf("bash: %s: command not found\n", cmd[0]);
 		exit(0);
 	}
 	// free(cmd);
@@ -127,24 +128,43 @@ char	**init()
 	return (mypath);
 }
 
-void	initialize_fork(char *str, char **mypath)
+void	initialize_fork(char *str, char **mypath, char **args)
 {
-	char	**args;
 	char	**pipes;
 	int		matrix_size;
+	int		**end;
+	int		n_pipes;
 
+	end = NULL;
 	matrix_size = 0;
 	pipes = ft_split(str, '|');
 	while (pipes[matrix_size])
 		matrix_size++;
-	while (*pipes)
+	n_pipes = matrix_size - 1;
+	if (matrix_size > 1)
 	{
-		args = ft_split(*pipes, ' ');
-		args = remove_quotes(args);
-		make_fork(*pipes, mypath, args);
-		pipes++;
-		free(args);
+		end = (int **)malloc(sizeof(int *) * matrix_size - 1);
+		matrix_size = -1;
+		while (++matrix_size < n_pipes)
+		{
+			end[matrix_size] = malloc(sizeof(int) * 2);
+			pipe(end[matrix_size]);
+		}
 	}
+	if(end)
+		pipex(end, pipes, mypath, n_pipes);
+	else
+			make_fork(mypath, args);
+// 	while (*pipes)
+// 	{
+// 		args = ft_split(*pipes, ' ');
+// 		args = remove_quotes(args);
+// 		if (end)
+// 			pipex(end, matrix_size++, stdout_cpy);
+// 		make_fork(*pipes, mypath, args);
+// 		pipes++;
+// 		free(args);
+// 	}
 }
 
 int	main(void)
@@ -169,7 +189,7 @@ int	main(void)
 				break ;
 			}
 			else
-				initialize_fork(buff, mypath);
+				initialize_fork(buff, mypath, remove_quotes(args));
 		}
 	}
 	free(buff);

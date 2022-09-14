@@ -12,15 +12,13 @@
 
 #include "minishell.h"
 
-int	my_exp(char *str)
+int	my_exp(char **tmp)
 {
 	extern char	**environ;
 	int			i;
-	char		**tmp;
 	char		**export;
 
 	i = 0;
-	tmp = ft_split(str, ' ');
 	export = cpy_matrix(environ, 0);
 	export = sort_env(export);
 	if (tmp[++i] != NULL)
