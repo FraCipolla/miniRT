@@ -54,29 +54,6 @@ int	check_builtin(char *str)
 	return (1);
 }
 
-// int	check_strcmp(char **cmd, char **mypath, int fd)
-// {
-// 	int			i;
-// 	extern char	**environ;
-
-// 	i = -1;
-// 	cmd = cut_red(cmd, 0);
-// 	if (check_return(cmd[0]) == 0)
-// 		return (0);
-// 	if (getenv("PATH") == NULL)
-// 		while (mypath[++i])
-// 			mypath[i] = NULL;
-// 	if (strncmp(cmd[0], "pwd", 3) == 0)
-// 		return (my_pwd(cmd));
-// 	if (strcmp(cmd[0], "env") == 0)
-// 		my_env(cmd);
-// 	else if (strcmp(cmd[0], "echo") == 0)
-// 		return (my_echo(cmd, fd));
-// 	else
-// 		my_exec(mypath, environ, cmd);
-// 	return (-1);
-// }
-
 void	exec_builtin(char **cmd)
 {
 

@@ -48,7 +48,7 @@ void	my_env( char **tmp)
 		if (check_env_path(tmp[1], environ) == -1)
 		{
 			printf("env: %s: No such file or directory\n", tmp[1]);
-			exit (0);
+			return (status(1));
 		}
 	}
 	i = -1;
@@ -63,7 +63,7 @@ void	my_env( char **tmp)
 				printf("%s\n", environ[i]);
 		}
 	}
-	exit (0);
+	return (status(0));
 }
 
 char	**sort_env(char **env)

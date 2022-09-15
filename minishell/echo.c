@@ -11,61 +11,61 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-// char	**cut_red(char **args)
-// {
-// 	int		i;
-// 	int		n;
-// 	char	**ret;
-
-// 	i = -1;
-// 	n = 0;
-// 	while (args[++i])
-// 	{
-// 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>'
-// 			|| args[i][0] == '<' || strcmp(args[i], "<<") == 0)
-// 			n++;
-// 	}
-// 	ret = malloc(sizeof(char *) * i - (n * 2) + 1);
-// 	i = -1;
-// 	n = 0;
-// 	while (args[++i])
-// 	{
-// 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>'
-// 			|| args[i][0] == '<' || strcmp(args[i], "<<") == 0)
-// 			i++;
-// 		else
-// 			ret[n++] = ft_strdup(args[i]);
-// 	}
-// 	ret[n] = NULL;
-// 	return (ret);
-// }
 char	**cut_red(char **args, int n)
 {
 	int		i;
 	char	**ret;
 
 	i = -1;
+	n = 0;
 	while (args[++i])
 	{
-		if (memcmp_aux(i, args))
-			n += 2;
-		else if (args[i][0] == '>' || args[i][0] == '<')
+		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
 			n++;
 	}
-	ret = ft_calloc(i - n + 1, sizeof(char *));
-	i = 0;
+	ret = malloc(sizeof(char *) * i - (n * 2) + 1);
+	i = -1;
 	n = 0;
-	while (args[i])
+	while (args[++i])
 	{
-		if (memcmp_aux(i, args))
-			i += 2;
-		else if (args[i][0] == '>' || args[i][0] == '<')
+		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
 			i++;
 		else
-			ret[n++] = ft_strdup(args[i++]);
+		{
+			ret[n] = ft_strdup(args[i]);
+			n++;
+		}
 	}
+	ret[n] = NULL;
 	return (ret);
 }
+// char	**cut_red(char **args, int n)
+// {
+// 	int		i;
+// 	char	**ret;
+
+// 	i = -1;
+// 	while (args[++i])
+// 	{
+// 		if (memcmp_aux(i, args))
+// 			n += 2;
+// 		else if (args[i][0] == '>' || args[i][0] == '<')
+// 			n++;
+// 	}
+// 	ret = ft_calloc(i - n + 1, sizeof(char *));
+// 	i = 0;
+// 	n = 0;
+// 	while (args[i])
+// 	{
+// 		if (memcmp_aux(i, args))
+// 			i += 2;
+// 		else if (args[i][0] == '>' || args[i][0] == '<')
+// 			i++;
+// 		else
+// 			ret[n++] = ft_strdup(args[i++]);
+// 	}
+// 	return (ret);
+// }
 
 char	**cut_echo(char **args)
 {
@@ -127,12 +127,13 @@ char	*manage_env(char *str)
 
 void	ft_putstr_fd(char *str, int fd)
 {
-	int	i;
+	int		i;
+	char	c;
 
 	i = 0;
-	printf("entra: %d\n", exit_value);
+	c = exit_value + '0';
 	if (ft_strcmp(str, "$?") == 0)
-		write (fd, &exit_value + '0', 1);
+		write (fd, &c, 1);
 	else
 	{
 		while (str[i])
