@@ -88,11 +88,11 @@ char	**cpy_matrix(char **matrix, int offset)
 	i = 0;
 	while (matrix[i])
 		i++;
-	ret = malloc(sizeof(char *) * (i + 1 - offset));
+	ret = (char **)malloc(sizeof(char *) * (i + 1 - offset));
 	i = 0;
 	while (matrix[i])
 	{
-		ret[i] = ft_strdup(matrix[i]);
+		ret[i] = matrix[i];
 		i++;
 	}
 	ret[i + 1] = NULL;

@@ -12,12 +12,15 @@
 
 #include "minishell.h"
 
-void	child_1(int **end, int i, char **mypath, char **cmd)
+void	child_1(int **end, int i, char **cmd, int pid)
 {
-	int	stdout_cpy;
+	int		stdout_cpy;
+	char	**mypath;
 
+	mypath = init();
 	stdout_cpy = dup(1);
-	if (fork() == 0)
+	pid = fork();
+	if (pid == 0)
 	{
 		close(end[i][0]);
 		// dup2(f1, STDIN_FILENO);
@@ -25,7 +28,6 @@ void	child_1(int **end, int i, char **mypath, char **cmd)
 		close(end[i][1]);
 		make_fork(mypath, cmd);
 		dup2(stdout_cpy, 1);
-		// write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
@@ -35,12 +37,16 @@ void	child_1(int **end, int i, char **mypath, char **cmd)
 	}
 }
 
-void	child_mid(int **end, int i, char **mypath, char **cmd)
+void	child_mid(int **end, int i, char **cmd, int pid)
 {
 	int	stdout_cpy;
+	char	**mypath;
 
+	mypath = init();
+	printf("CMD: %s\n", cmd[2]);
 	stdout_cpy = dup(1);
-	if (fork() == 0)
+	pid = fork();
+	if (pid == 0)
 	{
 		close(end[i][0]);
 		dup2(end[i - 1][0], STDIN_FILENO);
@@ -49,7 +55,6 @@ void	child_mid(int **end, int i, char **mypath, char **cmd)
 		close(end[i][1]);
 		make_fork(mypath, cmd);
 		dup2(stdout_cpy, 1);
-		// write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
@@ -59,52 +64,62 @@ void	child_mid(int **end, int i, char **mypath, char **cmd)
 	}
 }
 
-void	child_last(int **end, int i, char **mypath, char **cmd)
+void	child_last(int **end, int i, char **cmd, int pid)
 {
 	int	stdout_cpy;
+	char	**mypath;
 
+	printf("CMD: %s\n", cmd[2]);
+	mypath = init();
 	stdout_cpy = dup(1);
-	if (fork() == 0)
+	pid = fork();
+	if (pid == 0)
 	{
-		close(end[i - 1][1]);
+		// close(end[i][0]);
 		dup2(end[i - 1][0], STDIN_FILENO);
 		dup2(stdout_cpy, STDOUT_FILENO);
 		close(end[i - 1][0]);
+		// close(end[i][1]);
 		// close(f2);
 		make_fork(mypath, cmd);
 		dup2(stdout_cpy, 1);
-		// write(1, "ERROR: invalid command\n", 24);
 		exit(0);
 	}
 	else
 	{
-		// close(f2);
+		dup2(stdout_cpy, 1);
 		close(end[i - 1][0]);
 	}
 }
 
-void	pipex(int **end, char **pipes, char **mypath, int n_pipes)
+void	pipex(int **end, char **pipes, int n_pipes)
 {
 	int	i;
 	char	**args;
+	int		*pid;
+	int		status;
 
 	i = 0;
+	pid = malloc(sizeof(int) * n_pipes + 1);
 	args = ft_split(pipes[i], ' ');
 	args = remove_quotes(args);
-	child_1(end, i, mypath, args);
+	child_1(end, i, args, pid[i]);
 	free(args);
-	while (++i < n_pipes - 1)
+	i++;
+	while (i < n_pipes)
 	{
 		args = ft_split(pipes[i], ' ');
 		args = remove_quotes(args);
-		child_mid(end, i, mypath, args);
+		child_mid(end, i, args, pid[i]);
 		free(args);
+		i++;
 	}
+	printf("%d\t%d\n", i, n_pipes);
 	args = ft_split(pipes[i], ' ');
 	args = remove_quotes(args);
-	child_last(end, i, mypath, args);
+	child_last(end, i, args, pid[i]);
 	free(args);
 	i = -1;
-	while (++i < n_pipes)
-		waitpid(-1, NULL, 0);
+	while (pid[++i] < n_pipes)
+		waitpid(pid[i], &status, 0);
 }

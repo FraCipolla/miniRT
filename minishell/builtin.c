@@ -18,12 +18,11 @@ int	my_exp(char **tmp)
 	int			i;
 	char		**export;
 
-	i = 0;
 	export = cpy_matrix(environ, 0);
 	export = sort_env(export);
-	if (tmp[++i] != NULL)
+	if (tmp[1] != NULL)
 	{
-		environ = add_env(environ, tmp[i]);
+		environ = add_env(environ, tmp[1]);
 		return (0);
 	}
 	i = -1;
@@ -81,7 +80,7 @@ char	**sort_env(char **env)
 			tmp = env[i];
 			env[i] = env[i + 1];
 			env[i + 1] = tmp;
-			i = 0;
+			i = -1;
 		}
 		i++;
 	}

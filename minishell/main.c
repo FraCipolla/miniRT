@@ -25,13 +25,13 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 			tmp = ft_strjoin(*mypath, cmd[0]);
 			if (access(tmp, R_OK) == 0)
 			{
-				if (ft_strcmp(cmd[0], "cat") == 0)
-				{
-					if (fork() == 0)
-						clt_echo("ctlecho");
-					else
-						waitpid(-1, NULL, 0);
-				}
+				// if (ft_strcmp(cmd[0], "cat") == 0)
+				// {
+				// 	if (fork() == 0)
+				// 		clt_echo("ctlecho");
+				// 	else
+				// 		waitpid(-1, NULL, 0);
+				// }
 				execve(tmp, cmd, environ);
 			}
 			mypath++;
@@ -84,17 +84,17 @@ void	action(int sig)
 
 void	make_fork(char **mypath, char **cmd)
 {
-	int			pid;
+	// int			pid;
 
 	cut_red(cmd, 0);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	pid = fork();
-	if (pid > 0)
-	{
+	// pid = fork();
+	// if (pid > 0)
+	// {
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		waitpid(-1, NULL, 0);
+		// waitpid(-1, NULL, 0);
 		signal(SIGINT, action);
 		if (strcmp(cmd[0], "cd") == 0)
 			my_cd(cmd);
@@ -102,13 +102,13 @@ void	make_fork(char **mypath, char **cmd)
 			my_exp(cmd);
 		else if (strcmp(cmd[0], "unset") == 0)
 			my_unset(cmd[1]);
-	}
-	if (pid == 0)
-	{
+	// }
+	// if (pid == 0)
+	// {
 		if (check_strcmp(cmd, mypath, check_redir(cmd)) == -1)
 			printf("bash: %s: command not found\n", cmd[0]);
 		exit(0);
-	}
+	// }
 	// free(cmd);
 }
 
@@ -117,8 +117,7 @@ char	**init()
 	int		i;
 	char	**mypath;
 
-	clt_echo("-ctlecho");
-	// waitpid(-1, NULL, 0);
+	// clt_echo("-ctlecho");
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
@@ -152,19 +151,9 @@ void	initialize_fork(char *str, char **mypath, char **args)
 		}
 	}
 	if(end)
-		pipex(end, pipes, mypath, n_pipes);
+		pipex(end, pipes, n_pipes);
 	else
-			make_fork(mypath, args);
-// 	while (*pipes)
-// 	{
-// 		args = ft_split(*pipes, ' ');
-// 		args = remove_quotes(args);
-// 		if (end)
-// 			pipex(end, matrix_size++, stdout_cpy);
-// 		make_fork(*pipes, mypath, args);
-// 		pipes++;
-// 		free(args);
-// 	}
+		make_fork(mypath, args);
 }
 
 int	main(void)
