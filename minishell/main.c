@@ -41,93 +41,91 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 	exit(0);
 }
 
-int	check_return(char *str)
+int	check_builtin(char *str)
 {
 	if (strcmp(str, "export") == 0
 		|| strcmp(str, "cd") == 0
-		|| strcmp(str, "unset") == 0)
+		|| strcmp(str, "unset") == 0
+		|| strcmp(str, "echo") == 0
+		|| strcmp(str, "env") == 0
+		|| strcmp(str, "pwd") == 0
+		|| strcmp(str, "exit") == 0)
 		return (0);
 	return (1);
 }
 
-int	check_strcmp(char **cmd, char **mypath, int fd)
+// int	check_strcmp(char **cmd, char **mypath, int fd)
+// {
+// 	int			i;
+// 	extern char	**environ;
+
+// 	i = -1;
+// 	cmd = cut_red(cmd, 0);
+// 	if (check_return(cmd[0]) == 0)
+// 		return (0);
+// 	if (getenv("PATH") == NULL)
+// 		while (mypath[++i])
+// 			mypath[i] = NULL;
+// 	if (strncmp(cmd[0], "pwd", 3) == 0)
+// 		return (my_pwd(cmd));
+// 	if (strcmp(cmd[0], "env") == 0)
+// 		my_env(cmd);
+// 	else if (strcmp(cmd[0], "echo") == 0)
+// 		return (my_echo(cmd, fd));
+// 	else
+// 		my_exec(mypath, environ, cmd);
+// 	return (-1);
+// }
+
+void	exec_builtin(char **cmd)
 {
-	int			i;
+
+	cut_red(cmd, 0);
+	// signal(SIGINT, SIG_DFL);
+	// signal(SIGQUIT, SIG_DFL);
+	// signal(SIGINT, SIG_IGN);
+	// signal(SIGQUIT, SIG_IGN);
+	// waitpid(-1, NULL, 0);
+	// signal(SIGINT, action);
+	if (strcmp(cmd[0], "cd") == 0)
+		my_cd(cmd);
+	else if (strcmp(cmd[0], "export") == 0)
+		my_exp(cmd);
+	else if (strcmp(cmd[0], "unset") == 0)
+		my_unset(cmd[1]);
+	else if (strcmp(cmd[0], "echo") == 0)
+		my_echo(cmd, check_redir(cmd));
+	else if (strncmp(cmd[0], "pwd", 3) == 0)
+		my_pwd(cmd);
+	else if (strcmp(cmd[0], "env") == 0)
+		my_env(cmd);
+	else
+		printf("bash: %s: command not found\n", cmd[0]);
+}
+
+void	split_exec(char **mypath, char **cmd)
+{
 	extern char	**environ;
+	int	i;
+	int	pid;
 
 	i = -1;
-	cmd = cut_red(cmd, 0);
-	if (check_return(cmd[0]) == 0)
-		return (0);
 	if (getenv("PATH") == NULL)
 		while (mypath[++i])
 			mypath[i] = NULL;
-	if (strncmp(cmd[0], "pwd", 3) == 0)
-		return (my_pwd(cmd));
-	if (strcmp(cmd[0], "env") == 0)
-		my_env(cmd);
-	else if (strcmp(cmd[0], "echo") == 0)
-		return (my_echo(cmd, fd));
+	if (check_builtin(cmd[0]) == 0)
+		exec_builtin(cmd);
 	else
-		my_exec(mypath, environ, cmd);
-	return (-1);
+	{
+		pid = fork();
+		if (pid == 0)
+			my_exec(mypath, environ, cmd);
+		else
+			waitpid(pid, NULL, 0);
+	}
 }
 
-void	action(int sig)
-{
-	write(0, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	signal(sig, action);
-}
-
-void	make_fork(char **mypath, char **cmd)
-{
-	// int			pid;
-
-	cut_red(cmd, 0);
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	// pid = fork();
-	// if (pid > 0)
-	// {
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		// waitpid(-1, NULL, 0);
-		signal(SIGINT, action);
-		if (strcmp(cmd[0], "cd") == 0)
-			my_cd(cmd);
-		else if (strcmp(cmd[0], "export") == 0)
-			my_exp(cmd);
-		else if (strcmp(cmd[0], "unset") == 0)
-			my_unset(cmd[1]);
-	// }
-	// if (pid == 0)
-	// {
-		if (check_strcmp(cmd, mypath, check_redir(cmd)) == -1)
-			printf("bash: %s: command not found\n", cmd[0]);
-		exit(0);
-	// }
-	// free(cmd);
-}
-
-char	**init()
-{
-	int		i;
-	char	**mypath;
-
-	// clt_echo("-ctlecho");
-	mypath = ft_split(getenv("PATH"), ':');
-	i = -1;
-	while (mypath[++i])
-		mypath[i] = ft_strjoin(mypath[i], "/");
-	signal(SIGINT, action);
-	signal(SIGQUIT, SIG_IGN);
-	return (mypath);
-}
-
-void	initialize_fork(char *str, char **mypath, char **args)
+void	check_pipes(char *str, char **mypath, char **args)
 {
 	char	**pipes;
 	int		matrix_size;
@@ -153,7 +151,22 @@ void	initialize_fork(char *str, char **mypath, char **args)
 	if(end)
 		pipex(end, pipes, n_pipes);
 	else
-		make_fork(mypath, args);
+		split_exec(mypath, args);
+}
+
+char	**init()
+{
+	int		i;
+	char	**mypath;
+
+	clt_echo("-ctlecho");
+	mypath = ft_split(getenv("PATH"), ':');
+	i = -1;
+	while (mypath[++i])
+		mypath[i] = ft_strjoin(mypath[i], "/");
+	signal(SIGINT, action);
+	signal(SIGQUIT, SIG_IGN);
+	return (mypath);
 }
 
 int	main(void)
@@ -178,7 +191,7 @@ int	main(void)
 				break ;
 			}
 			else
-				initialize_fork(buff, mypath, remove_quotes(args));
+				check_pipes(buff, mypath, remove_quotes(args));
 		}
 	}
 	free(buff);

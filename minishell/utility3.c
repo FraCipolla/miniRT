@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+void	action(int sig)
+{
+	write(0, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	signal(sig, action);
+}
+
 void	clt_echo(char *str)
 {
 	char		**stty;

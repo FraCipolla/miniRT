@@ -14,8 +14,6 @@
 
 int	status(int n)
 {
-	int	exit_value;
-
 	exit_value = n;
 	return (n);
 }

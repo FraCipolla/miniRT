@@ -26,7 +26,7 @@ void	child_1(int **end, int i, char **cmd, int pid)
 		// dup2(f1, STDIN_FILENO);
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i][1]);
-		make_fork(mypath, cmd);
+		split_exec(mypath, cmd);
 		dup2(stdout_cpy, 1);
 		exit(0);
 	}
@@ -43,7 +43,6 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 	char	**mypath;
 
 	mypath = init();
-	printf("CMD: %s\n", cmd[2]);
 	stdout_cpy = dup(1);
 	pid = fork();
 	if (pid == 0)
@@ -53,7 +52,7 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i - 1][0]);
 		close(end[i][1]);
-		make_fork(mypath, cmd);
+		split_exec(mypath, cmd);
 		dup2(stdout_cpy, 1);
 		exit(0);
 	}
@@ -69,7 +68,6 @@ void	child_last(int **end, int i, char **cmd, int pid)
 	int	stdout_cpy;
 	char	**mypath;
 
-	printf("CMD: %s\n", cmd[2]);
 	mypath = init();
 	stdout_cpy = dup(1);
 	pid = fork();
@@ -81,7 +79,7 @@ void	child_last(int **end, int i, char **cmd, int pid)
 		close(end[i - 1][0]);
 		// close(end[i][1]);
 		// close(f2);
-		make_fork(mypath, cmd);
+		split_exec(mypath, cmd);
 		dup2(stdout_cpy, 1);
 		exit(0);
 	}
@@ -114,7 +112,6 @@ void	pipex(int **end, char **pipes, int n_pipes)
 		free(args);
 		i++;
 	}
-	printf("%d\t%d\n", i, n_pipes);
 	args = ft_split(pipes[i], ' ');
 	args = remove_quotes(args);
 	child_last(end, i, args, pid[i]);

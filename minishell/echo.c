@@ -103,9 +103,10 @@ char	*manage_env(char *str)
 	int		i;
 
 	i = 0;
+	
 	if (*(str) == '?')
 	{
-		write(1, "bho", 3);
+		write(1, &exit_value + '0', 3);
 		return (str + 1);
 	}
 	while (str[i] && str[i] != ' ' && str[i]
@@ -129,10 +130,16 @@ void	ft_putstr_fd(char *str, int fd)
 	int	i;
 
 	i = 0;
-	while (str[i])
+	printf("entra: %d\n", exit_value);
+	if (ft_strcmp(str, "$?") == 0)
+		write (fd, &exit_value + '0', 1);
+	else
 	{
-		write(fd, &str[i], 1);
-		i++;
+		while (str[i])
+		{
+			write(fd, &str[i], 1);
+			i++;
+		}
 	}
 }
 
@@ -158,5 +165,5 @@ int	my_echo(char **args, int fd)
 	}
 	if (flag == 0)
 		write(fd, "\n", 1);
-	exit (0);
+	return (status(0));
 }

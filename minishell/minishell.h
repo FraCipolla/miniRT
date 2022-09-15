@@ -26,7 +26,7 @@
 # include <sys/types.h>
 # include "readline/readline.h"
 
-int	g_exit_value;
+int	exit_value;
 
 extern void		rl_replace_line(const char *text, int clear_undo);
 char			*get_next_line(int fd);
@@ -85,5 +85,9 @@ int				check_redir_aux2(char **args, int i, int *end);
 void			pipex(int **end, char **pipes, int n_pipes);
 void			make_fork(char **mypath, char **cmd);
 char			**init();
+void			action(int sig);
+int				check_builtin(char *str);
+void			exec_builtin(char **cmd);
+void			split_exec(char **mypath, char **cmd);
 
 #endif
