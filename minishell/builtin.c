@@ -37,7 +37,7 @@ int	my_exp(char **tmp)
 	return (0);
 }
 
-void	my_env( char **tmp)
+int	my_env( char **tmp)
 {
 	extern char	**environ;
 	int			i;

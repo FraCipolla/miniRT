@@ -28,6 +28,27 @@
 
 int	exit_value;
 
+/* BUILT-IN */
+
+int				ft_strrchr(const char *s, char c);
+int				my_pwd(char **tmp);
+int				my_echo(char **args);
+int				my_env(char **tmp);
+int				my_exp(char **tmp);
+int				my_unset(char *str);
+int				my_cd(char **tmp);
+
+/* CHECKS */
+
+int				check_redir(char **args);
+int				check_pwd(char *str);
+int				check_semicolon(char *str, char **mypath);
+int				check_strcmp(char **cmd, char **mypath, int fd);
+int				check_quotes(char **tmp, int flag);
+char			*check_infile(char **args);
+int				check_dot(char **cmd, char **environ);
+int				check_empty_env(char *str);
+
 extern void		rl_replace_line(const char *text, int clear_undo);
 char			*get_next_line(int fd);
 int				status(int n);
@@ -42,29 +63,15 @@ char			*ft_strjoin(char *s1, char *s2);
 int				ft_strcpy(char *s1, char *s2);
 size_t			ft_strlen(const char *s);
 char			*rem_char(char *str, int r);
-char			**cut_red(char **args, int n);
+char			**cut_red(char **args);
 char			*quotes_resolve(char *str, int q);
 char			*ret_word(char *str);
 char			*infile(char **args);
 char			*ft_strdup(const char *s1);
-int				check_dot(char **cmd, char **environ);
-int				check_empty_env(char *str);
-int				check_redir(char **args);
-int				check_pwd(char *str);
-int				check_semicolon(char *str, char **mypath);
-int				check_strcmp(char **cmd, char **mypath, int fd);
-int				check_quotes(char **tmp, int flag);
-char			*check_infile(char **args);
+// int				check_redir(char **args);
 char			**cpy_matrix(char **matrix, int offset);
 void			ft_increase_shlvl(void);
 char			*ft_itoa(int n);
-int				ft_strrchr(const char *s, char c);
-int				my_pwd(char **tmp);
-int				my_echo(char **args, int fd);
-void			my_env(char **tmp);
-int				my_exp(char **tmp);
-int				my_unset(char *str);
-int				my_cd(char **tmp);
 char			*ft_malloc_strcpy(const char *s, int n);
 void			*ft_calloc(size_t count, size_t size);
 char			**remove_env(char **env, char *search);

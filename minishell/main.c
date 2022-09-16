@@ -16,7 +16,7 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 {
 	char	*tmp;
 
-	cmd = cut_red(cmd, 0);
+	// cmd = cut_red(cmd, 0);
 	// SISTEMARE QUESTA FUNZIONE
 	if (check_dot(cmd, environ) == -1)
 	{
@@ -57,7 +57,7 @@ int	check_builtin(char *str)
 void	exec_builtin(char **cmd)
 {
 
-	cut_red(cmd, 0);
+	// cut_red(cmd, 0);
 	// signal(SIGINT, SIG_DFL);
 	// signal(SIGQUIT, SIG_DFL);
 	// signal(SIGINT, SIG_IGN);
@@ -71,7 +71,7 @@ void	exec_builtin(char **cmd)
 	else if (strcmp(cmd[0], "unset") == 0)
 		my_unset(cmd[1]);
 	else if (strcmp(cmd[0], "echo") == 0)
-		my_echo(cmd, check_redir(cmd));
+		my_echo(cmd);
 	else if (strncmp(cmd[0], "pwd", 3) == 0)
 		my_pwd(cmd);
 	else if (strcmp(cmd[0], "env") == 0)
@@ -85,8 +85,12 @@ void	split_exec(char **mypath, char **cmd)
 	extern char	**environ;
 	int	i;
 	int	pid;
+	int	stdout_cpy;
 
 	i = -1;
+	stdout_cpy = dup(1);
+	check_redir(cmd);
+	cut_red(cmd);
 	if (getenv("PATH") == NULL)
 		while (mypath[++i])
 			mypath[i] = NULL;
@@ -100,6 +104,7 @@ void	split_exec(char **mypath, char **cmd)
 		else
 			waitpid(pid, NULL, 0);
 	}
+	dup2(stdout_cpy, 1);
 }
 
 void	check_pipes(char *str, char **mypath, char **args)

@@ -12,6 +12,36 @@
 
 #include "minishell.h"
 
+char	**cut_red(char **args)
+{
+	int		i;
+	int		n;
+	char	**ret;
+
+	i = -1;
+	n = 0;
+	while (args[++i])
+	{
+		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
+			n++;
+	}
+	ret = malloc(sizeof(char *) * i - (n * 2) + 1);
+	i = -1;
+	n = 0;
+	while (args[++i])
+	{
+		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
+			i++;
+		else
+		{
+			ret[n] = ft_strdup(args[i]);
+			n++;
+		}
+	}
+	ret[n] = NULL;
+	return (ret);
+}
+
 int	memcmp_aux(int i, char **args)
 {
 	if (!memcmp(args[i], ">\0", 2) || !memcmp(args[i], ">>\0", 3)

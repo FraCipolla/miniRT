@@ -11,34 +11,34 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-char	**cut_red(char **args, int n)
-{
-	int		i;
-	char	**ret;
+// char	**cut_red(char **args, int n)
+// {
+// 	int		i;
+// 	char	**ret;
 
-	i = -1;
-	n = 0;
-	while (args[++i])
-	{
-		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
-			n++;
-	}
-	ret = malloc(sizeof(char *) * i - (n * 2) + 1);
-	i = -1;
-	n = 0;
-	while (args[++i])
-	{
-		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
-			i++;
-		else
-		{
-			ret[n] = ft_strdup(args[i]);
-			n++;
-		}
-	}
-	ret[n] = NULL;
-	return (ret);
-}
+// 	i = -1;
+// 	n = 0;
+// 	while (args[++i])
+// 	{
+// 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
+// 			n++;
+// 	}
+// 	ret = malloc(sizeof(char *) * i - (n * 2) + 1);
+// 	i = -1;
+// 	n = 0;
+// 	while (args[++i])
+// 	{
+// 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
+// 			i++;
+// 		else
+// 		{
+// 			ret[n] = ft_strdup(args[i]);
+// 			n++;
+// 		}
+// 	}
+// 	ret[n] = NULL;
+// 	return (ret);
+// }
 // char	**cut_red(char **args, int n)
 // {
 // 	int		i;
@@ -144,7 +144,7 @@ void	ft_putstr_fd(char *str, int fd)
 	}
 }
 
-int	my_echo(char **args, int fd)
+int	my_echo(char **args)
 {
 	int		i;
 	int		flag;
@@ -158,13 +158,13 @@ int	my_echo(char **args, int fd)
 		flag = 1;
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], fd);
-		write(1, " ", 1);
+		printf("%s", args[i]);
 		i++;
 		if (args[i] == NULL)
 			break ;
+		printf(" ");
 	}
 	if (flag == 0)
-		write(fd, "\n", 1);
+		printf("\n");
 	return (status(0));
 }

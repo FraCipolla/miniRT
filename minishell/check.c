@@ -12,6 +12,25 @@
 
 #include "minishell.h"
 
+// int	check_redir(char **args)
+// {
+// 	int		fd;
+// 	int		i;
+// 	int		end[2];
+
+// 	i = -1;
+// 	fd = 1;
+// 	pipe(end);
+// 	while (args[++i])
+// 	{
+// 		if (args[i][0] == '<')
+// 			fd = check_redir_aux2(args, i, end);
+// 		else
+// 			fd = check_redir_aux1(args, i);
+// 	}
+// 	return (fd);
+// }
+
 int	check_redir(char **args)
 {
 	int		fd;
@@ -19,16 +38,26 @@ int	check_redir(char **args)
 	int		end[2];
 
 	i = -1;
-	fd = 1;
 	pipe(end);
 	while (args[++i])
 	{
-		if (args[i][0] == '<')
-			fd = check_redir_aux2(args, i, end);
-		else
-			fd = check_redir_aux1(args, i);
+		if (i != -1 && (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
+		{
+			if (strcmp(args[i], ">") == 0)
+				fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+			else
+				fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+			dup2(fd, 1);
+		}
+		if (strcmp(args[i] , "<") == 0)
+		{
+			fd = open(args[i + 1], O_RDONLY, 0644);
+			dup2(fd, 0);
+		}
+		if (strcmp(args[i] , "<<") == 0)
+			here_doc(args[i + 1], end);
 	}
-	return (fd);
+	return (0);
 }
 
 void	check_aux(int i, int c, int *store, char **tmp)
