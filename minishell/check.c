@@ -41,7 +41,7 @@ int	check_redir(char **args)
 	pipe(end);
 	while (args[++i])
 	{
-		if (i != -1 && (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
+		if ((strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
 		{
 			if (strcmp(args[i], ">") == 0)
 				fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -49,7 +49,7 @@ int	check_redir(char **args)
 				fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
 			dup2(fd, 1);
 		}
-		if (strcmp(args[i] , "<") == 0)
+		if (strcmp(args[i], "<") == 0)
 		{
 			fd = open(args[i + 1], O_RDONLY, 0644);
 			dup2(fd, 0);
@@ -57,7 +57,7 @@ int	check_redir(char **args)
 		if (strcmp(args[i] , "<<") == 0)
 			here_doc(args[i + 1], end);
 	}
-	return (0);
+	return (fd);
 }
 
 void	check_aux(int i, int c, int *store, char **tmp)

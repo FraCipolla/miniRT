@@ -72,7 +72,8 @@
 		"minirt.h": "c",
 		"deque": "cpp",
 		"fstream": "cpp",
-		"stack": "cpp"
+		"stack": "cpp",
+		"minishell.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "Disabled"
 }

@@ -32,7 +32,7 @@ int	exit_value;
 
 int				ft_strrchr(const char *s, char c);
 int				my_pwd(char **tmp);
-int				my_echo(char **args);
+int				my_echo(char **args, int fd);
 int				my_env(char **tmp);
 int				my_exp(char **tmp);
 int				my_unset(char *str);
@@ -49,6 +49,7 @@ char			*check_infile(char **args);
 int				check_dot(char **cmd, char **environ);
 int				check_empty_env(char *str);
 
+char			*ft_addspaces(char *str);
 extern void		rl_replace_line(const char *text, int clear_undo);
 char			*get_next_line(int fd);
 int				status(int n);

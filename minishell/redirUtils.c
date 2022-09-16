@@ -12,6 +12,59 @@
 
 #include "minishell.h"
 
+int	ft_find_new_size(char	*str)
+{
+	int		i;
+	int		size;
+
+	i = -1;
+	size = 0;
+	while (str[++i])
+	{
+		if ((str[i] == '>' || str[i] == '<') && str[i + 1] != ' ' && str[i + 1] != '>' && str[i + 1] != '<')
+			size++;
+		else if (ft_strncmp(str + i, ">>", 2) == 0 || ft_strncmp(str + i, "<<", 2) == 0)
+		{
+			if (str[i + 2] != ' ')
+				size++;
+		}
+	}
+	return (i + size);
+}
+
+char	*ft_addspaces(char *str)
+{
+	int		i;
+	int		c;
+	char	*ret;
+
+	i = -1;
+	c = 0;
+	ret = malloc(sizeof(char) * ft_find_new_size(str) + 1);
+	while (str[++i])
+	{
+		ret[c] = str[i];
+		if ((str[i] == '>' || str[i] == '<') && str[i + 1] != ' ' && str[i + 1] != '>' && str[i + 1] != '<')
+			ret[++c] = ' ';
+		else if (ft_strncmp(str + i, ">>", 2) == 0 || ft_strncmp(str + i, "<<", 2) == 0)
+		{
+			if (str[i + 2] == '<' || str[i + 2] == '>')
+			{
+				printf("bash: syntax error near unexpected token '%c'\n", str[i + 2]);
+				return (NULL);
+			}
+			else if (str[i + 2] != ' ')
+			{
+				ret[++c] = str[++i];
+				ret[++c] = ' ';
+			}
+		}
+		c++;
+	}
+	ret[c] = '\0';
+	return (ret);
+}
+
 char	**cut_red(char **args)
 {
 	int		i;
@@ -23,19 +76,20 @@ char	**cut_red(char **args)
 	while (args[++i])
 	{
 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
-			n++;
+			n += 2;
 	}
-	ret = malloc(sizeof(char *) * i - (n * 2) + 1);
-	i = -1;
+	ret = malloc(sizeof(char *) * i - (n) + 1);
+	i = 0;
 	n = 0;
-	while (args[++i])
+	while (args[i])
 	{
 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
-			i++;
+			i += 2;
 		else
 		{
 			ret[n] = ft_strdup(args[i]);
 			n++;
+			i++;
 		}
 	}
 	ret[n] = NULL;

@@ -144,27 +144,29 @@ void	ft_putstr_fd(char *str, int fd)
 	}
 }
 
-int	my_echo(char **args)
+int	my_echo(char **args, int fd)
 {
 	int		i;
 	int		flag;
 
-	i = 0;
+	i = 1;
 	flag = 0;
-	args = cut_echo(args);
+	// printf("%s\n%s\n", args[0], args[1]);
+	// args = cut_echo(args);
 	while (strcmp(args[i], "-n") == 0)
+	{
 		i++;
-	if (i > 0)
 		flag = 1;
+	}
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		ft_putstr_fd(args[i], fd);
 		i++;
 		if (args[i] == NULL)
 			break ;
-		printf(" ");
+		ft_putstr_fd(" ", fd);
 	}
 	if (flag == 0)
-		printf("\n");
+		ft_putstr_fd("\n", fd);
 	return (status(0));
 }
