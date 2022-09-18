@@ -89,7 +89,7 @@ char			*get_env(char *str);
 int				memcmp_aux(int i, char **args);
 int				cut_red_aux(char **args);
 int				check_redir_aux1(char **args, int i);
-int				check_redir_aux2(char **args, int i, int *end);
+int				check_redir_aux2(char **args, int i);
 void			pipex(int **end, char **pipes, int n_pipes);
 void			make_fork(char **mypath, char **cmd);
 char			**init();

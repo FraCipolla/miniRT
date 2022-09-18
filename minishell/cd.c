@@ -59,9 +59,10 @@ int	my_cd(char **tmp)
 	if (tmp[1] && chdir(tmp[1]) == -1)
 	{
 		if (i > 2)
-			return (printf("cd: too many arguments\n"));
+			printf("cd: too many arguments\n");
 		else
-			return (printf("cd: no such file or directory: %s\n", tmp[1]));
+			printf("cd: no such file or directory: %s\n", tmp[1]);
+		return (1);
 	}
 	return (0);
 }

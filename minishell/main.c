@@ -17,7 +17,6 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 	char	*tmp;
 
 	cmd = cut_red(cmd);
-	// SISTEMARE QUESTA FUNZIONE
 	if (check_dot(cmd, environ) == -1)
 	{
 		while (*mypath)
@@ -36,7 +35,8 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 			}
 			mypath++;
 		}
-		printf("bash: %s: command not found\n", cmd[1]);
+		exit_value = 127;
+		printf("bash: %s: command not found\n", cmd[0]);
 	}
 	exit(0);
 }
@@ -60,25 +60,23 @@ void	exec_builtin(char **cmd)
 
 	fd = check_redir(cmd);
 	cmd = cut_red(cmd);
-	// cut_red(cmd, 0);
 	// signal(SIGINT, SIG_DFL);
 	// signal(SIGQUIT, SIG_DFL);
 	// signal(SIGINT, SIG_IGN);
 	// signal(SIGQUIT, SIG_IGN);
-	// waitpid(-1, NULL, 0);
 	// signal(SIGINT, action);
 	if (strcmp(cmd[0], "cd") == 0)
-		my_cd(cmd);
+		exit_value = my_cd(cmd);
 	else if (strcmp(cmd[0], "export") == 0)
-		my_exp(cmd);
+		exit_value = my_exp(cmd);
 	else if (strcmp(cmd[0], "unset") == 0)
-		my_unset(cmd[1]);
+		exit_value = my_unset(cmd[1]);
 	else if (strcmp(cmd[0], "echo") == 0)
-		my_echo(cmd, fd);
+		exit_value = my_echo(cmd, fd);
 	else if (strncmp(cmd[0], "pwd", 3) == 0)
-		my_pwd(cmd);
+		exit_value = my_pwd(cmd);
 	else if (strcmp(cmd[0], "env") == 0)
-		my_env(cmd);
+		exit_value = my_env(cmd);
 	else
 		printf("bash: %s: command not found\n", cmd[0]);
 }
@@ -86,16 +84,19 @@ void	exec_builtin(char **cmd)
 void	split_exec(char **mypath, char **cmd)
 {
 	extern char	**environ;
-	int	i;
 	int	pid;
 	int	stdout_cpy;
+	int	stdin_cpy;
 
-	i = -1;
+	stdin_cpy = dup(0);
 	stdout_cpy = dup(1);
 	check_redir(cmd);
 	if (getenv("PATH") == NULL)
-		while (mypath[++i])
-			mypath[i] = NULL;
+		while (*mypath)
+		{
+			*mypath = NULL;
+			mypath++;
+		}
 	if (check_builtin(cmd[0]) == 0)
 		exec_builtin(cmd);
 	else
@@ -106,6 +107,7 @@ void	split_exec(char **mypath, char **cmd)
 		else
 			waitpid(pid, NULL, 0);
 	}
+	dup2(stdin_cpy, 0);
 	dup2(stdout_cpy, 1);
 }
 
@@ -169,9 +171,8 @@ int	main(void)
 		{
 			add_history(buff);
 			buff = ft_addspaces(buff);
-			printf("BUFF: %s\n", buff);
 			if (buff == NULL)
-				status(258);
+				exit_value = (258);
 			else
 			{
 				args = ft_split(buff, ' ');

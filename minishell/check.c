@@ -38,6 +38,7 @@ int	check_redir(char **args)
 	int		end[2];
 
 	i = -1;
+	fd = 1;
 	pipe(end);
 	while (args[++i])
 	{
@@ -117,19 +118,25 @@ int	check_empty_env(char *str)
 int	check_dot(char **cmd, char **environ)
 {
 	int		i;
+	char	*tmp;
 
+	i = -1;
+	tmp = NULL;
+	while (cmd[++i])
+		tmp = ft_strjoin(tmp, cmd[i]);
 	i = 0;
-	while (cmd[i])
+	while (tmp[i])
 	{
-		if (strncmp(cmd[i], "./", 2) == 0)
+		if (strncmp(tmp + i, "./", 2) == 0)
 		{
 			if (access(cmd[0], R_OK) == 0)
 			{
-				if (strncmp(cmd[i], "./minishell", 11) == 0)
+				if (strncmp(tmp + i, "./minishell", 11) == 0)
 					ft_increase_shlvl();
 				execve(cmd[0], cmd, environ);
 			}
-			printf("zsh: no such file or directory: %s\n", cmd[0]);
+			exit_value = 127;
+			printf("bash: %s: No such file or directory\n", cmd[0]);
 			exit (0);
 		}
 		i++;

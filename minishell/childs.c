@@ -103,14 +103,12 @@ void	pipex(int **end, char **pipes, int n_pipes)
 	args = remove_quotes(args);
 	child_1(end, i, args, pid[i]);
 	free(args);
-	i++;
-	while (i < n_pipes)
+	while (++i < n_pipes)
 	{
 		args = ft_split(pipes[i], ' ');
 		args = remove_quotes(args);
 		child_mid(end, i, args, pid[i]);
 		free(args);
-		i++;
 	}
 	args = ft_split(pipes[i], ' ');
 	args = remove_quotes(args);

@@ -168,5 +168,5 @@ int	my_echo(char **args, int fd)
 	}
 	if (flag == 0)
 		ft_putstr_fd("\n", fd);
-	return (status(0));
+	return (0);
 }

@@ -72,7 +72,7 @@ char	*resolve_env(char *str, int j)
 	c = 0;
 	while (str[i] && str[i] != '"')
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && str[i + 1] != '?')
 		{
 			env = getenv(get_env(str + (++i)));
 			while (str[i] && str[i] != ' ' && str[i]
