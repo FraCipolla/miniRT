@@ -15,9 +15,11 @@
 void	child_1(int **end, int i, char **cmd, int pid)
 {
 	int		stdout_cpy;
+	int		stdin_cpy;
 	char	**mypath;
 
 	mypath = init();
+	stdin_cpy = dup(0);
 	stdout_cpy = dup(1);
 	pid = fork();
 	if (pid == 0)
@@ -26,7 +28,7 @@ void	child_1(int **end, int i, char **cmd, int pid)
 		// dup2(f1, STDIN_FILENO);
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i][1]);
-		split_exec(mypath, cmd);
+		split_exec(mypath, cmd, stdin_cpy);
 		dup2(stdout_cpy, 1);
 		exit(0);
 	}
@@ -39,11 +41,13 @@ void	child_1(int **end, int i, char **cmd, int pid)
 
 void	child_mid(int **end, int i, char **cmd, int pid)
 {
-	int	stdout_cpy;
+	int		stdout_cpy;
+	int		stdin_cpy;
 	char	**mypath;
 
 	mypath = init();
 	stdout_cpy = dup(1);
+	stdin_cpy = dup(0);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -52,7 +56,7 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i - 1][0]);
 		close(end[i][1]);
-		split_exec(mypath, cmd);
+		split_exec(mypath, cmd, stdin_cpy);
 		dup2(stdout_cpy, 1);
 		exit(0);
 	}
@@ -65,10 +69,12 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 
 void	child_last(int **end, int i, char **cmd, int pid)
 {
-	int	stdout_cpy;
+	int		stdout_cpy;
+	int		stdin_cpy;
 	char	**mypath;
 
 	mypath = init();
+	stdin_cpy = dup(0);
 	stdout_cpy = dup(1);
 	pid = fork();
 	if (pid == 0)
@@ -79,7 +85,7 @@ void	child_last(int **end, int i, char **cmd, int pid)
 		close(end[i - 1][0]);
 		// close(end[i][1]);
 		// close(f2);
-		split_exec(mypath, cmd);
+		split_exec(mypath, cmd, stdin_cpy);
 		dup2(stdout_cpy, 1);
 		exit(0);
 	}

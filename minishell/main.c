@@ -54,11 +54,11 @@ int	check_builtin(char *str)
 	return (1);
 }
 
-void	exec_builtin(char **cmd)
+void	exec_builtin(char **cmd, int stdin_cpy)
 {
 	int	fd;
 
-	fd = check_redir(cmd);
+	fd = check_redir(cmd, stdin_cpy);
 	cmd = cut_red(cmd);
 	// signal(SIGINT, SIG_DFL);
 	// signal(SIGQUIT, SIG_DFL);
@@ -81,16 +81,14 @@ void	exec_builtin(char **cmd)
 		printf("bash: %s: command not found\n", cmd[0]);
 }
 
-void	split_exec(char **mypath, char **cmd)
+void	split_exec(char **mypath, char **cmd, int stdin_cpy)
 {
 	extern char	**environ;
 	int	pid;
 	int	stdout_cpy;
-	int	stdin_cpy;
 
-	stdin_cpy = dup(0);
 	stdout_cpy = dup(1);
-	check_redir(cmd);
+	check_redir(cmd, stdin_cpy);
 	if (getenv("PATH") == NULL)
 		while (*mypath)
 		{
@@ -98,7 +96,7 @@ void	split_exec(char **mypath, char **cmd)
 			mypath++;
 		}
 	if (check_builtin(cmd[0]) == 0)
-		exec_builtin(cmd);
+		exec_builtin(cmd, stdin_cpy);
 	else
 	{
 		pid = fork();
@@ -137,7 +135,7 @@ void	check_pipes(char *str, char **mypath, char **args)
 	if(end)
 		pipex(end, pipes, n_pipes);
 	else
-		split_exec(mypath, args);
+		split_exec(mypath, args, dup(0));
 }
 
 char	**init()

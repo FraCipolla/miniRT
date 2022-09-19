@@ -18,7 +18,6 @@ int	my_unset(char *str)
 	int			i;
 
 	i = 0;
-	printf("str: %s\n", str);
 	while (environ[i])
 	{
 		if (strncmp(str, environ[i], ft_strlen(str)) == 0
@@ -92,12 +91,13 @@ char	**cpy_matrix(char **matrix, int offset)
 	return (ret);
 }
 
-void	here_doc(char *limiter, int *end)
+void	here_doc(char *limiter, int *end, int fd)
 {
 	char	*buff;
 	char	*ret;
 
 	ret = NULL;
+	dup2(fd, 0);
 	while(1)
 	{
 		buff = readline("heredoc> ");

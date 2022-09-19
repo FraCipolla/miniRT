@@ -31,7 +31,7 @@
 // 	return (fd);
 // }
 
-int	check_redir(char **args)
+int	check_redir(char **args, int stdin_cpy)
 {
 	int		fd;
 	int		i;
@@ -56,7 +56,7 @@ int	check_redir(char **args)
 			dup2(fd, 0);
 		}
 		if (strcmp(args[i] , "<<") == 0)
-			here_doc(args[i + 1], end);
+			here_doc(args[i + 1], end, stdin_cpy);
 	}
 	return (fd);
 }
