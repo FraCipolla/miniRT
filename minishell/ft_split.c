@@ -43,8 +43,9 @@ int	ft_len(const char *s, char c)
 	while (s[i] && !(s[i] == c))
 	{
 		if (quote_str(s + i) > 0)
-			return (i + quote_str(s + i));
-		i++;
+			i += quote_str(s + i);
+		else
+			i++;
 	}
 	return (i);
 }
@@ -58,20 +59,12 @@ int	ft_find_size(const char *s, char c)
 	x = 0;
 	while (*s)
 	{
-		i = quote_str(s);
+		i = ft_len(s, c);
 		if (i)
 			x++;
 		s += i;
 		if (*s == c)
 			s++;
-		i = ft_len(s, c);
-		if (i)
-			x++;
-		s += i;
-		i = ft_len(s, c);
-		s += i;
-		if (i)
-			x++;
 	}
 	return (x);
 }
@@ -95,7 +88,7 @@ char	**ft_split(char const *s, char c)
 	{
 		while (*s == c)
 			s++;
-		i = quote_str(s);
+		i = ft_len(s, c);
 		if (i != 0)
 			dst[x] = ft_malloc_strcpy(s, i);
 		else

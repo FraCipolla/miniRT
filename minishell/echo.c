@@ -151,8 +151,6 @@ int	my_echo(char **args, int fd)
 
 	i = 1;
 	flag = 0;
-	// printf("%s\n%s\n", args[0], args[1]);
-	// args = cut_echo(args);
 	while (strcmp(args[i], "-n") == 0)
 	{
 		i++;

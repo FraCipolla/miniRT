@@ -70,9 +70,11 @@ char	*resolve_env(char *str, int j)
 
 	i = j;
 	c = 0;
-	while (str[i] && str[i] != '"')
+	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] != '?')
+		if (str[i] == '"')
+			i++;
+		else if (str[i] == '$' && str[i + 1] != '?')
 		{
 			env = getenv(get_env(str + (++i)));
 			while (str[i] && str[i] != ' ' && str[i]
@@ -104,10 +106,10 @@ char	**remove_quotes(char **args)
 		if (args[i][0] == 34 || args[i][0] == 39)
 		{
 			if (args[i][0] == 34)
-				ret[i] = ft_strdup(resolve_env(args[i], 1));
+				ret[i] = resolve_env(args[i], 1);
 			else
 			{
-				ret[i] = ft_strdup(args[i] + 1);
+				ret[i] = args[i] + 1;
 				ret[i][ft_strlen(args[i]) - 2] = '\0';
 			}
 		}

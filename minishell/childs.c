@@ -144,21 +144,19 @@ void	pipex(int **end, char **pipes, int n_pipes)
 	int		*pid;
 	int		status;
 
+	printf("PIPEX\n");
 	i = 0;
 	pid = malloc(sizeof(int) * n_pipes + 1);
 	args = ft_split(pipes[i], ' ');
-	args = remove_quotes(args);
 	child_1(end, i, args, pid[i]);
 	free(args);
 	while (++i < n_pipes)
 	{
 		args = ft_split(pipes[i], ' ');
-		args = remove_quotes(args);
 		child_mid(end, i, args, pid[i]);
 		free(args);
 	}
 	args = ft_split(pipes[i], ' ');
-	args = remove_quotes(args);
 	child_last(end, i, args, pid[i]);
 	free(args);
 	i = -1;

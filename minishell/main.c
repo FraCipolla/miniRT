@@ -92,7 +92,6 @@ void	split_exec(char **mypath, char **cmd)
 	// stdin_cpy = dup(0);
 	// stdout_cpy = dup(1);
 	// check_redir(cmd);
-	// printf("CMD: %s %s\n", cmd[0], cmd[1]);
 	if (getenv("PATH") == NULL)
 		while (*mypath)
 		{
