@@ -18,6 +18,7 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 
 	check_redir(cmd);
 	cmd = cut_red(cmd);
+	exit_value = 0;
 	if (check_dot(cmd, environ) == -1)
 	{
 		while (*mypath)
@@ -25,13 +26,7 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 			tmp = ft_strjoin(*mypath, cmd[0]);
 			if (access(tmp, R_OK) == 0)
 			{
-				// if (ft_strcmp(cmd[0], "cat") == 0)
-				// {
-				// 	if (fork() == 0)
-				// 		clt_echo("ctlecho");
-				// 	else
-				// 		waitpid(-1, NULL, 0);
-				// }
+				clt_echo("ctlecho");
 				execve(tmp, cmd, environ);
 			}
 			mypath++;
@@ -61,11 +56,6 @@ void	exec_builtin(char **cmd)
 
 	fd = check_redir(cmd);
 	cmd = cut_red(cmd);
-	// signal(SIGINT, SIG_DFL);
-	// signal(SIGQUIT, SIG_DFL);
-	// signal(SIGINT, SIG_IGN);
-	// signal(SIGQUIT, SIG_IGN);
-	// signal(SIGINT, action);
 	if (strcmp(cmd[0], "cd") == 0)
 		exit_value = my_cd(cmd);
 	else if (strcmp(cmd[0], "export") == 0)
@@ -86,11 +76,11 @@ void	split_exec(char **mypath, char **cmd)
 {
 	extern char	**environ;
 	int	pid;
-	// int	stdout_cpy;
-	// int	stdin_cpy;
+	int	stdout_cpy;
+	int	stdin_cpy;
 
-	// stdin_cpy = dup(0);
-	// stdout_cpy = dup(1);
+	stdin_cpy = dup(0);
+	stdout_cpy = dup(1);
 	// check_redir(cmd);
 	if (getenv("PATH") == NULL)
 		while (*mypath)
@@ -108,8 +98,9 @@ void	split_exec(char **mypath, char **cmd)
 		else
 			waitpid(pid, NULL, 0);
 	}
-	// dup2(stdin_cpy, 0);
-	// dup2(stdout_cpy, 1);
+	clt_echo("-ctlecho");
+	dup2(stdin_cpy, 0);
+	dup2(stdout_cpy, 1);
 }
 
 void	check_pipes(char *str, char **mypath, char **args)

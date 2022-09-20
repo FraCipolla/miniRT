@@ -91,53 +91,8 @@ char	**ft_split(char const *s, char c)
 		i = ft_len(s, c);
 		if (i != 0)
 			dst[x] = ft_malloc_strcpy(s, i);
-		else
-		{
-			i = ft_len(s, c);
-			if (s[i] == 34 || s[i] == 39)
-				i += quote_str(s + i);
-			dst[x] = ft_malloc_strcpy(s, i);
-		}
 		s += i;
 	}
 	dst[size] = 0;
 	return (dst);
 }
-
-// char	*ft_split_aux(int *i, char const *s, char c)
-// {
-// 	*i = ft_len(s, c);
-// 	if (s[*i] == 34 || s[*i] == 39)
-// 		*i += quote_str(s + *i);
-// 	return (ft_malloc_strcpy(s, *i));
-// }
-
-// char	**ft_split(char const *s, char c)
-// {
-// 	int		i;
-// 	int		x;
-// 	char	**dst;
-// 	int		size;
-
-// 	i = 0;
-// 	x = -1;
-// 	if (s == NULL)
-// 		return (NULL);
-// 	size = ft_find_size(s, c);
-// 	dst = malloc((size + 1) * sizeof(char *));
-// 	if (!dst)
-// 		return (NULL);
-// 	while (++x < size)
-// 	{
-// 		while (*s == c)
-// 			s++;
-// 		i = quote_str(s);
-// 		if (i != 0)
-// 			dst[x] = ft_malloc_strcpy(s, i);
-// 		else
-// 			dst[x] = ft_split_aux(&i, s, c);
-// 		s += i;
-// 	}
-// 	dst[size] = 0;
-// 	return (dst);
-// }
