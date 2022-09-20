@@ -40,7 +40,7 @@ int				my_cd(char **tmp);
 
 /* CHECKS */
 
-int				check_redir(char **args, int stdin_cpy);
+int				check_redir(char **args);
 int				check_pwd(char *str);
 int				check_semicolon(char *str, char **mypath);
 int				check_strcmp(char **cmd, char **mypath, int fd);
@@ -80,7 +80,10 @@ char			**cpy_matrix(char **matrix, int offset);
 char			**sort_env(char **env);
 char			**add_env(char **env, char *str);
 int				check_env_path(char *str, char **environ);
-void			here_doc(char *limiter, int *end, int fd);
+
+int				here_doc_pipes(char	**args);
+void			here_doc(char *limiter, int *end);
+
 char			*manage_env(char *str);
 void			clt_echo(char *str);
 char			**remove_quotes(char **args);
@@ -95,7 +98,7 @@ void			make_fork(char **mypath, char **cmd);
 char			**init();
 void			action(int sig);
 int				check_builtin(char *str);
-void			exec_builtin(char **cmd, int stdin_cpy);
-void			split_exec(char **mypath, char **cmd, int stdin_cpy);
+void			exec_builtin(char **cmd);
+void			split_exec(char **mypath, char **cmd);
 
 #endif

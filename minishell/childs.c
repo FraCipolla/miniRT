@@ -12,29 +12,63 @@
 
 #include "minishell.h"
 
+char	**cut_heredoc(char **args)
+{
+	int		i;
+	int		n;
+	char	**ret;
+
+	i = -1;
+	n = 0;
+	while (args[++i])
+	{
+		if (strcmp(args[i], "<<") == 0)
+			n += 2;
+	}
+	ret = malloc(sizeof(char *) * i - (n) + 1);
+	i = 0;
+	n = 0;
+	while (args[i])
+	{
+		if (strcmp(args[i], "<<") == 0)
+			i += 2;
+		else
+		{
+			ret[n] = ft_strdup(args[i]);
+			n++;
+			i++;
+		}
+	}
+	ret[n] = NULL;
+	return (ret);
+}
+
 void	child_1(int **end, int i, char **cmd, int pid)
 {
 	int		stdout_cpy;
-	int		stdin_cpy;
 	char	**mypath;
+	int		heredoc;
 
 	mypath = init();
-	stdin_cpy = dup(0);
 	stdout_cpy = dup(1);
+	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
 	{
+		if (heredoc != -1)
+		{
+			cmd = cut_heredoc(cmd);
+			dup2(heredoc, STDIN_FILENO);
+		}
 		close(end[i][0]);
-		// dup2(f1, STDIN_FILENO);
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i][1]);
-		split_exec(mypath, cmd, stdin_cpy);
-		dup2(stdout_cpy, 1);
+		split_exec(mypath, cmd);
 		exit(0);
 	}
 	else
 	{
-		// close(f1);
+		dup2(stdout_cpy, 1);
 		close(end[0][1]);
 	}
 }
@@ -42,26 +76,31 @@ void	child_1(int **end, int i, char **cmd, int pid)
 void	child_mid(int **end, int i, char **cmd, int pid)
 {
 	int		stdout_cpy;
-	int		stdin_cpy;
 	char	**mypath;
+	int		heredoc;
 
 	mypath = init();
 	stdout_cpy = dup(1);
-	stdin_cpy = dup(0);
+	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
 	{
 		close(end[i][0]);
+		if (heredoc != -1)
+		{
+			cmd = cut_heredoc(cmd);
+			end[i - 1][0] = heredoc;
+		}
 		dup2(end[i - 1][0], STDIN_FILENO);
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i - 1][0]);
 		close(end[i][1]);
-		split_exec(mypath, cmd, stdin_cpy);
-		dup2(stdout_cpy, 1);
+		split_exec(mypath, cmd);
 		exit(0);
 	}
 	else
 	{
+		dup2(stdout_cpy, 1);
 		close(end[i - 1][0]);
 		close(end[i][1]);
 	}
@@ -70,23 +109,25 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 void	child_last(int **end, int i, char **cmd, int pid)
 {
 	int		stdout_cpy;
-	int		stdin_cpy;
 	char	**mypath;
+	int		heredoc;
 
 	mypath = init();
-	stdin_cpy = dup(0);
 	stdout_cpy = dup(1);
+	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
 	{
-		// close(end[i][0]);
+		if (heredoc != -1)
+		{
+			cmd = cut_heredoc(cmd);
+			end[i - 1][0] = heredoc;
+		}
 		dup2(end[i - 1][0], STDIN_FILENO);
 		dup2(stdout_cpy, STDOUT_FILENO);
 		close(end[i - 1][0]);
 		// close(end[i][1]);
-		// close(f2);
-		split_exec(mypath, cmd, stdin_cpy);
-		dup2(stdout_cpy, 1);
+		split_exec(mypath, cmd);
 		exit(0);
 	}
 	else
