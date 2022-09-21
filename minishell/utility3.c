@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:28:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/07 12:17:00 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:27:07 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ char	*get_env(char *str)
 	char	*ret;
 
 	i = 0;
-	while (str[i] != '\0' && str[i] != ' '
+	while (str[i] != '\0' && str[i] != ' ' && str[i] != '\n'
 		&& str[i] != '"' && str[i] != '$' && str[i] != '\'')
 		i++;
 	ret = malloc(sizeof(char) * i + 1);
 	i = 0;
-	while (str[i] != ' ' && str[i] != '\0'
+	while (str[i] != ' ' && str[i] != '\0' && str[i] != '\n'
 		&& str[i] != '"' && str[i] != '$' && str[i] != '\'')
 	{
 		ret[i] = str[i];
@@ -77,8 +77,8 @@ char	*resolve_env(char *str, int j)
 		else if (str[i] == '$' && str[i + 1] != '?')
 		{
 			env = getenv(get_env(str + (++i)));
-			while (str[i] && str[i] != ' ' && str[i]
-				!= '"' && str[i] != '$' && str[i] != '\'')
+			while (str[i] && str[i] != ' ' && str[i] != '"' &&
+					str[i] != '$' && str[i] != '\'' && str[i] != '\n')
 					i++;
 			while (env && *env)
 					ret[c++] = *env++;

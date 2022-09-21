@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 15:51:20 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:10:31 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	split_exec(char **mypath, char **cmd)
 	int	stdout_cpy;
 	int	stdin_cpy;
 
-	// stdin_cpy = dup(0);
-	// stdout_cpy = dup(1);
 	set_fd(&stdin_cpy, &stdout_cpy, 0);
 	if (getenv("PATH") == NULL)
 		while (*mypath)
@@ -77,8 +75,6 @@ void	split_exec(char **mypath, char **cmd)
 	}
 	// clt_echo("-ctlecho");
 	set_fd(&stdin_cpy, &stdout_cpy, 1);
-	// dup2(stdin_cpy, 0);
-	// dup2(stdout_cpy, 1);
 }
 
 void	check_pipes(char *str, char **mypath, char **args)
