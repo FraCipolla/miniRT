@@ -53,7 +53,7 @@ char			*ft_addspaces(char *str);
 extern void		rl_replace_line(const char *text, int clear_undo);
 char			*get_next_line(int fd);
 int				status(int n);
-void			msg_exit(char *str);
+void			msg_exit();
 char			*first_check(char *readline);
 void			my_free(char **mypath);
 char			**ft_split(char const *s, char c);
@@ -101,4 +101,5 @@ int				check_builtin(char *str);
 void			exec_builtin(char **cmd);
 void			split_exec(char **mypath, char **cmd);
 
+void			 rl_redisplay (void);
 #endif

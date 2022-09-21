@@ -26,7 +26,8 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 			tmp = ft_strjoin(*mypath, cmd[0]);
 			if (access(tmp, R_OK) == 0)
 			{
-				clt_echo("ctlecho");
+				if (ft_strcmp(cmd[0], "cat") == 0)
+					clt_echo("ctlecho");
 				execve(tmp, cmd, environ);
 			}
 			mypath++;
@@ -81,13 +82,9 @@ void	split_exec(char **mypath, char **cmd)
 
 	stdin_cpy = dup(0);
 	stdout_cpy = dup(1);
-	// check_redir(cmd);
 	if (getenv("PATH") == NULL)
 		while (*mypath)
-		{
-			*mypath = NULL;
-			mypath++;
-		}
+			*mypath++ = NULL;
 	if (check_builtin(cmd[0]) == 0)
 		exec_builtin(cmd);
 	else
@@ -98,7 +95,7 @@ void	split_exec(char **mypath, char **cmd)
 		else
 			waitpid(pid, NULL, 0);
 	}
-	clt_echo("-ctlecho");
+	// clt_echo("-ctlecho");
 	dup2(stdin_cpy, 0);
 	dup2(stdout_cpy, 1);
 }
@@ -158,7 +155,7 @@ int	main(void)
 	{
 		buff = readline("minishell: ");
 		if (buff == NULL)
-			msg_exit("logout\n");
+			msg_exit();
 		if (buff[0] != '\0')
 		{
 			add_history(buff);
@@ -171,14 +168,15 @@ int	main(void)
 				if (strncmp(args[0], "exit", 4) == 0)
 				{
 					write(1, "exit\n", 5);
+					free(buff);
 					break ;
 				}
 				else
 					check_pipes(buff, mypath, remove_quotes(args));
 			}
 		}
+		free(buff);
+		clt_echo("-ctlecho");
 	}
-	free(buff);
-	// my_free(mypath);
 	return (0);
 }

@@ -84,9 +84,10 @@ void	ft_increase_shlvl(void)
 	environ[i] = ft_strjoin(cpy, ft_itoa(tmp));
 }
 
-void	msg_exit(char *str)
+void	msg_exit()
 {
-	write(0, str, sizeof(str));
+	printf ("\e[A\e[K");
+	printf("minishell: exit\n");
 	exit(0);
 }
 
