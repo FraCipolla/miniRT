@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 15:43:54 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:32:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ char			*ft_malloc_strcpy(const char *s, int n);
 void			*ft_calloc(size_t count, size_t size);
 char			**cpy_matrix(char **matrix, int offset);
 int				ft_strrchr(const char *s, char c);
-int				memcmp_aux(int i, char **args);
 char			*get_next_line(int fd);
 
 /* PIPES/HEREDOC/REDIRECTION */
@@ -83,9 +82,6 @@ void			pipex(int **end, char **pipes, int n_pipes);
 int				here_doc_pipes(char	**args);
 void			here_doc(char *limiter, int *end);
 char			**cut_red(char **args);
-int				cut_red_aux(char **args);
-int				check_redir_aux1(char **args, int i);
-int				check_redir_aux2(char **args, int i);
 char			*infile(char **args);
 
 /* STRINGS OPERATIONS */
