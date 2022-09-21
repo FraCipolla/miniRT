@@ -6,66 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/07 14:30:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:45:07 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-// char	**cut_red(char **args, int n)
-// {
-// 	int		i;
-// 	char	**ret;
-
-// 	i = -1;
-// 	n = 0;
-// 	while (args[++i])
-// 	{
-// 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
-// 			n++;
-// 	}
-// 	ret = malloc(sizeof(char *) * i - (n * 2) + 1);
-// 	i = -1;
-// 	n = 0;
-// 	while (args[++i])
-// 	{
-// 		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
-// 			i++;
-// 		else
-// 		{
-// 			ret[n] = ft_strdup(args[i]);
-// 			n++;
-// 		}
-// 	}
-// 	ret[n] = NULL;
-// 	return (ret);
-// }
-// char	**cut_red(char **args, int n)
-// {
-// 	int		i;
-// 	char	**ret;
-
-// 	i = -1;
-// 	while (args[++i])
-// 	{
-// 		if (memcmp_aux(i, args))
-// 			n += 2;
-// 		else if (args[i][0] == '>' || args[i][0] == '<')
-// 			n++;
-// 	}
-// 	ret = ft_calloc(i - n + 1, sizeof(char *));
-// 	i = 0;
-// 	n = 0;
-// 	while (args[i])
-// 	{
-// 		if (memcmp_aux(i, args))
-// 			i += 2;
-// 		else if (args[i][0] == '>' || args[i][0] == '<')
-// 			i++;
-// 		else
-// 			ret[n++] = ft_strdup(args[i++]);
-// 	}
-// 	return (ret);
-// }
 
 char	**cut_echo(char **args)
 {

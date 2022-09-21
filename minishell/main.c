@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/07 14:29:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:51:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 			tmp = ft_strjoin(*mypath, cmd[0]);
 			if (access(tmp, R_OK) == 0)
 			{
-				if (ft_strcmp(cmd[0], "cat") == 0)
-					clt_echo("ctlecho");
+				// if (ft_strcmp(cmd[0], "cat") == 0)
+				// 	clt_echo("ctlecho");
 				execve(tmp, cmd, environ);
 			}
 			mypath++;
@@ -38,39 +38,18 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 	exit(0);
 }
 
-int	check_builtin(char *str)
+void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)
 {
-	if (strcmp(str, "export") == 0
-		|| strcmp(str, "cd") == 0
-		|| strcmp(str, "unset") == 0
-		|| strcmp(str, "echo") == 0
-		|| strcmp(str, "env") == 0
-		|| strcmp(str, "pwd") == 0
-		|| strcmp(str, "exit") == 0)
-		return (0);
-	return (1);
-}
-
-void	exec_builtin(char **cmd)
-{
-	int	fd;
-
-	fd = check_redir(cmd);
-	cmd = cut_red(cmd);
-	if (strcmp(cmd[0], "cd") == 0)
-		exit_value = my_cd(cmd);
-	else if (strcmp(cmd[0], "export") == 0)
-		exit_value = my_exp(cmd);
-	else if (strcmp(cmd[0], "unset") == 0)
-		exit_value = my_unset(cmd[1]);
-	else if (strcmp(cmd[0], "echo") == 0)
-		exit_value = my_echo(cmd, fd);
-	else if (strncmp(cmd[0], "pwd", 3) == 0)
-		exit_value = my_pwd(cmd);
-	else if (strcmp(cmd[0], "env") == 0)
-		exit_value = my_env(cmd);
+	if (flag == 0)
+	{
+		*stdin_cpy = dup(0);
+		*stdout_cpy = dup(1);
+	}
 	else
-		printf("bash: %s: command not found\n", cmd[0]);
+	{
+		dup2(*stdin_cpy, 0);
+		dup2(*stdout_cpy, 1);
+	}
 }
 
 void	split_exec(char **mypath, char **cmd)
@@ -80,8 +59,9 @@ void	split_exec(char **mypath, char **cmd)
 	int	stdout_cpy;
 	int	stdin_cpy;
 
-	stdin_cpy = dup(0);
-	stdout_cpy = dup(1);
+	// stdin_cpy = dup(0);
+	// stdout_cpy = dup(1);
+	set_fd(&stdin_cpy, &stdout_cpy, 0);
 	if (getenv("PATH") == NULL)
 		while (*mypath)
 			*mypath++ = NULL;
@@ -96,8 +76,9 @@ void	split_exec(char **mypath, char **cmd)
 			waitpid(pid, NULL, 0);
 	}
 	// clt_echo("-ctlecho");
-	dup2(stdin_cpy, 0);
-	dup2(stdout_cpy, 1);
+	set_fd(&stdin_cpy, &stdout_cpy, 1);
+	// dup2(stdin_cpy, 0);
+	// dup2(stdout_cpy, 1);
 }
 
 void	check_pipes(char *str, char **mypath, char **args)
@@ -134,7 +115,7 @@ char	**init()
 	int		i;
 	char	**mypath;
 
-	clt_echo("-ctlecho");
+	// clt_echo("-ctlecho");
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
@@ -142,6 +123,20 @@ char	**init()
 	signal(SIGINT, action);
 	signal(SIGQUIT, SIG_IGN);
 	return (mypath);
+}
+
+void	first_check(char **buff)
+{
+	if (*buff == NULL)
+		msg_exit();
+	*buff = ft_addspaces(*buff);
+	if (*buff == NULL)
+	{
+		*buff = ft_strdup("");
+		exit_value = (258);
+	}
+	else
+		add_history(*buff);
 }
 
 int	main(void)
@@ -154,29 +149,21 @@ int	main(void)
 	while (1)
 	{
 		buff = readline("minishell: ");
-		if (buff == NULL)
-			msg_exit();
+		first_check(&buff);
 		if (buff[0] != '\0')
 		{
-			add_history(buff);
-			buff = ft_addspaces(buff);
-			if (buff == NULL)
-				exit_value = (258);
-			else
+			args = ft_split(buff, ' ');
+			if (strncmp(args[0], "exit", 4) == 0)
 			{
-				args = ft_split(buff, ' ');
-				if (strncmp(args[0], "exit", 4) == 0)
-				{
-					write(1, "exit\n", 5);
-					free(buff);
-					break ;
-				}
-				else
-					check_pipes(buff, mypath, remove_quotes(args));
+				write(1, "exit\n", 5);
+				break ;
 			}
+			else
+				check_pipes(buff, mypath, remove_quotes(args));
 		}
 		free(buff);
-		clt_echo("-ctlecho");
+		// clt_echo("-ctlecho");
 	}
+	last_free(mypath, args, buff);
 	return (0);
 }

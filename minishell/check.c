@@ -12,25 +12,6 @@
 
 #include "minishell.h"
 
-// int	check_redir(char **args)
-// {
-// 	int		fd;
-// 	int		i;
-// 	int		end[2];
-
-// 	i = -1;
-// 	fd = 1;
-// 	pipe(end);
-// 	while (args[++i])
-// 	{
-// 		if (args[i][0] == '<')
-// 			fd = check_redir_aux2(args, i, end);
-// 		else
-// 			fd = check_redir_aux1(args, i);
-// 	}
-// 	return (fd);
-// }
-
 int	check_redir(char **args)
 {
 	int		fd;

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/17 18:22:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:40:11 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ char	*ft_addspaces(char *str)
 			if (str[i + 2] == '<' || str[i + 2] == '>')
 			{
 				printf("bash: syntax error near unexpected token '%c'\n", str[i + 2]);
+				free(ret);
+				free(str);
 				return (NULL);
 			}
 			else if (str[i + 2] != ' ')
@@ -62,6 +64,7 @@ char	*ft_addspaces(char *str)
 		c++;
 	}
 	ret[c] = '\0';
+	free(str);
 	return (ret);
 }
 
@@ -96,13 +99,13 @@ char	**cut_red(char **args)
 	return (ret);
 }
 
-int	memcmp_aux(int i, char **args)
-{
-	if (!memcmp(args[i], ">\0", 2) || !memcmp(args[i], ">>\0", 3)
-		|| !memcmp(args[i], "<\0", 2) || !memcmp(args[i], "<<\0", 3))
-		return (1);
-	return (0);
-}
+// int	memcmp_aux(int i, char **args)
+// {
+// 	if (!memcmp(args[i], ">\0", 2) || !memcmp(args[i], ">>\0", 3)
+// 		|| !memcmp(args[i], "<\0", 2) || !memcmp(args[i], "<<\0", 3))
+// 		return (1);
+// 	return (0);
+// }
 
 // int	cut_red_aux(char **args)
 // {

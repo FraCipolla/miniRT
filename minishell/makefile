@@ -1,8 +1,8 @@
 NAME = minishell
 
 SRC = main.c ft_split.c utility.c ft_strlen.c utility2.c redirUtils.c \
-		builtin.c builtin2.c ft_strdup.c echo.c ft_itoa.c check.c pwd.c \
-			cd.c ft_strrchr.c free.c utility3.c childs.c
+		builtin.c ft_strdup.c echo.c ft_itoa.c check.c pwd.c env.c \
+			cd.c ft_strrchr.c free.c utility3.c childs.c exp.c heredoc.c
 GNL = get_next_line.c get_next_line_utils.c
 GNLDIR = GNL/
 GNLPATH = $(addprefix $(GNLDIR), $(GNL))

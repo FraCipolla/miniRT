@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:02:36 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/06/23 16:20:40 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:41:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,22 @@
 
 void	my_free(char **mypath)
 {
-	while (*mypath)
+	int	i;
+
+	i = 0;
+	while (mypath[i])
 	{
-		free(*mypath);
-		mypath++;
+		free(mypath[i]);
+		i++;
 	}
+	free(mypath);
+}
+
+void	last_free(char **m1, char **m2, char *str)
+{
+	my_free(m1);
+	my_free(m2);
+	free(str);
 }
 
 void	ft_bzero(void *s, size_t n)

@@ -139,10 +139,9 @@ void	child_last(int **end, int i, char **cmd, int pid)
 
 void	pipex(int **end, char **pipes, int n_pipes)
 {
-	int	i;
+	int		i;
 	char	**args;
 	int		*pid;
-	int		status;
 
 	i = 0;
 	pid = malloc(sizeof(int) * n_pipes + 1);
@@ -160,5 +159,5 @@ void	pipex(int **end, char **pipes, int n_pipes)
 	free(args);
 	i = -1;
 	while (pid[++i] < n_pipes)
-		waitpid(pid[i], &status, 0);
+		waitpid(pid[i], NULL, 0);
 }
