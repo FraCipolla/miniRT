@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:30:43 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 15:31:15 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:24:09 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ void	exec_builtin(char **cmd)
 	fd = check_redir(cmd);
 	cmd = cut_red(cmd);
 	if (strcmp(cmd[0], "cd") == 0)
-		exit_value = my_cd(cmd);
+		g_exit = my_cd(cmd);
 	else if (strcmp(cmd[0], "export") == 0)
-		exit_value = my_exp(cmd);
+		g_exit = my_exp(cmd);
 	else if (strcmp(cmd[0], "unset") == 0)
-		exit_value = my_unset(cmd[1]);
+		g_exit = my_unset(cmd[1]);
 	else if (strcmp(cmd[0], "echo") == 0)
-		exit_value = my_echo(cmd, fd);
+		g_exit = my_echo(cmd, fd);
 	else if (strncmp(cmd[0], "pwd", 3) == 0)
-		exit_value = my_pwd(cmd);
+		g_exit = my_pwd(cmd);
 	else if (strcmp(cmd[0], "env") == 0)
-		exit_value = my_env(cmd);
+		g_exit = my_env(cmd);
 	else
 		printf("bash: %s: command not found\n", cmd[0]);
 }

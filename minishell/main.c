@@ -6,19 +6,18 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 16:31:55 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:52:09 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	my_exec(char **mypath, char **environ, char **cmd)
+int	my_exec(char **mypath, char **environ, char **cmd)
 {
 	char	*tmp;
 
 	check_redir(cmd);
 	cmd = cut_red(cmd);
-	exit_value = 0;
 	if (check_dot(cmd, environ) == -1)
 	{
 		while (*mypath)
@@ -31,11 +30,11 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 				execve(tmp, cmd, environ);
 			}
 			mypath++;
+			free(tmp);
 		}
-		exit_value = 127;
 		printf("bash: %s: command not found\n", cmd[0]);
 	}
-	exit(0);
+	exit (0);
 }
 
 void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)
@@ -130,8 +129,43 @@ void	first_check(char **buff)
 	if (*buff == NULL)
 	{
 		*buff = ft_strdup("");
-		exit_value = (258);
+		g_exit = 258;
 	}
+}
+
+char	**check_wild(char **args)
+{
+	int		i;
+	int		c;
+	char	**ret;
+	char	*tmp;
+
+	i = -1;
+	c = -1;
+	tmp = NULL;
+	ret = cpy_matrix(args, 0);
+	while (args[++i])
+	{
+		c = -1;
+		while (args[i][++c])
+		{
+			if (args[i][c] == '*')
+			{
+				ret[i] = parse_files(args[i]);
+				i = -1;
+				while (ret[++i])
+				{
+					tmp = ft_strjoin(tmp, ret[i]);
+					free(ret[i]);
+					tmp = ft_strjoin(tmp, " ");
+				}
+				ret = ft_split(tmp, ' ');
+				free(tmp);
+				return (ret);
+			}
+		}
+	}
+	return (args);
 }
 
 int	main(void)
@@ -148,6 +182,9 @@ int	main(void)
 		if (buff[0] != '\0')
 		{
 			args = ft_split(buff, ' ');
+			// printf("FILES: %s\n", parse_files(args[1]));
+			// printf("ENTRA\n");
+			args = check_wild(args);
 			if (strncmp(args[0], "exit", 4) == 0)
 			{
 				write(1, "exit\n", 5);

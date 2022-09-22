@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 16:32:48 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:32:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <sys/types.h>
 # include "readline/readline.h"
 
-int	exit_value;
+int	g_exit;
 
 /* READLINE */
 
@@ -55,7 +55,6 @@ void			ft_increase_shlvl(void);
 int				check_redir(char **args);
 int				check_semicolon(char *str, char **mypath);
 int				check_strcmp(char **cmd, char **mypath, int fd);
-int				check_quotes(char **tmp, int flag);
 char			*check_infile(char **args);
 int				check_dot(char **cmd, char **environ);
 int				check_builtin(char *str);
@@ -87,7 +86,6 @@ char			*infile(char **args);
 /* STRINGS OPERATIONS */
 
 char			*ft_addspaces(char *str);
-char			*manage_env(char *str);
 int				check_env_path(char *str, char **environ);
 char			**remove_quotes(char **args);
 char			*resolve_env(char *str, int j);
@@ -106,5 +104,9 @@ void			split_exec(char **mypath, char **cmd);
 void			my_free(char **mypath);
 void			last_free(char **m1, char **m2, char *str);
 void			msg_exit();
+
+/* WILDCARD */
+
+char	*parse_files();
 
 #endif

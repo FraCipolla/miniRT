@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 15:45:07 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:24:09 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,15 @@ char	**cut_echo(char **args)
 	return (ret);
 }
 
-char	*manage_env(char *str)
-{
-	char	*aux;
-	char	*aux1;
-	int		i;
-
-	i = 0;
-	
-	if (*(str) == '?')
-	{
-		write(1, &exit_value + '0', 3);
-		return (str + 1);
-	}
-	while (str[i] && str[i] != ' ' && str[i]
-		!= '"' && str[i] != '\'' && str[i] != '$')
-		i++;
-	aux = ft_calloc(i, 1);
-	i = -1;
-	while (str[++i] && str[i] != ' ' && str[i]
-		!= '"' && str[i] != '\'' && str[i] != '$')
-		aux[i] = str[i];
-	if (!*aux)
-		return ("$");
-	aux1 = getenv(aux);
-	if (aux1 == NULL)
-		return (NULL);
-	return (aux1);
-}
-
 void	ft_putstr_fd(char *str, int fd)
 {
 	int		i;
-	char	c;
+	char	*c;
 
 	i = 0;
-	c = exit_value + '0';
+	c = ft_itoa(g_exit);
 	if (ft_strcmp(str, "$?") == 0)
-		write (fd, &c, 1);
+		write (fd, c, strlen(c));
 	else
 	{
 		while (str[i])

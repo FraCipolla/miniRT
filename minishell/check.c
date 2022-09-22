@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/07 14:47:33 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:24:09 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,31 +55,6 @@ void	check_aux(int i, int c, int *store, char **tmp)
 		store[1] = 39;
 }
 
-int	check_quotes(char **tmp, int flag)
-{
-	int		i;
-	int		c;
-	int		store[2];
-
-	i = -1;
-	store[0] = 0;
-	store[1] = 0;
-	while (tmp[++i])
-	{
-		c = -1;
-		while (tmp[i][++c])
-		{
-			if (tmp[i][c] == flag)
-				return (flag);
-			else
-				check_aux(i, c, store, tmp);
-		}
-	}
-	if (store[0] > store[1])
-		return (store[0]);
-	return (store[1]);
-}
-
 int	check_empty_env(char *str)
 {
 	int	i;
@@ -116,7 +91,7 @@ int	check_dot(char **cmd, char **environ)
 					ft_increase_shlvl();
 				execve(cmd[0], cmd, environ);
 			}
-			exit_value = 127;
+			g_exit = 127;
 			printf("bash: %s: No such file or directory\n", cmd[0]);
 			exit (0);
 		}
