@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 17:52:09 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 19:16:31 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,14 @@ void	check_pipes(char *str, char **mypath, char **args)
 	end = NULL;
 	matrix_size = 0;
 	pipes = ft_split(str, '|');
-	while (pipes[matrix_size])
-		matrix_size++;
-	n_pipes = matrix_size - 1;
-	if (matrix_size > 1)
+	while (*(str++))
+		if (*str == '|')
+			matrix_size++;
+	n_pipes = matrix_size;
+	if (matrix_size > 0)
 	{
-		end = (int **)malloc(sizeof(int *) * matrix_size - 1);
-		matrix_size = -1;
-		while (++matrix_size < n_pipes)
+		end = (int **)malloc(sizeof(int *) * matrix_size);
+		while (--matrix_size >= 0)
 		{
 			end[matrix_size] = malloc(sizeof(int) * 2);
 			pipe(end[matrix_size]);
@@ -122,6 +122,20 @@ char	**init()
 
 void	first_check(char **buff)
 {
+	char	**check;
+
+	check = ft_split(*buff, ' ');
+	if (check[0][0] == '|')
+	{
+		printf("bash: syntax error near unexpected token '%c'\n", check[0][0]);
+		while(*check)
+		{
+			free(*check);
+			check++;
+		}
+		*buff[0] = '\0';
+		return ;
+	}
 	if (*buff == NULL)
 		msg_exit();
 	add_history(*buff);
@@ -131,41 +145,6 @@ void	first_check(char **buff)
 		*buff = ft_strdup("");
 		g_exit = 258;
 	}
-}
-
-char	**check_wild(char **args)
-{
-	int		i;
-	int		c;
-	char	**ret;
-	char	*tmp;
-
-	i = -1;
-	c = -1;
-	tmp = NULL;
-	ret = cpy_matrix(args, 0);
-	while (args[++i])
-	{
-		c = -1;
-		while (args[i][++c])
-		{
-			if (args[i][c] == '*')
-			{
-				ret[i] = parse_files(args[i]);
-				i = -1;
-				while (ret[++i])
-				{
-					tmp = ft_strjoin(tmp, ret[i]);
-					free(ret[i]);
-					tmp = ft_strjoin(tmp, " ");
-				}
-				ret = ft_split(tmp, ' ');
-				free(tmp);
-				return (ret);
-			}
-		}
-	}
-	return (args);
 }
 
 int	main(void)
@@ -182,8 +161,6 @@ int	main(void)
 		if (buff[0] != '\0')
 		{
 			args = ft_split(buff, ' ');
-			// printf("FILES: %s\n", parse_files(args[1]));
-			// printf("ENTRA\n");
 			args = check_wild(args);
 			if (strncmp(args[0], "exit", 4) == 0)
 			{

@@ -6,33 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:25:45 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 17:44:55 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:04:54 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	check_wildcard(char *src, char *str)
-// {
-// 	if (*src == '\0')
-// 		return (0);
-// 	else if (*str == '\0')
-// 		return (1);
-// 	while (*str)
-// 	{
-// 		if (*src == '*')
-// 			src++;
-// 		if (*src == '\0' && *str == '\0')
-// 			return (0);
-// 		if (*str == *src)
-// 		{
-// 			src++;
-// 			check_wildcard(str, src);
-// 		}
-// 		str++;
-// 	}
-// 	return (1);
-// }
 
 int parse_wild(char *wild_str, char *str)
 {
@@ -78,4 +56,39 @@ char	*parse_files(char *wild)
 	}
 	closedir(d);
 	return (ret);
+}
+
+char	**check_wild(char **args)
+{
+	int		i;
+	int		c;
+	char	**ret;
+	char	*tmp;
+
+	i = -1;
+	c = -1;
+	tmp = NULL;
+	ret = cpy_matrix(args, 0);
+	while (args[++i])
+	{
+		c = -1;
+		while (args[i][++c])
+		{
+			if (args[i][c] == '*')
+			{
+				ret[i] = parse_files(args[i]);
+				i = -1;
+				while (ret[++i])
+				{
+					tmp = ft_strjoin(tmp, ret[i]);
+					free(ret[i]);
+					tmp = ft_strjoin(tmp, " ");
+				}
+				ret = ft_split(tmp, ' ');
+				free(tmp);
+				return (ret);
+			}
+		}
+	}
+	return (args);
 }

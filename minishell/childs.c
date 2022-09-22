@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/20 23:20:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 19:03:15 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void	pipex(int **end, char **pipes, int n_pipes)
 	int		i;
 	char	**args;
 	int		*pid;
+	char	*buff;
 
 	i = 0;
 	pid = malloc(sizeof(int) * n_pipes + 1);
@@ -151,10 +152,20 @@ void	pipex(int **end, char **pipes, int n_pipes)
 	while (++i < n_pipes)
 	{
 		args = ft_split(pipes[i], ' ');
+		if (pipes[i] == NULL || args[0] == NULL)
+		{
+			buff = readline("> ");
+			args = ft_split(buff, ' ');
+		}
 		child_mid(end, i, args, pid[i]);
 		free(args);
 	}
 	args = ft_split(pipes[i], ' ');
+	if (pipes[i] == NULL || args[0] == NULL)
+	{
+		buff = readline("> ");
+		args = ft_split(buff, ' ');
+	}
 	child_last(end, i, args, pid[i]);
 	free(args);
 	i = -1;

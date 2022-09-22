@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 16:32:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:05:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int				check_strcmp(char **cmd, char **mypath, int fd);
 char			*check_infile(char **args);
 int				check_dot(char **cmd, char **environ);
 int				check_builtin(char *str);
+char			**check_wild(char **args);
 
 /* UTILITY */
 
