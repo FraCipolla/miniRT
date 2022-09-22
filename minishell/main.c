@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 16:10:31 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:31:55 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,14 +125,13 @@ void	first_check(char **buff)
 {
 	if (*buff == NULL)
 		msg_exit();
+	add_history(*buff);
 	*buff = ft_addspaces(*buff);
 	if (*buff == NULL)
 	{
 		*buff = ft_strdup("");
 		exit_value = (258);
 	}
-	else
-		add_history(*buff);
 }
 
 int	main(void)
