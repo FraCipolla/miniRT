@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 18:05:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:23:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include "readline/readline.h"
 
 int	g_exit;
+
+void	set_global(int status);
 
 /* READLINE */
 
@@ -58,7 +60,7 @@ int				check_strcmp(char **cmd, char **mypath, int fd);
 char			*check_infile(char **args);
 int				check_dot(char **cmd, char **environ);
 int				check_builtin(char *str);
-char			**check_wild(char **args);
+void			check_pipes(char *str, char **mypath, char **args);
 
 /* UTILITY */
 
@@ -108,6 +110,12 @@ void			msg_exit();
 
 /* WILDCARD */
 
-char	*parse_files();
+char			*parse_files();
+char			**check_wild(char **args);
+
+/* LOGICAL OPERATOR */
+
+int				logical_operator(char *buff, char **mypath, char *log);
+char			*check_empty_logical(char *buff);
 
 #endif

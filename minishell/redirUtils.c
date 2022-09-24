@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 16:29:19 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:40:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	*ft_addspaces(char *str)
 
 	i = -1;
 	c = 0;
+	if (str == NULL)
+		return (NULL);
 	ret = malloc(sizeof(char) * ft_find_new_size(str) + 1);
 	while (str[++i])
 	{

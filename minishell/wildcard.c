@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:25:45 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 18:04:54 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/24 14:04:21 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,34 +61,20 @@ char	*parse_files(char *wild)
 char	**check_wild(char **args)
 {
 	int		i;
-	int		c;
 	char	**ret;
 	char	*tmp;
 
 	i = -1;
-	c = -1;
 	tmp = NULL;
-	ret = cpy_matrix(args, 0);
 	while (args[++i])
 	{
-		c = -1;
-		while (args[i][++c])
-		{
-			if (args[i][c] == '*')
-			{
-				ret[i] = parse_files(args[i]);
-				i = -1;
-				while (ret[++i])
-				{
-					tmp = ft_strjoin(tmp, ret[i]);
-					free(ret[i]);
-					tmp = ft_strjoin(tmp, " ");
-				}
-				ret = ft_split(tmp, ' ');
-				free(tmp);
-				return (ret);
-			}
-		}
+		if (strchr(args[i], '*') != NULL)
+			tmp = ft_strjoin(tmp, parse_files(args[i]));
+		else
+			tmp = ft_strjoin(tmp, args[i]);
+		tmp = ft_strjoin(tmp, " ");
 	}
-	return (args);
+	ret = ft_split(tmp, ' ');
+	free(tmp);
+	return (ret);
 }

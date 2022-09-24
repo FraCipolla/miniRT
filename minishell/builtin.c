@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:30:43 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 16:24:09 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:52:02 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ void	exec_builtin(char **cmd)
 		g_exit = my_pwd(cmd);
 	else if (strcmp(cmd[0], "env") == 0)
 		g_exit = my_env(cmd);
+	else if (strcmp(cmd[0], "exit") == 0)
+	{
+			write(1, "exit\n", 5);
+			exit (0);
+	}
 	else
 		printf("bash: %s: command not found\n", cmd[0]);
 }

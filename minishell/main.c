@@ -6,35 +6,42 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 19:16:31 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:27:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	my_exec(char **mypath, char **environ, char **cmd)
+void	my_exec(char **mypath, char **environ, char **cmd)
 {
 	char	*tmp;
+	int		pid;
+	int		status;
 
 	check_redir(cmd);
 	cmd = cut_red(cmd);
-	if (check_dot(cmd, environ) == -1)
+	pid = fork();
+	if (pid == 0)
 	{
-		while (*mypath)
+		if (check_dot(cmd, environ) == -1)
 		{
-			tmp = ft_strjoin(*mypath, cmd[0]);
-			if (access(tmp, R_OK) == 0)
+			while (*mypath)
 			{
-				// if (ft_strcmp(cmd[0], "cat") == 0)
-				// 	clt_echo("ctlecho");
-				execve(tmp, cmd, environ);
+				tmp = ft_strjoin(*mypath, cmd[0]);
+				if (access(tmp, R_OK) == 0)
+					execve(tmp, cmd, environ);
+				mypath++;
+				free(tmp);
 			}
-			mypath++;
-			free(tmp);
+			printf("bash: %s: command not found\n", cmd[0]);
 		}
-		printf("bash: %s: command not found\n", cmd[0]);
+		exit(127);
 	}
-	exit (0);
+	else
+	{
+		waitpid(pid, &status, 0);
+		set_global(status);
+	}
 }
 
 void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)
@@ -54,7 +61,6 @@ void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)
 void	split_exec(char **mypath, char **cmd)
 {
 	extern char	**environ;
-	int	pid;
 	int	stdout_cpy;
 	int	stdin_cpy;
 
@@ -65,14 +71,7 @@ void	split_exec(char **mypath, char **cmd)
 	if (check_builtin(cmd[0]) == 0)
 		exec_builtin(cmd);
 	else
-	{
-		pid = fork();
-		if (pid == 0)
-			my_exec(mypath, environ, cmd);
-		else
-			waitpid(pid, NULL, 0);
-	}
-	// clt_echo("-ctlecho");
+		my_exec(mypath, environ, cmd);
 	set_fd(&stdin_cpy, &stdout_cpy, 1);
 }
 
@@ -86,14 +85,14 @@ void	check_pipes(char *str, char **mypath, char **args)
 	end = NULL;
 	matrix_size = 0;
 	pipes = ft_split(str, '|');
-	while (*(str++))
-		if (*str == '|')
-			matrix_size++;
-	n_pipes = matrix_size;
-	if (matrix_size > 0)
+	while (pipes[matrix_size])
+		matrix_size++;
+	n_pipes = matrix_size - 1;
+	if (matrix_size > 1)
 	{
-		end = (int **)malloc(sizeof(int *) * matrix_size);
-		while (--matrix_size >= 0)
+		end = (int **)malloc(sizeof(int *) * matrix_size - 1);
+		matrix_size = -1;
+		while (++matrix_size < n_pipes)
 		{
 			end[matrix_size] = malloc(sizeof(int) * 2);
 			pipe(end[matrix_size]);
@@ -110,7 +109,7 @@ char	**init()
 	int		i;
 	char	**mypath;
 
-	// clt_echo("-ctlecho");
+	clt_echo("-ctlecho");
 	mypath = ft_split(getenv("PATH"), ':');
 	i = -1;
 	while (mypath[++i])
@@ -120,31 +119,19 @@ char	**init()
 	return (mypath);
 }
 
-void	first_check(char **buff)
+char	*first_check(char *buff)
 {
-	char	**check;
-
-	check = ft_split(*buff, ' ');
-	if (check[0][0] == '|')
-	{
-		printf("bash: syntax error near unexpected token '%c'\n", check[0][0]);
-		while(*check)
-		{
-			free(*check);
-			check++;
-		}
-		*buff[0] = '\0';
-		return ;
-	}
-	if (*buff == NULL)
+	if (buff == NULL)
 		msg_exit();
-	add_history(*buff);
-	*buff = ft_addspaces(*buff);
-	if (*buff == NULL)
+	add_history(buff);
+	buff = check_empty_logical(buff);
+	buff = ft_addspaces(buff);
+	if (buff == NULL)
 	{
-		*buff = ft_strdup("");
+		buff = ft_strdup("");
 		g_exit = 258;
 	}
+	return (buff);
 }
 
 int	main(void)
@@ -157,21 +144,14 @@ int	main(void)
 	while (1)
 	{
 		buff = readline("minishell: ");
-		first_check(&buff);
+		buff = first_check(buff);
 		if (buff[0] != '\0')
 		{
 			args = ft_split(buff, ' ');
-			args = check_wild(args);
-			if (strncmp(args[0], "exit", 4) == 0)
-			{
-				write(1, "exit\n", 5);
-				break ;
-			}
-			else
+			if (logical_operator(buff, mypath, NULL) == 1)
 				check_pipes(buff, mypath, remove_quotes(args));
 		}
 		free(buff);
-		// clt_echo("-ctlecho");
 	}
 	last_free(mypath, args, buff);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 16:24:09 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:01:42 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,21 @@ int	my_echo(char **args, int fd)
 
 	i = 1;
 	flag = 0;
-	while (strcmp(args[i], "-n") == 0)
+	if (args[i])
 	{
-		i++;
-		flag = 1;
-	}
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], fd);
-		i++;
-		if (args[i] == NULL)
-			break ;
-		ft_putstr_fd(" ", fd);
+		while (args[i] && ft_strcmp(args[i], "-n") == 0)
+		{
+			i++;
+			flag = 1;
+		}
+		while (args[i])
+		{
+			ft_putstr_fd(args[i], fd);
+			i++;
+			if (args[i] == NULL)
+				break ;
+			ft_putstr_fd(" ", fd);
+		}
 	}
 	if (flag == 0)
 		ft_putstr_fd("\n", fd);

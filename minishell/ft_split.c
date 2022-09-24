@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/07 12:11:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:00:52 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_len(const char *s, char c)
 	int	i;
 
 	i = 0;
-	while (s[i] && !(s[i] == c))
+	while (s[i] && s[i] != c)
 	{
 		if (quote_str(s + i) > 0)
 			i += quote_str(s + i);
@@ -91,8 +91,10 @@ char	**ft_split(char const *s, char c)
 		i = ft_len(s, c);
 		if (i != 0)
 			dst[x] = ft_malloc_strcpy(s, i);
+		// printf("split: %d %s\n", i, dst[x]);
 		s += i;
 	}
 	dst[size] = 0;
+	// printf("dst[0]: %s\n", dst[0]);
 	return (dst);
 }
