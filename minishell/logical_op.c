@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:25:42 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 20:42:18 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/25 00:10:23 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ int	logical_operator(char *buff, char **mypath, char *log)
 	char	*tmp;
 	char	**args;
 
-	i = -1;
+	if (*buff == ' ')
+		buff++;
+	i = quote_str(buff);
 	while (buff[++i])
 	{
 		if ((buff[i + 1] == '\0' && log != NULL) || ft_strncmp(buff + i, "&&", 2) == 0
@@ -73,6 +75,8 @@ char	*check_empty_logical(char *buff)
 	int		i;
 	char	print[3];
 	
+	if (buff == NULL)
+		return (NULL);
 	i = -1;
 	while (buff[++i])
 	{

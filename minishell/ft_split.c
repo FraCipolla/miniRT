@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 20:00:52 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/24 23:59:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,32 @@ int	quote_str(const char *s)
 {
 	int	i;
 	int	flag;
+	int	par;
 
+	i = -1;
+	par = 0;
+	while (s[++i])
+		if (s[i] == '(')
+			par++;
 	i = 0;
-	if (s[i] == 34 || s[i] == 39)
+	if (s[i] == 34 || s[i] == 39 || s[i] == '(')
 	{
 		if (s[i] == 34)
 			flag = 34;
-		else
+		else if (s[i] == 39)
 			flag = 39;
+		else
+			flag = ')';
 		i++;
 		while (s[i])
 		{
-			if (s[i] == flag)
+			if (flag == ')' && s[i] == flag)
+			{
+				par--;
+				if (par == 0)
+					return (i + 1);
+			}
+			else if (flag != ')' && s[i] == flag)
 				return (i + 1);
 			i++;
 		}

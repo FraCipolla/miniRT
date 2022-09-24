@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 20:27:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/25 00:09:24 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ void	split_exec(char **mypath, char **cmd)
 	int	stdout_cpy;
 	int	stdin_cpy;
 
+	if (between_parentheses(cmd[0]) == 0)
+	{
+		exec_subshell(cmd);
+		return ;
+	}
 	set_fd(&stdin_cpy, &stdout_cpy, 0);
 	if (getenv("PATH") == NULL)
 		while (*mypath)
@@ -84,6 +89,7 @@ void	check_pipes(char *str, char **mypath, char **args)
 
 	end = NULL;
 	matrix_size = 0;
+	printf("args: %s\n", args[0]);
 	pipes = ft_split(str, '|');
 	while (pipes[matrix_size])
 		matrix_size++;
@@ -121,9 +127,16 @@ char	**init()
 
 char	*first_check(char *buff)
 {
+	char	*tmp;
+
+	tmp = buff;
 	if (buff == NULL)
 		msg_exit();
-	add_history(buff);
+	buff = check_empty_parentheses(buff);
+	if (buff == NULL)
+		add_history(tmp);
+	else
+		add_history(buff);
 	buff = check_empty_logical(buff);
 	buff = ft_addspaces(buff);
 	if (buff == NULL)
@@ -134,7 +147,7 @@ char	*first_check(char *buff)
 	return (buff);
 }
 
-int	main(void)
+int	main(int argc, char *argv[])
 {
 	char	*buff;
 	char	**mypath;
@@ -143,14 +156,21 @@ int	main(void)
 	mypath = init();
 	while (1)
 	{
-		buff = readline("minishell: ");
-		buff = first_check(buff);
+		if (argc > 1)
+			buff = argv[1];
+		else
+		{
+			buff = readline("minishell: ");
+			buff = first_check(buff);
+		}
 		if (buff[0] != '\0')
 		{
 			args = ft_split(buff, ' ');
 			if (logical_operator(buff, mypath, NULL) == 1)
 				check_pipes(buff, mypath, remove_quotes(args));
 		}
+		if (argc > 1)
+			exit(0);
 		free(buff);
 	}
 	last_free(mypath, args, buff);
