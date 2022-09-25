@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/25 00:01:19 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:42:46 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@
 
 int	g_exit;
 
-void	set_global(int status);
+void			set_global(int status);
 
 /* READLINE */
 
 extern void		rl_replace_line(const char *text, int clear_undo);
-void			rl_redisplay (void);
+void			rl_redisplay(void);
 
 /* BUILT-IN */
 
@@ -102,17 +102,17 @@ char			**remove_env(char **env, char *search);
 
 void			clt_echo(char *str);
 void			make_fork(char **mypath, char **cmd);
-char			**init();
+char			**init(void);
 void			action(int sig);
 void			exec_builtin(char **cmd);
 void			split_exec(char **mypath, char **cmd);
 void			my_free(char **mypath);
 void			last_free(char **m1, char **m2, char *str);
-void			msg_exit();
+void			msg_exit(void);
 
 /* WILDCARD */
 
-char			*parse_files();
+char			*parse_files(char *wild);
 char			**check_wild(char **args);
 
 /* LOGICAL OPERATOR */

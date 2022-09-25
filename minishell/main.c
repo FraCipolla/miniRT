@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/25 00:09:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:41:37 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	check_pipes(char *str, char **mypath, char **args)
 
 	end = NULL;
 	matrix_size = 0;
-	printf("args: %s\n", args[0]);
+	// printf("args: %s\n", args[0]);
 	pipes = ft_split(str, '|');
 	while (pipes[matrix_size])
 		matrix_size++;
@@ -147,11 +147,25 @@ char	*first_check(char *buff)
 	return (buff);
 }
 
+void	start_parsing(char *buff, char **mypath)
+{
+	char	**args;
+	char	**args2;
+
+	args = ft_split(buff, ';');
+	while (*args)
+	{
+		args2 = ft_split(*args, ' ');
+		if (logical_operator(*args, mypath, NULL) == 1)
+			check_pipes(*args, mypath, remove_quotes(args2));
+		args++;
+	}
+}
+
 int	main(int argc, char *argv[])
 {
 	char	*buff;
 	char	**mypath;
-	char	**args;
 
 	mypath = init();
 	while (1)
@@ -164,15 +178,11 @@ int	main(int argc, char *argv[])
 			buff = first_check(buff);
 		}
 		if (buff[0] != '\0')
-		{
-			args = ft_split(buff, ' ');
-			if (logical_operator(buff, mypath, NULL) == 1)
-				check_pipes(buff, mypath, remove_quotes(args));
-		}
+			start_parsing(buff, mypath);
 		if (argc > 1)
 			exit(0);
 		free(buff);
 	}
-	last_free(mypath, args, buff);
+	my_free(mypath);
 	return (0);
 }

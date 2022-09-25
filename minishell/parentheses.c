@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:24:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/25 00:16:50 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/25 12:36:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,22 @@ char	*remove_parentheses(char *str)
 	size_t	i;
 	size_t	c;
 	char	*ret;
+	size_t	size;
 
-	printf("str: %s\n", str);
+	size = ft_strlen(str) - 2;
 	if (str[1] == ' ')
-		i = 1;
+		i = 2;
 	else
-		i = 0;
+		i = 1;
 	c = 0;
-	ret = malloc(sizeof(char) * ft_strlen(str) - 2 - i);
-	ret[ft_strlen(str) - 2 - i] = '\0';
-	while (c < ft_strlen(str) - 2 - i)
-		ret[c++] = str[++i];
+	ret = malloc(sizeof(char) * size);
+	ret[size] = '\0';
+	while (c < size)
+	{
+		ret[c] = str[i];
+		c++;
+		i++;
+	}
 	free(str);
 	return (ret);
 }
