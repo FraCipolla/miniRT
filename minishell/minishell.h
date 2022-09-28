@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/25 19:42:46 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/28 18:56:05 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ char			**cpy_matrix(char **matrix, int offset);
 int				ft_strrchr(const char *s, char c);
 char			*get_next_line(int fd);
 int				quote_str(const char *s);
+void			add_char(char **toret, char a);
 
 /* PIPES/HEREDOC/REDIRECTION */
 
@@ -93,7 +94,7 @@ char			*infile(char **args);
 char			*ft_addspaces(char *str);
 int				check_env_path(char *str, char **environ);
 char			**remove_quotes(char **args);
-char			*resolve_env(char *str, int j);
+char			*resolve_env(char *str);
 char			*get_env(char *str);
 char			*rem_char(char *str, int r);
 char			**remove_env(char **env, char *search);
@@ -125,5 +126,9 @@ char			*check_empty_logical(char *buff);
 char			*check_empty_parentheses(char *buff);
 int				between_parentheses(char *str);
 void			exec_subshell(char **args);
+
+/* SIGNAL */
+
+void			action(int sig);
 
 #endif

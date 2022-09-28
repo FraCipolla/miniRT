@@ -6,11 +6,20 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 20:23:54 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/28 18:56:16 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	add_char(char **toret, char a)
+{
+	char aux[2];
+
+	aux[0] = a;
+	aux[1] = 0;
+	*toret = ft_strjoin(*toret, aux);
+}
 
 void	ft_increase_shlvl(void)
 {

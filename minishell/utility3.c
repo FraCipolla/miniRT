@@ -6,39 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:28:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/21 16:27:07 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/28 19:47:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	action(int sig)
-{
-	write(0, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	signal(sig, action);
-}
-
-void	clt_echo(char *str)
-{
-	char		**stty;
-	extern char	**environ;
-	int			pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		stty = malloc(sizeof(char *) * 3);
-		stty[0] = ft_strdup("stty");
-		stty[1] = ft_strdup(str);
-		stty[2] = NULL;
-		execve("/bin/stty", stty, environ);
-	}
-	if (pid > 0)
-		waitpid(-1, NULL, 0);
-}
 
 char	*get_env(char *str)
 {
@@ -61,34 +33,99 @@ char	*get_env(char *str)
 	return (ret);
 }
 
-char	*resolve_env(char *str, int j)
+int	check_dollar(char *str, char **ret, int i)
 {
-	int		i;
 	int		c;
-	char	ret[1024];
+	char	tmp[1024];
 	char	*env;
 
-	i = j;
 	c = 0;
-	while (str[i])
+	while (str[i] != '"')
 	{
-		if (str[i] == '"')
-			i++;
-		else if (str[i] == '$' && str[i + 1] != '?')
+		if (str[i] == '$')
 		{
-			env = getenv(get_env(str + (++i)));
-			while (str[i] && str[i] != ' ' && str[i] != '"' &&
-					str[i] != '$' && str[i] != '\'' && str[i] != '\n')
-					i++;
+			if (str[++i] == '?')
+				env = ft_itoa(g_exit);
+			else
+				env = getenv(get_env(str + i));
 			while (env && *env)
-					ret[c++] = *env++;
+				tmp[c++] = *env++;
+			while (str[i] && str[i] != ' ' && str[i] != '"'
+				&& str[i] != '$' && str[i] != '\'' && str[i] != '\n')
+				i++;
+		}
+		else if (str[i])
+			tmp[c++] = str[i++];
+	}
+	tmp[c] = '\0';
+	*ret = ft_strjoin(*ret, tmp);
+	return (i + 1);
+}
+
+// int	between_quotes(char *str, char **ret)
+// {
+// 	int		i;
+// 	int		c;
+// 	char	*tmp;
+
+// 	i = 1;
+// 	while (str[i] != '\'')
+// 		i++;
+// 	tmp = malloc(sizeof(char) * i - 1);
+// 	tmp[i - 1] = '\0';
+// 	i = 1;
+// 	c = 0;
+// 	while (str[i] != '\'')
+// 	{
+// 		tmp[c] = str[i];
+// 		i++;
+// 		c++;
+// 	}
+// 	*ret = ft_strjoin(*ret, tmp);
+// 	return (i + 1);
+// }
+
+int manage_sq(char *first, char **toret)
+{
+	char *next;
+	char *aux;
+
+	next = strstr(first, "'");
+	if((next - first) == 1)
+		return (1);
+	aux = ft_malloc_strcpy(first, next - first);
+	*toret = ft_strjoin(*toret,aux);
+	free(aux);
+	return(next - first + 2);
+}
+
+char	*resolve_env(char *str)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	ret = NULL;
+	while (*str && str)
+	{
+		if (*str == '\'')
+			str += manage_sq(str + 1, &ret);
+		else if (*str == '"')
+			str += check_dollar(str, &ret, 1);
+		else if (*str == '$')
+		{
+			ret = ft_strjoin(ret, getenv(get_env(++(str))));
+			while (*str && *str != ' ' && *str != '"'
+				&& *str != '$' && *str != '\'' && *str != '\n')
+				str++;
 		}
 		else
-			ret[c++] = str[i++];
+		{
+			add_char(&ret, *str);
+			str++;
+		}
 	}
-	ret[c] = '\0';
-	env = ft_strdup(ret);
-	return (env);
+	return (ret);
 }
 
 char	**remove_quotes(char **args)
@@ -103,18 +140,10 @@ char	**remove_quotes(char **args)
 	i = -1;
 	while (args[++i])
 	{
-		if (args[i][0] == 34 || args[i][0] == 39)
-		{
-			if (args[i][0] == 34)
-				ret[i] = resolve_env(args[i], 1);
-			else
-			{
-				ret[i] = args[i] + 1;
-				ret[i][ft_strlen(args[i]) - 2] = '\0';
-			}
-		}
+		if (strchr(args[i], 34) != NULL || strchr(args[i], 39) != NULL)
+			ret[i] = resolve_env(args[i]);
 		else
-			ret[i] = resolve_env(args[i], 0);
+			ret[i] = resolve_env(args[i]);
 	}
 	ret[i] = NULL;
 	return (ret);

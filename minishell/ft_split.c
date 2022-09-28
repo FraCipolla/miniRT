@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 23:59:58 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/26 17:35:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,8 @@ char	**ft_split(char const *s, char c)
 		i = ft_len(s, c);
 		if (i != 0)
 			dst[x] = ft_malloc_strcpy(s, i);
-		// printf("split: %d %s\n", i, dst[x]);
 		s += i;
 	}
 	dst[size] = 0;
-	// printf("dst[0]: %s\n", dst[0]);
 	return (dst);
 }

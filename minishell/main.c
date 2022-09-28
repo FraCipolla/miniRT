@@ -6,11 +6,28 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/25 19:41:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:15:56 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**cmd_path(char **args)
+{
+	int		i;
+	char	*tmp;
+
+	if (args[0][0] == '/')
+	{
+		i = ft_strlen(args[0]);
+		while (args[0][i] != '/')
+			i--;
+		tmp = ft_strdup(args[0] + i);
+		free(args[0]);
+		args[0] = tmp;
+	}
+	return (args);
+}
 
 void	my_exec(char **mypath, char **environ, char **cmd)
 {
@@ -20,6 +37,7 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 
 	check_redir(cmd);
 	cmd = cut_red(cmd);
+	cmd = cmd_path(cmd);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -156,6 +174,8 @@ void	start_parsing(char *buff, char **mypath)
 	while (*args)
 	{
 		args2 = ft_split(*args, ' ');
+		if (*args2 == NULL)
+			return ;
 		if (logical_operator(*args, mypath, NULL) == 1)
 			check_pipes(*args, mypath, remove_quotes(args2));
 		args++;

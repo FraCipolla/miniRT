@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:23:37 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 15:12:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/28 17:49:49 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,32 @@ void	set_global(int status)
 		g_exit = 130;
 	else
 		g_exit = 0;
+}
+
+void	action(int sig)
+{
+	write(0, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	signal(sig, action);
+}
+
+void	clt_echo(char *str)
+{
+	char		**stty;
+	extern char	**environ;
+	int			pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		stty = malloc(sizeof(char *) * 3);
+		stty[0] = ft_strdup("stty");
+		stty[1] = ft_strdup(str);
+		stty[2] = NULL;
+		execve("/bin/stty", stty, environ);
+	}
+	if (pid > 0)
+		waitpid(-1, NULL, 0);
 }
