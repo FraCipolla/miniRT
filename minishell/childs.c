@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/29 14:50:07 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/30 23:27:21 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,41 @@ char	**cut_heredoc(char **args)
 		}
 	}
 	ret[n] = NULL;
+	my_free(args);
 	return (ret);
 }
 
 void	child_1(int **end, int i, char **cmd, int pid)
 {
-	// int		stdout_cpy;
 	char	**mypath;
 	int		heredoc;
 
 	mypath = init();
-	// stdout_cpy = dup(1);
+	heredoc = here_doc_pipes(cmd);
+	pid = fork();
+	if (pid == 0)
+	{
+		close(end[i][0]);
+		if (heredoc != -1)
+		{
+			cmd = cut_heredoc(cmd);
+			dup2(heredoc, STDIN_FILENO);
+		}
+		dup2(end[i][1], STDOUT_FILENO);
+		close(end[i][1]);
+		split_exec(mypath, cmd);
+		exit(0);
+	}
+	close(end[i][1]);
+	close(end[i][0]);
+}
+
+void	child_mid(int **end, int i, char **cmd, int pid)
+{
+	char	**mypath;
+	int		heredoc;
+	
+	mypath = init();
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
@@ -60,53 +84,17 @@ void	child_1(int **end, int i, char **cmd, int pid)
 			cmd = cut_heredoc(cmd);
 			dup2(heredoc, STDIN_FILENO);
 		}
+		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i][0]);
-		dup2(end[i][1], STDOUT_FILENO);
+		close(end[i - 1][0]);
 		close(end[i][1]);
 		split_exec(mypath, cmd);
 		exit(0);
 	}
-	else
-	{
-		// dup2(stdout_cpy, 1);
-		close(end[0][1]);
-		// close(end[i][1]);
-	}
-}
-
-void	child_mid(int **end, int i, char **cmd, int pid)
-{
-	int		stdout_cpy;
-	char	**mypath;
-	int		heredoc;
-
-	mypath = init();
-	stdout_cpy = dup(1);
-	heredoc = here_doc_pipes(cmd);
-	pid = fork();
-	if (pid == 0)
-	{
-		// close(end[i][0]);
-		if (heredoc != -1)
-		{
-			cmd = cut_heredoc(cmd);
-			end[i - 1][0] = heredoc;
-		}
-		dup2(end[i - 1][0], STDIN_FILENO);
-		dup2(end[i][1], STDOUT_FILENO);
-		close(end[i - 1][0]);
-		close(end[i][1]);
-		split_exec(mypath, cmd);
-		dup2(stdout_cpy, 1);
-		exit(0);
-	}
-	else
-	{
-		// dup2(stdout_cpy, 1);
-		// close(end[i - 1][1]);
-		close(end[i - 1][0]);
-		close(end[i][1]);
-	}
+	close(end[i - 1][0]);
+	close(end[i - 1][1]);
+	close(end[i][1]);
+	close(end[i][0]);
 }
 
 void	child_last(int **end, int i, char **cmd, int pid)
@@ -121,24 +109,17 @@ void	child_last(int **end, int i, char **cmd, int pid)
 	pid = fork();
 	if (pid == 0)
 	{
-		close(end[i - 1][1]);
 		if (heredoc != -1)
 		{
 			cmd = cut_heredoc(cmd);
-			end[i - 1][0] = heredoc;
+			dup2(heredoc, STDIN_FILENO);
 		}
-		dup2(end[i - 1][0], STDIN_FILENO);
 		dup2(stdout_cpy, STDOUT_FILENO);
 		close(end[i - 1][0]);
-		// close(end[i][1]);
 		split_exec(mypath, cmd);
 		exit(0);
 	}
-	else
-	{
-		// dup2(stdout_cpy, 1);
-		close(end[i - 1][0]);
-	}
+	close(end[i - 1][0]);
 }
 
 void	pipex(int **end, char **pipes, int n_pipes)
@@ -146,8 +127,10 @@ void	pipex(int **end, char **pipes, int n_pipes)
 	int		i;
 	char	**args;
 	int		*pid;
+	int		stdcpy;
 
 	i = 0;
+	stdcpy = dup(1);
 	pid = malloc(sizeof(int) * n_pipes + 1);
 	args = ft_split(pipes[i], ' ');
 	child_1(end, i, args, pid[i]);
@@ -161,10 +144,8 @@ void	pipex(int **end, char **pipes, int n_pipes)
 	args = ft_split(pipes[i], ' ');
 	child_last(end, i, args, pid[i]);
 	free(args);
-	while (0 <= n_pipes)
-	{
+	i = -1;
+	while (pid[++i] <= n_pipes)
 		waitpid(pid[i], NULL, 0);
-		n_pipes--;
-	}
 	free(pid);
 }

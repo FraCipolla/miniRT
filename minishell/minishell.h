@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/30 18:05:06 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/30 23:02:46 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char			**remove_quotes(char **args);
 char			*resolve_env(char *str);
 char			*get_env(char *str);
 char			*rem_char(char *str, int r);
-char			**remove_env(char **env, char *search);
+void			remove_env(char **env, char *search);
 
 /* PROGRAM BEHAVIOUR */
 

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/30 18:05:59 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/30 23:06:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	my_unset(char **str)
 		{
 			if (strncmp(str[c], environ[i], ft_strlen(str[c])) == 0
 				&& environ[i][ft_strlen(str[c])] == '=')
-				environ = remove_env(environ, str[c]);
+				remove_env(environ, str[c]);
 			i++;
 		}
 	}
@@ -34,28 +34,18 @@ int	my_unset(char **str)
 	return (0);
 }
 
-char	**remove_env(char **env, char *search)
+void	remove_env(char **env, char *search)
 {
 	int		i;
-	int		c;
-	char	**ret;
-
-	i = 0;
-	c = 0;
-	while (env[i])
-		i++;
-	ret = malloc(sizeof(char *) * i + 1);
+	
 	i = -1;
 	while (env[++i])
 	{
-		if (strncmp(search, env[i], ft_strlen(search)) != 0)
+		if (strncmp(search, env[i], ft_strlen(search)) == 0)
 		{
-			ret[c] = ft_strjoin(ret[c], env[i]);
-			c++;
+			env[i] = "";
 		}
 	}
-	ret[c] = NULL;
-	return (ret);
 }
 
 int	check_env_path(char *str, char **environ)

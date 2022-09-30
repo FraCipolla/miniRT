@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/29 15:52:55 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/30 23:51:28 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,26 @@ void	add_char(char **toret, char a)
 void	ft_increase_shlvl(void)
 {
 	extern char	**environ;
-	int			i;
+	char		*nb;
 	int			tmp;
 	char		*cpy;
 
-	i = -1;
-	cpy = malloc(sizeof(char) * 7);
-	while (environ[++i])
+	tmp = -1;
+	nb = NULL;
+	cpy = ft_strdup("SHLVL=");
+	while (environ[++tmp])
 	{
-		if (strncmp(environ[i], "SHLVL", 5) == 0)
+		if (strncmp(environ[tmp], "SHLVL", 5) == 0)
 		{
-			cpy = strncpy(cpy, environ[i], 6);
+			tmp = atoi(environ[tmp] + 6) + 1;
+			nb = ft_itoa(tmp);
+			environ[tmp] = ft_strjoin(cpy, nb);
 			break ;
 		}
 	}
-	tmp = atoi(environ[i] + 6) + 1;
-	environ[i] = ft_strjoin(cpy, ft_itoa(tmp));
+	free(cpy);
+	if (nb != NULL)
+		free(nb);
 }
 
 void	msg_exit()
@@ -65,13 +69,13 @@ char	**cpy_matrix(char **matrix, int offset)
 	i = 0;
 	while (matrix[i])
 		i++;
-	ret = (char **)malloc(sizeof(char *) * (i + 1 - offset));
+	ret = (char **)malloc(sizeof(char *) * (i - offset));
 	i = 0;
 	while (matrix[i])
 	{
-		ret[i] = matrix[i];
+		ret[i] = ft_strdup(matrix[i]);
 		i++;
 	}
-	ret[i + 1] = NULL;
+	ret[i] = NULL;
 	return (ret);
 }
