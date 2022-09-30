@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 19:40:48 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:39:01 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_addspaces(char *str)
 		{
 			if (str[i + 2] == '<' || str[i + 2] == '>')
 			{
-				printf("bash: syntax error near unexpected token '%c'\n", str[i + 2]);
+				printf("syntax error near unexpected token '%c'\n", str[i + 2]);
 				free(ret);
 				free(str);
 				return (NULL);

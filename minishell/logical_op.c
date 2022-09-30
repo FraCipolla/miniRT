@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:25:42 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/25 19:34:41 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:38:57 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*check_empty_logical(char *buff)
 			if (buff[i + 2] == '&' || buff[i + 2] == '|')
 			{
 				strncpy(print, buff + i + 2, 2);
-				printf("bash: syntax error near unexpected token '%s'\n", print);
+				printf("syntax error near unexpected token '%s'\n", print);
 				return (NULL);
 			}
 			else if (check_emptyline(buff + i + 2) == 0)

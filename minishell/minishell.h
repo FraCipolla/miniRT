@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/28 18:56:05 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:05:06 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int				my_pwd(char **tmp);
 int				my_echo(char **args, int fd);
 int				my_env(char **tmp);
 int				my_exp(char **tmp);
-int				my_unset(char *str);
+int				my_unset(char **str);
 int				my_cd(char **tmp);
 
 /* BUILT-IN UTILITY */
@@ -80,6 +80,7 @@ int				ft_strrchr(const char *s, char c);
 char			*get_next_line(int fd);
 int				quote_str(const char *s);
 void			add_char(char **toret, char a);
+int				skip_chars(char c);
 
 /* PIPES/HEREDOC/REDIRECTION */
 
@@ -130,5 +131,6 @@ void			exec_subshell(char **args);
 /* SIGNAL */
 
 void			action(int sig);
+void			action_in_process(int sig);
 
 #endif

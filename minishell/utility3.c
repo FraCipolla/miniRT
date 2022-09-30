@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:28:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/28 19:47:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:55:11 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ char	*get_env(char *str)
 	char	*ret;
 
 	i = 0;
-	while (str[i] != '\0' && str[i] != ' ' && str[i] != '\n'
-		&& str[i] != '"' && str[i] != '$' && str[i] != '\'')
+	while (str[i] && skip_chars(str[i]) == 0 && str[i] != '$')
 		i++;
 	ret = malloc(sizeof(char) * i + 1);
 	i = 0;
-	while (str[i] != ' ' && str[i] != '\0' && str[i] != '\n'
-		&& str[i] != '"' && str[i] != '$' && str[i] != '\'')
+	while (str[i] && skip_chars(str[i]) == 0 && str[i] != '$')
 	{
 		ret[i] = str[i];
 		i++;
@@ -40,7 +38,7 @@ int	check_dollar(char *str, char **ret, int i)
 	char	*env;
 
 	c = 0;
-	while (str[i] != '"')
+	while (str[i] && skip_chars(str[i]) == 0)
 	{
 		if (str[i] == '$')
 		{
@@ -50,53 +48,30 @@ int	check_dollar(char *str, char **ret, int i)
 				env = getenv(get_env(str + i));
 			while (env && *env)
 				tmp[c++] = *env++;
-			while (str[i] && str[i] != ' ' && str[i] != '"'
-				&& str[i] != '$' && str[i] != '\'' && str[i] != '\n')
+			while (str[i] && skip_chars(str[i]) == 0)
 				i++;
 		}
 		else if (str[i])
 			tmp[c++] = str[i++];
 	}
 	tmp[c] = '\0';
-	*ret = ft_strjoin(*ret, tmp);
-	return (i + 1);
+	if (tmp[0] != '\0')
+		*ret = ft_strjoin(*ret, tmp);
+	return (i);
 }
 
-// int	between_quotes(char *str, char **ret)
-// {
-// 	int		i;
-// 	int		c;
-// 	char	*tmp;
-
-// 	i = 1;
-// 	while (str[i] != '\'')
-// 		i++;
-// 	tmp = malloc(sizeof(char) * i - 1);
-// 	tmp[i - 1] = '\0';
-// 	i = 1;
-// 	c = 0;
-// 	while (str[i] != '\'')
-// 	{
-// 		tmp[c] = str[i];
-// 		i++;
-// 		c++;
-// 	}
-// 	*ret = ft_strjoin(*ret, tmp);
-// 	return (i + 1);
-// }
-
-int manage_sq(char *first, char **toret)
+int	manage_sq(char *first, char **toret)
 {
-	char *next;
-	char *aux;
+	char	*next;
+	char	*aux;
 
 	next = strstr(first, "'");
-	if((next - first) == 1)
+	if ((next - first) == 1)
 		return (1);
 	aux = ft_malloc_strcpy(first, next - first);
-	*toret = ft_strjoin(*toret,aux);
+	*toret = ft_strjoin(*toret, aux);
 	free(aux);
-	return(next - first + 2);
+	return (next - first + 2);
 }
 
 char	*resolve_env(char *str)
@@ -113,12 +88,7 @@ char	*resolve_env(char *str)
 		else if (*str == '"')
 			str += check_dollar(str, &ret, 1);
 		else if (*str == '$')
-		{
-			ret = ft_strjoin(ret, getenv(get_env(++(str))));
-			while (*str && *str != ' ' && *str != '"'
-				&& *str != '$' && *str != '\'' && *str != '\n')
-				str++;
-		}
+			str += check_dollar(str, &ret, 0);
 		else
 		{
 			add_char(&ret, *str);
@@ -148,3 +118,26 @@ char	**remove_quotes(char **args)
 	ret[i] = NULL;
 	return (ret);
 }
+
+// int	between_quotes(char *str, char **ret)
+// {
+// 	int		i;
+// 	int		c;
+// 	char	*tmp;
+
+// 	i = 1;
+// 	while (str[i] != '\'')
+// 		i++;
+// 	tmp = malloc(sizeof(char) * i - 1);
+// 	tmp[i - 1] = '\0';
+// 	i = 1;
+// 	c = 0;
+// 	while (str[i] != '\'')
+// 	{
+// 		tmp[c] = str[i];
+// 		i++;
+// 		c++;
+// 	}
+// 	*ret = ft_strjoin(*ret, tmp);
+// 	return (i + 1);
+// }

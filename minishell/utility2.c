@@ -6,11 +6,19 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/28 18:56:16 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:52:55 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	skip_chars(char c)
+{
+	if (c && c != ' ' && c != '"'
+		&& c != '\'' && c != '\n')
+		return (0);
+	return (1);
+}
 
 void	add_char(char **toret, char a)
 {

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:23:37 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/28 17:49:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:57:23 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,19 @@ void	set_global(int status)
 		g_exit = 0;
 }
 
+void	action_in_process(int sig)
+{
+	printf("\n");
+	(void)sig;
+}
+
 void	action(int sig)
 {
-	write(0, "\n", 1);
+	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	signal(sig, action);
+	(void)sig;
 }
 
 void	clt_echo(char *str)

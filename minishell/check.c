@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/22 16:24:09 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:39:09 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	check_dot(char **cmd, char **environ)
 				execve(cmd[0], cmd, environ);
 			}
 			g_exit = 127;
-			printf("bash: %s: No such file or directory\n", cmd[0]);
+			printf("%s: No such file or directory\n", cmd[0]);
 			exit (0);
 		}
 		i++;

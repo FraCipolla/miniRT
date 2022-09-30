@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 19:55:50 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:50:07 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ char	**cut_heredoc(char **args)
 
 void	child_1(int **end, int i, char **cmd, int pid)
 {
-	int		stdout_cpy;
+	// int		stdout_cpy;
 	char	**mypath;
 	int		heredoc;
 
 	mypath = init();
-	stdout_cpy = dup(1);
+	// stdout_cpy = dup(1);
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
@@ -68,8 +68,9 @@ void	child_1(int **end, int i, char **cmd, int pid)
 	}
 	else
 	{
-		dup2(stdout_cpy, 1);
+		// dup2(stdout_cpy, 1);
 		close(end[0][1]);
+		// close(end[i][1]);
 	}
 }
 
@@ -85,7 +86,7 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 	pid = fork();
 	if (pid == 0)
 	{
-		close(end[i][0]);
+		// close(end[i][0]);
 		if (heredoc != -1)
 		{
 			cmd = cut_heredoc(cmd);
@@ -96,11 +97,13 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 		close(end[i - 1][0]);
 		close(end[i][1]);
 		split_exec(mypath, cmd);
+		dup2(stdout_cpy, 1);
 		exit(0);
 	}
 	else
 	{
-		dup2(stdout_cpy, 1);
+		// dup2(stdout_cpy, 1);
+		// close(end[i - 1][1]);
 		close(end[i - 1][0]);
 		close(end[i][1]);
 	}
@@ -118,6 +121,7 @@ void	child_last(int **end, int i, char **cmd, int pid)
 	pid = fork();
 	if (pid == 0)
 	{
+		close(end[i - 1][1]);
 		if (heredoc != -1)
 		{
 			cmd = cut_heredoc(cmd);
@@ -132,7 +136,7 @@ void	child_last(int **end, int i, char **cmd, int pid)
 	}
 	else
 	{
-		dup2(stdout_cpy, 1);
+		// dup2(stdout_cpy, 1);
 		close(end[i - 1][0]);
 	}
 }
@@ -155,10 +159,12 @@ void	pipex(int **end, char **pipes, int n_pipes)
 		free(args);
 	}
 	args = ft_split(pipes[i], ' ');
-	// printf("args[0]: %s %lu\n", args[0], strlen(args[0]));
 	child_last(end, i, args, pid[i]);
 	free(args);
-	i = -1;
-	while (pid[++i] < n_pipes)
+	while (0 <= n_pipes)
+	{
 		waitpid(pid[i], NULL, 0);
+		n_pipes--;
+	}
+	free(pid);
 }

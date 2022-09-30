@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:24:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/25 12:36:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:38:30 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,22 @@ char	*remove_parentheses(char *str)
 	char	*ret;
 	size_t	size;
 
-	size = ft_strlen(str) - 2;
 	if (str[1] == ' ')
+	{
+		size = ft_strlen(str) - 3;
 		i = 2;
+	}
 	else
+	{
+		size = ft_strlen(str) - 2;
 		i = 1;
-	c = 0;
+	}
+	c = -1;
 	ret = malloc(sizeof(char) * size);
 	ret[size] = '\0';
-	while (c < size)
+	while (++c < size)
 	{
 		ret[c] = str[i];
-		c++;
 		i++;
 	}
 	free(str);
@@ -77,11 +81,11 @@ int	between_parentheses(char *str)
 }
 
 int	logic_operator(char *buff)
-{;
+{
 	if (ft_strncmp(buff, "&&", 2) == 0 || ft_strncmp(buff, "||", 2) == 0)
 		return (2);
 	if (buff[0] == '|' || buff[0] == '&')
-		return(1);
+		return (1);
 	return (0);
 }
 
@@ -90,23 +94,21 @@ char	*fill_parentheses(char *buff, int i)
 	int		flag;
 	char	*read;
 	int		c;
-	
+
 	flag = 0;
 	c = i;
-	//	 SISTEMARE IL CASO DI ECHO( DEVE DARE ERROR, NON CONTROLLA BENE SE C'E' UN COMANDO FRA OPERATORE LOGICO E PARENTESI
-	while (buff[i])
+	while (buff[i++])
 	{
 		if (buff[i] == '(')
 			if (strchr(buff + i, ')') == NULL)
 				flag++;
-		i++;
 	}
 	while (flag > 0)
 	{
 		read = readline("> ");
 		if (strchr(read, ')') != NULL)
 		{
-			if (check_emptyline(buff + c) != 0)
+			if (check_emptyline(buff + c + 1) != 0)
 				buff = ft_strjoin(buff, ";");
 			buff = ft_strjoin(buff, " ");
 			buff = ft_strjoin(buff, read);
@@ -129,13 +131,13 @@ char	*check_empty_parentheses(char *buff)
 		{
 			if (buff[i] == '(' || buff[i] == ')')
 			{
-				printf("bash: syntax error near unexpected token '%c'\n", buff[i]);
+				printf("syntax error near unexpected token '%c'\n", buff[i]);
 				return (NULL);
 			}
 			i++;
 		}
 		i += logic_operator(buff + i);
-		while(buff[i] && buff[i] == ' ')
+		while (buff[i] && buff[i] == ' ')
 			i++;
 	}
 	return (fill_parentheses(buff, i));

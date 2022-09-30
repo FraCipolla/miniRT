@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/26 18:15:56 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:47:56 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,17 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 
 	check_redir(cmd);
 	cmd = cut_red(cmd);
+	if (cmd[0] == NULL)
+		return ;
 	cmd = cmd_path(cmd);
 	pid = fork();
+	signal(SIGINT, action_in_process);
+	clt_echo("ctlecho");
 	if (pid == 0)
 	{
 		if (check_dot(cmd, environ) == -1)
 		{
-			while (*mypath)
+			while (mypath && *mypath)
 			{
 				tmp = ft_strjoin(*mypath, cmd[0]);
 				if (access(tmp, R_OK) == 0)
@@ -51,7 +55,7 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 				mypath++;
 				free(tmp);
 			}
-			printf("bash: %s: command not found\n", cmd[0]);
+			printf("%s: command not found\n", cmd[0]);
 		}
 		exit(127);
 	}
@@ -88,9 +92,6 @@ void	split_exec(char **mypath, char **cmd)
 		return ;
 	}
 	set_fd(&stdin_cpy, &stdout_cpy, 0);
-	if (getenv("PATH") == NULL)
-		while (*mypath)
-			*mypath++ = NULL;
 	if (check_builtin(cmd[0]) == 0)
 		exec_builtin(cmd);
 	else
@@ -107,7 +108,6 @@ void	check_pipes(char *str, char **mypath, char **args)
 
 	end = NULL;
 	matrix_size = 0;
-	// printf("args: %s\n", args[0]);
 	pipes = ft_split(str, '|');
 	while (pipes[matrix_size])
 		matrix_size++;
@@ -134,10 +134,15 @@ char	**init()
 	char	**mypath;
 
 	clt_echo("-ctlecho");
-	mypath = ft_split(getenv("PATH"), ':');
-	i = -1;
-	while (mypath[++i])
-		mypath[i] = ft_strjoin(mypath[i], "/");
+	if (getenv("PATH") == NULL)
+		mypath = NULL;
+	else
+	{
+		mypath = ft_split(getenv("PATH"), ':');
+		i = -1;
+		while (mypath[++i])
+			mypath[i] = ft_strjoin(mypath[i], "/");
+	}
 	signal(SIGINT, action);
 	signal(SIGQUIT, SIG_IGN);
 	return (mypath);
@@ -169,17 +174,21 @@ void	start_parsing(char *buff, char **mypath)
 {
 	char	**args;
 	char	**args2;
+	int		i;
 
 	args = ft_split(buff, ';');
-	while (*args)
+	i = 0;
+	while (args[i])
 	{
-		args2 = ft_split(*args, ' ');
-		if (*args2 == NULL)
+		args2 = ft_split(args[i], ' ');
+		if (args2 == NULL)
 			return ;
-		if (logical_operator(*args, mypath, NULL) == 1)
-			check_pipes(*args, mypath, remove_quotes(args2));
-		args++;
+		if (logical_operator(args[i], mypath, NULL) == 1)
+			check_pipes(args[i], mypath, remove_quotes(args2));
+		my_free(args2);
+		i++;
 	}
+	my_free(args);
 }
 
 int	main(int argc, char *argv[])
@@ -187,9 +196,9 @@ int	main(int argc, char *argv[])
 	char	*buff;
 	char	**mypath;
 
-	mypath = init();
 	while (1)
 	{
+		mypath = init();
 		if (argc > 1)
 			buff = argv[1];
 		else

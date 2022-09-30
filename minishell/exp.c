@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   exp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/07/17 18:22:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:35:48 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,28 @@ int	my_exp(char **tmp)
 	extern char	**environ;
 	int			i;
 	char		**export;
+	char		*aux;
 
+	i = 0;
+	while (tmp[++i] != NULL)
+		environ = add_env(environ, tmp[i]);
+	if (tmp[1] != NULL)
+		return (0);
+	i = -1;
 	export = cpy_matrix(environ, 0);
 	export = sort_env(export);
-	if (tmp[1] != NULL)
-	{
-		environ = add_env(environ, tmp[1]);
-		return (0);
-	}
-	i = -1;
 	while (export[++i])
 	{
 		if (check_empty_env(export[i]) == -2)
-			export[i] = ft_strjoin(export[i], "''");
+			aux = ft_strjoin(export[i], "''");
 		else if (check_empty_env(export[i]) == 0)
-			export[i] = ft_strjoin(export[i], "=''");
-		printf("%s\n", export[i]);
+			aux = ft_strjoin(export[i], "=''");
+		else
+			aux = ft_strdup(export[i]);
+		printf("%s\n", aux);
+		free(aux);
 	}
+	my_free(export);
 	return (0);
 }
 
@@ -112,16 +117,21 @@ char	*until_ugual(char *str)
 char	**add_env(char **env, char *str)
 {
 	int		i;
-	char	**tmp;
+	char	*tmp;
+	char	*tmp2;
 
 	i = -1;
 	while (env[++i])
 	{
-		if (until_ugual(str) != NULL && until_ugual(env[i]) != NULL)
+		tmp = until_ugual(str);
+		tmp2 = until_ugual(env[i]);
+		if (tmp != NULL && tmp2 != NULL)
 		{
-			if (strcmp(until_ugual(str), until_ugual(env[i])) == 0)
+			if (strcmp(tmp, tmp2) == 0)
 			{
-				env[i] = ft_strdup(str);
+				env[i] = str;
+				free(tmp);
+				free(tmp2);
 				return (env);
 			}
 		}
@@ -129,11 +139,7 @@ char	**add_env(char **env, char *str)
 			if (env[i][ft_strlen(str)] == '=')
 				return (env);
 	}
-	tmp = cpy_matrix(env, -1);
-	i = -1;
-	while (env[++i])
-		tmp[i] = env[i];
-	tmp[i] = str;
-	tmp[i + 1] = NULL;
-	return (tmp);
+	env[i] = str;
+	env[i + 1] = NULL;
+	return (env);
 }
