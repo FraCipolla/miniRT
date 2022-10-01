@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 14:15:58 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 16:24:53 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,6 @@ void	ft_increase_shlvl(void)
 			break ;
 		}
 	}
-	free(cpy);
-	if (nb != NULL)
-		free(nb);
 }
 
 void	msg_exit()

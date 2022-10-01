@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 15:05:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 17:11:22 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	check_pipes(char *str, char **mypath, char **args)
 		pipex(end, pipes, n_pipes);
 	else
 		split_exec(mypath, args);
-	my_free(pipes);
+	// my_free(pipes);
 }
 
 char	**init()
@@ -156,11 +156,11 @@ char	*first_check(char *buff)
 {
 	char	*tmp;
 
+	if (buff == NULL)
+		msg_exit();
 	if (buff[0] == '\0')
 		return(buff);
 	tmp = buff;
-	if (buff == NULL)
-		msg_exit();
 	buff = check_empty_parentheses(buff);
 	if (buff == NULL)
 		add_history(tmp);

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:24:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 15:04:45 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 16:20:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,19 @@ void	exec_subshell(char **args)
 	extern char	**environ;
 	int			pid;
 
+	cmd = (char **)malloc(sizeof(char *) * 3);
+	cmd[0] = ft_strdup("./minishell");
+	cmd[1] = remove_parentheses(args[0]);
+	cmd[2] = NULL;
 	pid = fork();
 	if (pid == 0)
 	{
-		cmd = (char **)malloc(sizeof(char *) * 3);
-		cmd[0] = ft_strdup("./minishell");
-		cmd[1] = remove_parentheses(args[0]);
-		cmd[2] = NULL;
 		ft_increase_shlvl();
 		execve(cmd[0], cmd, environ);
 	}
 	else
 		waitpid(pid, NULL, 0);
-	// my_free(cmd);
+	my_free(cmd);
 }
 
 int	between_parentheses(char *str)
@@ -108,14 +108,13 @@ char	*fill_parentheses(char *buff, int i)
 	while (flag > 0)
 	{
 		read = readline("> ");
+		if (check_emptyline(buff + c + 1) != 0)
+			buff = ft_strjoin(buff, ";");
+		buff = ft_strjoin(buff, " ");
+		buff = ft_strjoin(buff, read);
 		if (strchr(read, ')') != NULL)
-		{
-			if (check_emptyline(buff + c + 1) != 0)
-				buff = ft_strjoin(buff, ";");
-			buff = ft_strjoin(buff, " ");
-			buff = ft_strjoin(buff, read);
 			flag--;
-		}
+		free(read);
 	}
 	return (buff);
 }
