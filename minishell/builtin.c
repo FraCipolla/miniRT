@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:30:43 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/30 18:03:21 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 14:50:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	exec_builtin(char **cmd)
 	}
 	else
 		printf("%s: command not found\n", cmd[0]);
+	my_free(cmd);
 }
 
 int	check_builtin(char *str)

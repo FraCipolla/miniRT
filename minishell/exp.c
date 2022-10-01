@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/30 23:14:35 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 14:20:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	my_exp(char **tmp)
 		printf("%s\n", aux);
 		free(aux);
 	}
-	my_free(export);
 	return (0);
 }
 

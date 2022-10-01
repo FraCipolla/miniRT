@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/30 23:51:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 14:15:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**cpy_matrix(char **matrix, int offset)
 	i = 0;
 	while (matrix[i])
 	{
-		ret[i] = ft_strdup(matrix[i]);
+		ret[i] = matrix[i];
 		i++;
 	}
 	ret[i] = NULL;

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:25:42 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/29 17:38:57 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 15:00:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	exec_logical(char *buff, char **mypath, int i)
 	args = ft_split(tmp, ' ');
 	args = check_wild(args);
 	check_pipes(tmp, mypath, remove_quotes(args));
+	my_free(args);
 	free(tmp);
 	if (buff[i + 1] == '\0')
 		return (1);

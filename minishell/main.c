@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/30 22:23:43 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 15:05:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 	{
 		waitpid(pid, &status, 0);
 		set_global(status);
+		my_free(cmd);
 	}
 }
 
@@ -126,19 +127,22 @@ void	check_pipes(char *str, char **mypath, char **args)
 		pipex(end, pipes, n_pipes);
 	else
 		split_exec(mypath, args);
+	my_free(pipes);
 }
 
 char	**init()
 {
 	int		i;
 	char	**mypath;
+	char	*tmp;
 
 	// clt_echo("-ctlecho");
 	if (getenv("PATH") == NULL)
 		mypath = NULL;
 	else
 	{
-		mypath = ft_split(getenv("PATH"), ':');
+		tmp = getenv("PATH");
+		mypath = ft_split(tmp, ':');
 		i = -1;
 		while (mypath[++i])
 			mypath[i] = ft_strjoin(mypath[i], "/");
@@ -213,7 +217,7 @@ int	main(int argc, char *argv[])
 		if (argc > 1)
 			exit(0);
 		free(buff);
+		my_free(mypath);
 	}
-	my_free(mypath);
 	return (0);
 }

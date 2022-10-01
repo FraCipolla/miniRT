@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/29 17:39:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/01 14:38:47 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ char	**cut_red(char **args)
 			ret[n++] = ft_strdup(args[i++]);
 	}
 	ret[n] = NULL;
+	my_free(args);
 	return (ret);
 }
