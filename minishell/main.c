@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 19:00:55 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:33:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,11 +179,11 @@ int	main(int argc, char *argv[], char **envp)
 	char	*buff;
 	char	**mypath;
 
-	mypath = NULL;
-	mypath = get_path(mypath);
 	init();
+	mypath = NULL;
 	while (1)
 	{
+		mypath = get_path(mypath);
 		if (argc > 1)
 			buff = argv[1];
 		else
@@ -196,7 +196,7 @@ int	main(int argc, char *argv[], char **envp)
 		if (argc > 1)
 			exit(0);
 		free(buff);
+		my_free(mypath);
 	}
-	my_free(mypath);
 	return (0);
 }

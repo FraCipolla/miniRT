@@ -6,30 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 15:15:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 18:43:22 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:10:03 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// char	**cpy_env(char **matrix)
-// {
-// 	char		**cpy;
-// 	int			i;
-
-// 	i = 0;
-// 	while (matrix[i])
-// 		i++;
-// 	cpy = malloc(sizeof(char *) * i);
-// 	i = 0;
-// 	while (matrix[i])
-// 	{
-// 		cpy[i] = ft_strdup(matrix[i]);
-// 		i++;
-// 	}
-// 	cpy[i] = NULL;
-// 	return (cpy);
-// }
 
 char	**get_path(char **ret)
 {

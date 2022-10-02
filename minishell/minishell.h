@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 19:01:17 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:04:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,12 @@ int				skip_chars(char c);
 /* PIPES/HEREDOC/REDIRECTION */
 
 void			pipex(int **end, char **pipes, int n_pipes);
+void			pipex2(int **end, char **pipes, int n_pipes, char **envp);
 int				here_doc_pipes(char	**args);
 void			here_doc(char *limiter, int *end);
 char			**cut_red(char **args);
 char			*infile(char **args);
+char			**cut_heredoc(char **args);
 
 /* STRINGS OPERATIONS */
 
