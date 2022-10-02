@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 13:24:40 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/24 19:01:42 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 14:40:22 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,12 @@ char	**cut_echo(char **args)
 void	ft_putstr_fd(char *str, int fd)
 {
 	int		i;
-	char	*c;
 
 	i = 0;
-	c = ft_itoa(g_exit);
-	if (ft_strcmp(str, "$?") == 0)
-		write (fd, c, strlen(c));
-	else
+	while (str[i])
 	{
-		while (str[i])
-		{
-			write(fd, &str[i], 1);
-			i++;
-		}
+		write(fd, &str[i], 1);
+		i++;
 	}
 }
 

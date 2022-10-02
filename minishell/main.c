@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 17:11:22 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:00:55 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,8 @@ void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)
 	}
 }
 
-void	split_exec(char **mypath, char **cmd)
+void	split_exec(char **mypath, char **cmd, char **envp)
 {
-	extern char	**environ;
 	int	stdout_cpy;
 	int	stdin_cpy;
 
@@ -94,13 +93,13 @@ void	split_exec(char **mypath, char **cmd)
 	}
 	set_fd(&stdin_cpy, &stdout_cpy, 0);
 	if (check_builtin(cmd[0]) == 0)
-		exec_builtin(cmd);
+		exec_builtin(cmd, envp);
 	else
-		my_exec(mypath, environ, cmd);
+		my_exec(mypath, envp, cmd);
 	set_fd(&stdin_cpy, &stdout_cpy, 1);
 }
 
-void	check_pipes(char *str, char **mypath, char **args)
+void	check_pipes(char *str, char **mypath, char **args, char **envp)
 {
 	char	**pipes;
 	int		matrix_size;
@@ -126,30 +125,8 @@ void	check_pipes(char *str, char **mypath, char **args)
 	if(end)
 		pipex(end, pipes, n_pipes);
 	else
-		split_exec(mypath, args);
-	// my_free(pipes);
-}
-
-char	**init()
-{
-	int		i;
-	char	**mypath;
-	char	*tmp;
-
-	// clt_echo("-ctlecho");
-	if (getenv("PATH") == NULL)
-		mypath = NULL;
-	else
-	{
-		tmp = getenv("PATH");
-		mypath = ft_split(tmp, ':');
-		i = -1;
-		while (mypath[++i])
-			mypath[i] = ft_strjoin(mypath[i], "/");
-	}
-	signal(SIGINT, action);
-	signal(SIGQUIT, SIG_IGN);
-	return (mypath);
+		split_exec(mypath, args, envp);
+	my_free(pipes);
 }
 
 char	*first_check(char *buff)
@@ -176,7 +153,7 @@ char	*first_check(char *buff)
 	return (buff);
 }
 
-void	start_parsing(char *buff, char **mypath)
+void	start_parsing(char *buff, char **mypath, char **envp)
 {
 	char	**args;
 	char	**args2;
@@ -189,22 +166,24 @@ void	start_parsing(char *buff, char **mypath)
 		args2 = ft_split(args[i], ' ');
 		if (args2 == NULL)
 			return ;
-		if (logical_operator(args[i], mypath, NULL) == 1)
-			check_pipes(args[i], mypath, remove_quotes(args2));
+		if (logical_operator(args[i], mypath, NULL, envp) == 1)
+			check_pipes(args[i], mypath, remove_quotes(args2), envp);
 		my_free(args2);
 		i++;
 	}
 	my_free(args);
 }
 
-int	main(int argc, char *argv[])
+int	main(int argc, char *argv[], char **envp)
 {
 	char	*buff;
 	char	**mypath;
 
+	mypath = NULL;
+	mypath = get_path(mypath);
+	init();
 	while (1)
 	{
-		mypath = init();
 		if (argc > 1)
 			buff = argv[1];
 		else
@@ -213,11 +192,11 @@ int	main(int argc, char *argv[])
 			buff = first_check(buff);
 		}
 		if (buff[0] != '\0')
-			start_parsing(buff, mypath);
+			start_parsing(buff, mypath, envp);
 		if (argc > 1)
 			exit(0);
 		free(buff);
-		my_free(mypath);
 	}
+	my_free(mypath);
 	return (0);
 }

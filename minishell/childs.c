@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 17:10:05 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:00:12 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,11 @@ char	**cut_heredoc(char **args)
 
 void	child_1(int **end, int i, char **cmd, int pid)
 {
-	char	**mypath;
+	char	**mypath = NULL;
 	int		heredoc;
+	extern char	**environ;
 
-	mypath = init();
+	mypath = get_path(mypath);
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
@@ -62,18 +63,20 @@ void	child_1(int **end, int i, char **cmd, int pid)
 		}
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i][1]);
-		split_exec(mypath, cmd);
+		split_exec(mypath, cmd, environ);
 		exit(0);
 	}
+	my_free(mypath);
 	close(end[i][1]);
 }
 
 void	child_mid(int **end, int i, char **cmd, int pid)
 {
-	char	**mypath;
+	char	**mypath = NULL;
 	int		heredoc;
+	extern char	**environ;
 	
-	mypath = init();
+	mypath = get_path(mypath);
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
@@ -88,11 +91,10 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i - 1][0]);
 		close(end[i][1]);
-		split_exec(mypath, cmd);
+		split_exec(mypath, cmd, environ);
 		exit(0);
 	}
-	// close(end[i - 1][0]);
-	// close(end[i - 1][1]);
+	my_free(mypath);
 	close(end[i][1]);
 	close(end[i - 1][0]);
 }
@@ -100,10 +102,11 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 void	child_last(int **end, int i, char **cmd, int pid)
 {
 	int		stdout_cpy;
-	char	**mypath;
+	char	**mypath = NULL;
 	int		heredoc;
+	extern char	**environ;
 
-	mypath = init();
+	mypath = get_path(mypath);
 	stdout_cpy = dup(1);
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();
@@ -115,12 +118,13 @@ void	child_last(int **end, int i, char **cmd, int pid)
 			cmd = cut_heredoc(cmd);
 			dup2(heredoc, STDIN_FILENO);
 		}
-		// dup2(end[i - 1][0], STDIN_FILENO);
+		dup2(end[i - 1][0], STDIN_FILENO);
 		dup2(stdout_cpy, STDOUT_FILENO);
 		close(end[i - 1][0]);
-		split_exec(mypath, cmd);
+		split_exec(mypath, cmd, environ);
 		exit(0);
 	}
+	my_free(mypath);
 	close(end[i - 1][0]);
 }
 

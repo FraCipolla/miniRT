@@ -6,15 +6,14 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/30 23:06:59 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:02:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	my_unset(char **str)
+int	my_unset(char **str, char **envp)
 {
-	extern char	**environ;
 	int			i;
 	int			c;
 
@@ -22,11 +21,11 @@ int	my_unset(char **str)
 	while (str[++c])
 	{
 		i = 0;
-		while (environ[i])
+		while (envp[i])
 		{
-			if (strncmp(str[c], environ[i], ft_strlen(str[c])) == 0
-				&& environ[i][ft_strlen(str[c])] == '=')
-				remove_env(environ, str[c]);
+			if (strncmp(str[c], envp[i], ft_strlen(str[c])) == 0
+				&& envp[i][ft_strlen(str[c])] == '=')
+				remove_env(envp, str[c]);
 			i++;
 		}
 	}

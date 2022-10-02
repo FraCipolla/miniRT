@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:25:42 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 15:00:59 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:00:22 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*cut_str(char *str, int limiter)
 	return (ret);
 }
 
-int	exec_logical(char *buff, char **mypath, int i)
+int	exec_logical(char *buff, char **mypath, int i, char **envp)
 {
 	char	*tmp;
 	char	**args;
@@ -46,7 +46,7 @@ int	exec_logical(char *buff, char **mypath, int i)
 	tmp = cut_str(buff, i);
 	args = ft_split(tmp, ' ');
 	args = check_wild(args);
-	check_pipes(tmp, mypath, remove_quotes(args));
+	check_pipes(tmp, mypath, remove_quotes(args), envp);
 	my_free(args);
 	free(tmp);
 	if (buff[i + 1] == '\0')
@@ -54,7 +54,7 @@ int	exec_logical(char *buff, char **mypath, int i)
 	return (0);
 }
 
-int	logical_operator(char *buff, char **mypath, char *log)
+int	logical_operator(char *buff, char **mypath, char *log, char **envp)
 {
 	int		i;
 
@@ -72,9 +72,9 @@ int	logical_operator(char *buff, char **mypath, char *log)
 			if (log == NULL
 				|| (ft_strncmp(log, "&&", 2) == 0 && g_exit == 0)
 				|| (ft_strncmp(log, "||", 2) == 0 && g_exit != 0))
-				if (exec_logical(buff, mypath, i) == 1)
+				if (exec_logical(buff, mypath, i, envp) == 1)
 					return (0);
-			logical_operator(buff + i + 2, mypath, buff + i);
+			logical_operator(buff + i + 2, mypath, buff + i, envp);
 			return (0);
 		}
 		i++;

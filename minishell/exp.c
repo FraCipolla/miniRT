@@ -6,26 +6,25 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 14:20:43 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:05:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	my_exp(char **tmp)
+int	my_exp(char **tmp, char **envp)
 {
-	extern char	**environ;
 	int			i;
 	char		**export;
 	char		*aux;
 
 	i = 0;
 	while (tmp[++i] != NULL)
-		environ = add_env(environ, tmp[i]);
+		add_env(tmp[i], envp);
 	if (tmp[1] != NULL)
 		return (0);
 	i = -1;
-	export = cpy_matrix(environ, 0);
+	export = cpy_matrix(envp, 0);
 	export = sort_env(export);
 	while (export[++i])
 	{
@@ -38,33 +37,33 @@ int	my_exp(char **tmp)
 		printf("%s\n", aux);
 		free(aux);
 	}
+	my_free(export);
 	return (0);
 }
 
-int	my_env( char **tmp)
+int	my_env( char **tmp, char **envp)
 {
-	extern char	**environ;
 	int			i;
 	int			s;
 
 	if (tmp[1] != NULL)
 	{
-		if (check_env_path(tmp[1], environ) == -1)
+		if (check_env_path(tmp[1], envp) == -1)
 		{
 			printf("env: %s: No such file or directory\n", tmp[1]);
 			return (1);
 		}
 	}
 	i = -1;
-	while (environ[++i])
+	while (envp[++i])
 	{
-		s = check_empty_env(environ[i]);
+		s = check_empty_env(envp[i]);
 		if (s == -1 || s == -2)
 		{
 			if (s == -2)
-				printf("%s''\n", environ[i]);
+				printf("%s''\n", envp[i]);
 			else
-				printf("%s\n", environ[i]);
+				printf("%s\n", envp[i]);
 		}
 	}
 	return (0);
@@ -79,7 +78,7 @@ char	**sort_env(char **env)
 	i = 0;
 	while (env[i + 1])
 	{
-		if (strcmp(env[i], env[i + 1]) > 0 && env[i])
+		if (env[i] && strcmp(env[i], env[i + 1]) > 0)
 		{
 			tmp = env[i];
 			env[i] = env[i + 1];
@@ -91,54 +90,42 @@ char	**sort_env(char **env)
 	return (env);
 }
 
-char	*until_ugual(char *str)
+int	until_ugual(char *s1, char *s2)
 {
-	int		i;
-	char	*ret;
-
+	int	i;
+	int	c;
+	
 	i = 0;
-	while (str[i] && str[i] != '=')
+	while (s1[i] && s1[i] != '=')
 		i++;
-	if (str[i] == '\0')
-		return (NULL);
-	ret = malloc(sizeof(char) * i);
-	ret[i] = '\0';
-	i = 0;
-	while (str[i] != '=')
-	{
-		ret[i] = str[i];
-		i++;
-	}
-	ret[i] = str[i];
-	return (ret);
+	if (s1[i] == '\0')
+		return (1);
+	c = 0;
+	while (s2[c] && s2[c] != '=')
+		c++;
+	if (s2[i] == '\0')
+		return (1);
+	if (i == c && strncmp(s1, s2, i) == 0)
+		return (0);
+	return (1);
 }
 
-char	**add_env(char **env, char *str)
+void	add_env(char *str, char **envp)
 {
-	int		i;
-	char	*tmp;
-	char	*tmp2;
+	int			i;
 
 	i = -1;
-	while (env[++i])
+	while (envp[++i])
 	{
-		tmp = until_ugual(str);
-		tmp2 = until_ugual(env[i]);
-		if (tmp != NULL && tmp2 != NULL)
+		if (until_ugual(str, envp[i]) == 0)
 		{
-			if (strcmp(tmp, tmp2) == 0)
-			{
-				env[i] = str;
-				free(tmp);
-				free(tmp2);
-				return (env);
-			}
+			envp[i] = str;
+			return ;
 		}
-		if (strncmp(str, env[i], ft_strlen(str)) == 0)
-			if (env[i][ft_strlen(str)] == '=')
-				return (env);
+		if (strncmp(str, envp[i], ft_strlen(str)) == 0)
+			if (envp[i][ft_strlen(str)] == '=')
+				return ;
 	}
-	env[i] = str;
-	env[i + 1] = NULL;
-	return (env);
+	envp[i] = ft_strdup(str);
+	envp[i + 1] = NULL;
 }

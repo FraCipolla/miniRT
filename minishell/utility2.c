@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 16:24:53 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:05:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,14 @@ char	**cpy_matrix(char **matrix, int offset)
 	i = 0;
 	while (matrix[i])
 		i++;
-	ret = (char **)malloc(sizeof(char *) * (i - offset));
+	ret = (char **)malloc(sizeof(char *) * (i - offset) + 1);
 	i = 0;
 	while (matrix[i])
 	{
-		ret[i] = matrix[i];
+		ret[i] = ft_strdup(matrix[i]);
 		i++;
 	}
 	ret[i] = NULL;
+	// my_free(matrix);
 	return (ret);
 }

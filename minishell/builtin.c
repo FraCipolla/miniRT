@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:30:43 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 14:50:26 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 18:55:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_builtin(char **cmd)
+void	exec_builtin(char **cmd, char **envp)
 {
 	int	fd;
 
@@ -21,15 +21,15 @@ void	exec_builtin(char **cmd)
 	if (strcmp(cmd[0], "cd") == 0)
 		g_exit = my_cd(cmd);
 	else if (strcmp(cmd[0], "export") == 0)
-		g_exit = my_exp(cmd);
+		g_exit = my_exp(cmd, envp);
 	else if (strcmp(cmd[0], "unset") == 0)
-		g_exit = my_unset(cmd);
+		g_exit = my_unset(cmd, envp);
 	else if (strcmp(cmd[0], "echo") == 0)
 		g_exit = my_echo(cmd, fd);
 	else if (strcmp(cmd[0], "pwd") == 0)
 		g_exit = my_pwd(cmd);
 	else if (strcmp(cmd[0], "env") == 0)
-		g_exit = my_env(cmd);
+		g_exit = my_env(cmd, envp);
 	else if (strcmp(cmd[0], "exit") == 0)
 	{
 			write(1, "exit\n", 5);

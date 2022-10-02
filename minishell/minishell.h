@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 16:18:37 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:01:17 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ void			rl_redisplay(void);
 
 int				my_pwd(char **tmp);
 int				my_echo(char **args, int fd);
-int				my_env(char **tmp);
-int				my_exp(char **tmp);
-int				my_unset(char **str);
+int				my_env(char **tmp, char **envp);
+int				my_exp(char **tmp, char **envp);
+int				my_unset(char **str, char **envp);
 int				my_cd(char **tmp);
 
 /* BUILT-IN UTILITY */
 
 char			**sort_env(char **env);
-char			**add_env(char **env, char *str);
+void			add_env(char *str, char **envp);
 int				check_empty_env(char *str);
 int				check_pwd(char *str);
 void			ft_increase_shlvl(void);
@@ -60,7 +60,7 @@ int				check_strcmp(char **cmd, char **mypath, int fd);
 char			*check_infile(char **args);
 int				check_dot(char **cmd, char **environ);
 int				check_builtin(char *str);
-void			check_pipes(char *str, char **mypath, char **args);
+void			check_pipes(char *str, char **mypath, char **args, char **envp);
 int				check_emptyline(char *str);
 
 /* UTILITY */
@@ -76,6 +76,7 @@ char			*ft_itoa(int n);
 char			*ft_malloc_strcpy(const char *s, int n);
 void			*ft_calloc(size_t count, size_t size);
 char			**cpy_matrix(char **matrix, int offset);
+char			**cpy_env(char **matrix);
 int				ft_strrchr(const char *s, char c);
 char			*get_next_line(int fd);
 int				quote_str(const char *s);
@@ -104,10 +105,11 @@ void			remove_env(char **env, char *search);
 
 void			clt_echo(char *str);
 void			make_fork(char **mypath, char **cmd);
-char			**init(void);
+void			init(void);
+char			**get_path(char **ret);
 void			action(int sig);
-void			exec_builtin(char **cmd);
-void			split_exec(char **mypath, char **cmd);
+void			exec_builtin(char **cmd, char **envp);
+void			split_exec(char **mypath, char **cmd, char **envp);
 void			my_free(char **mypath);
 void			last_free(char **m1, char **m2, char *str);
 void			msg_exit(void);
@@ -119,7 +121,7 @@ char			**check_wild(char **args);
 
 /* LOGICAL OPERATOR */
 
-int				logical_operator(char *buff, char **mypath, char *log);
+int				logical_operator(char *buff, char **mypath, char *log, char **envp);
 char			*check_empty_logical(char *buff);
 
 /* PARENTHESES */
