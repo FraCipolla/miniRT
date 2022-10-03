@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/29 17:39:09 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:12:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,18 @@ int	check_redir(char **args)
 	pipe(end);
 	while (args[++i])
 	{
-		if ((strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0))
-		{
-			if (strcmp(args[i], ">") == 0)
-				fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-			else
-				fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+		if (strcmp(args[i], ">") == 0)
+			fd = open(args[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (strcmp(args[i], ">>") == 0)
+			fd = open(args[i + 1], O_CREAT | O_RDWR | O_APPEND, 0644);
+		if (strcmp(args[i], ">") == 0 || strcmp(args[i], ">>") == 0)
 			dup2(fd, 1);
-		}
 		if (strcmp(args[i], "<") == 0)
 		{
 			fd = open(args[i + 1], O_RDONLY, 0644);
 			dup2(fd, 0);
 		}
-		if (strcmp(args[i] , "<<") == 0)
+		if (strcmp(args[i], "<<") == 0)
 			here_doc(args[i + 1], end);
 	}
 	return (fd);

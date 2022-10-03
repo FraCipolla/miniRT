@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:24:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 18:01:35 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:23:56 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ char	*check_empty_parentheses(char *buff)
 			if (buff[i] == '(' || buff[i] == ')')
 			{
 				printf("syntax error near unexpected token '%c'\n", buff[i]);
+				free(buff);
 				return (NULL);
 			}
 			i++;

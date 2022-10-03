@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 16:05:53 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:08:05 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,7 @@ char	**cut_heredoc(char **args)
 		if (strcmp(args[i], "<<") == 0)
 			i += 2;
 		else
-		{
-			ret[n] = ft_strdup(args[i]);
-			n++;
-			i++;
-		}
+			ret[n++] = ft_strdup(args[i++]);
 	}
 	ret[n] = NULL;
 	my_free(args);
@@ -72,10 +68,10 @@ void	child_1(int **end, int i, char **cmd, int pid)
 
 void	child_mid(int **end, int i, char **cmd, int pid)
 {
-	char	**mypath = NULL;
-	int		heredoc;
+	char		**mypath;
+	int			heredoc;
 	extern char	**environ;
-	
+
 	mypath = get_path();
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();
@@ -87,7 +83,6 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 			cmd = cut_heredoc(cmd);
 			dup2(heredoc, STDIN_FILENO);
 		}
-		// dup2(end[i - 1][0], STDIN_FILENO);
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i - 1][0]);
 		close(end[i][1]);
@@ -101,9 +96,9 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 
 void	child_last(int **end, int i, char **cmd, int pid)
 {
-	int		stdout_cpy;
-	char	**mypath = NULL;
-	int		heredoc;
+	int			stdout_cpy;
+	char		**mypath;
+	int			heredoc;
 	extern char	**environ;
 
 	mypath = get_path();

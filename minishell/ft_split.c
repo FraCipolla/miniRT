@@ -6,16 +6,15 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:35:38 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 16:26:13 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 19:21:45 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	quote_str(const char *s)
+int	lengh_parantheses(const char *s)
 {
 	int	i;
-	int	flag;
 	int	par;
 
 	i = -1;
@@ -24,24 +23,37 @@ int	quote_str(const char *s)
 		if (s[i] == '(')
 			par++;
 	i = 0;
-	if (s[i] == 34 || s[i] == 39 || s[i] == '(')
+	while (s[i])
+	{
+		if (s[i] == ')')
+		{
+			par--;
+			if (par == 0)
+				return (i + 1);
+		}
+		i++;
+	}
+	return (i);
+}
+
+int	quote_str(const char *s)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	if (s[i] == '(')
+		return (lengh_parantheses(s));
+	if (s[i] == 34 || s[i] == 39)
 	{
 		if (s[i] == 34)
 			flag = 34;
 		else if (s[i] == 39)
 			flag = 39;
-		else
-			flag = ')';
 		i++;
 		while (s[i])
 		{
-			if (flag == ')' && s[i] == flag)
-			{
-				par--;
-				if (par == 0)
-					return (i + 1);
-			}
-			else if (flag != ')' && s[i] == flag)
+			if (s[i] == flag)
 				return (i + 1);
 			i++;
 		}
