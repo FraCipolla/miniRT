@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 15:53:58 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:00:14 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 	cmd = cmd_path(cmd);
 	pid = fork();
 	signal(SIGINT, action_in_process);
-	// clt_echo("ctlecho");
 	if (pid == 0)
 	{
 		if (check_dot(cmd, environ) == -1)
@@ -122,7 +121,7 @@ void	check_pipes(char *str, char **mypath, char **args, char **envp)
 			pipe(end[matrix_size]);
 		}
 	}
-	if(end)
+	if (end)
 		pipex(end, pipes, n_pipes);
 	else
 		split_exec(mypath, args, envp);
@@ -136,7 +135,7 @@ char	*first_check(char *buff)
 	if (buff == NULL)
 		msg_exit();
 	if (buff[0] == '\0')
-		return(buff);
+		return (buff);
 	tmp = buff;
 	buff = check_empty_parentheses(buff);
 	if (buff == NULL)
@@ -195,7 +194,7 @@ int	main(int argc, char *argv[], char **envp)
 		if (buff[0] != '\0')
 			start_parsing(buff, mypath, envp);
 		if (argc > 1)
-			exit(0);
+			exit(g_exit);
 		free(buff);
 		if (mypath)
 			my_free(mypath);

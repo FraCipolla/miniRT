@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:25:42 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 15:39:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:00:50 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,13 @@ int	exec_logical(char *buff, char **mypath, int i, char **envp)
 {
 	char	*tmp;
 	char	**args;
-	int		pid;
 
 	tmp = cut_str(buff, i);
 	args = ft_split(tmp, ' ');
 	args = check_wild(args);
-	pid = fork();
-	if (pid == 0)
-	{
-		check_pipes(tmp, mypath, remove_quotes(args), envp);
-		exit(0);
-	}
-	else
-	{
-		waitpid(pid, NULL, 0);
-		my_free(args);
-		free(tmp);
-	}
+	check_pipes(tmp, mypath, remove_quotes(args), envp);
+	my_free(args);
+	free(tmp);
 	if (buff[i + 1] == '\0')
 		return (1);
 	return (0);
@@ -70,11 +60,11 @@ int	logical_operator(char *buff, char **mypath, char *log, char **envp)
 
 	if (*buff == ' ')
 		buff++;
-	// printf("buff %s\n", buff);
 	// i = quote_str(buff);
 	// if (buff[i] == '\0')
 	// 	i--;
 	i = 0;
+	// printf("global %d\n", g_exit);
 	while (buff[i])
 	{
 		if ((buff[i + 1] == '\0' && log != NULL)

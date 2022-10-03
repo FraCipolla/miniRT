@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:24:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:24 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:01:35 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	exec_subshell(char **args, char **envp)
 {
 	char		**cmd;
 	int			pid;
+	int			status;
 
 	cmd = (char **)malloc(sizeof(char *) * 3);
 	cmd[0] = ft_strdup("./minishell");
@@ -58,9 +59,10 @@ void	exec_subshell(char **args, char **envp)
 	}
 	else
 	{
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
 		my_free(cmd);
 		free(args);
+		set_global(status);
 	}
 }
 

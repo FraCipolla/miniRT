@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 14:38:47 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:57:31 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ int	ft_find_new_size(char	*str)
 	size = 0;
 	while (str[++i])
 	{
-		if ((str[i] == '>' || str[i] == '<') && str[i + 1] != ' ' && str[i + 1] != '>' && str[i + 1] != '<')
+		if ((str[i] == '>' || str[i] == '<') && str[i + 1]
+			!= ' ' && str[i + 1] != '>' && str[i + 1] != '<')
 			size++;
-		else if (ft_strncmp(str + i, ">>", 2) == 0 || ft_strncmp(str + i, "<<", 2) == 0)
+		else if (ft_strncmp(str + i, ">>", 2)
+			== 0 || ft_strncmp(str + i, "<<", 2) == 0)
 		{
 			if (str[i + 2] != ' ')
 				size++;
@@ -46,7 +48,8 @@ char	*ft_addspaces(char *str)
 	while (str[++i])
 	{
 		ret[c] = str[i];
-		if ((str[i] == '>' || str[i] == '<') && str[i + 1] != ' ' && str[i + 1] != '>' && str[i + 1] != '<')
+		if ((str[i] == '>' || str[i] == '<') && str[i + 1]
+			!= ' ' && str[i + 1] != '>' && str[i + 1] != '<')
 			ret[++c] = ' ';
 		else if (ft_strncmp(str + i, ">>", 2) == 0 || ft_strncmp(str + i, "<<", 2) == 0)
 		{
@@ -80,7 +83,8 @@ char	**cut_red(char **args)
 	n = 0;
 	while (args[++i])
 	{
-		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
+		if (strcmp(args[i], ">>") == 0 || args[i][0]
+			== '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
 			n += 2;
 	}
 	ret = malloc(sizeof(char *) * i - (n) + 1);
@@ -88,7 +92,8 @@ char	**cut_red(char **args)
 	n = 0;
 	while (args[i])
 	{
-		if (strcmp(args[i], ">>") == 0 || args[i][0] == '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
+		if (strcmp(args[i], ">>") == 0 || args[i][0]
+			== '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
 			i += 2;
 		else
 			ret[n++] = ft_strdup(args[i++]);

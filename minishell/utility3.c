@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:28:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/29 15:55:11 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 17:43:12 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_dollar(char *str, char **ret, int i)
 	char	*env;
 
 	c = 0;
-	while (str[i] && skip_chars(str[i]) == 0)
+	while (str[i] != '"')
 	{
 		if (str[i] == '$')
 		{
@@ -66,13 +66,36 @@ int	manage_sq(char *first, char **toret)
 	char	*aux;
 
 	next = strstr(first, "'");
-	if ((next - first) == 1)
+	if (*first == '\'')
 		return (1);
 	aux = ft_malloc_strcpy(first, next - first);
 	*toret = ft_strjoin(*toret, aux);
 	free(aux);
 	return (next - first + 2);
 }
+
+// int	manage_sq(char *str, char **ret)
+// {
+// 	int		i;
+// 	int		c;
+// 	char	*tmp;
+
+// 	i = 1;
+// 	while (str[i] != '\'')
+// 		i++;
+// 	tmp = malloc(sizeof(char) * i - 1);
+// 	tmp[i - 1] = '\0';
+// 	i = 1;
+// 	c = 0;
+// 	while (str[i] != '\'')
+// 	{
+// 		tmp[c] = str[i];
+// 		i++;
+// 		c++;
+// 	}
+// 	*ret = ft_strjoin(*ret, tmp);
+// 	return (i + 1);
+// }
 
 char	*resolve_env(char *str)
 {
@@ -119,25 +142,3 @@ char	**remove_quotes(char **args)
 	return (ret);
 }
 
-// int	between_quotes(char *str, char **ret)
-// {
-// 	int		i;
-// 	int		c;
-// 	char	*tmp;
-
-// 	i = 1;
-// 	while (str[i] != '\'')
-// 		i++;
-// 	tmp = malloc(sizeof(char) * i - 1);
-// 	tmp[i - 1] = '\0';
-// 	i = 1;
-// 	c = 0;
-// 	while (str[i] != '\'')
-// 	{
-// 		tmp[c] = str[i];
-// 		i++;
-// 		c++;
-// 	}
-// 	*ret = ft_strjoin(*ret, tmp);
-// 	return (i + 1);
-// }

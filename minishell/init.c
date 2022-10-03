@@ -6,13 +6,13 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 15:15:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 14:45:49 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:03:29 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_path()
+char	**get_path(void)
 {
 	char	*path;
 	char	**ret;
@@ -33,12 +33,8 @@ char	**get_path()
 	return (ret);
 }
 
-void	init()
+void	init(void)
 {
-	// extern char	**environ;
-	// // clt_echo("-ctlecho");
-
-	// environ = cpy_env(environ);
 	signal(SIGINT, action);
 	signal(SIGQUIT, SIG_IGN);
 }

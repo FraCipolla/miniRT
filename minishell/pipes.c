@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 14:47:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:59:44 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	do_pipe(int stdcpy, int pid, char **cmd, char **envp)
 {
-	char	**mypath = NULL;
+	char	**mypath;
 	int		heredoc;
 	int		end[2];
 
+	mypath = NULL;
 	pipe(end);
 	pid = fork();
 	mypath = get_path();
 	heredoc = here_doc_pipes(cmd);
-	// close(end[i][0]);
 	if (pid == 0)
 	{
 		close(end[0]);
@@ -39,7 +39,6 @@ void	do_pipe(int stdcpy, int pid, char **cmd, char **envp)
 		split_exec(mypath, cmd, envp);
 		exit(0);
 	}
-	// close(end[1]);
 	close(end[0]);
 }
 

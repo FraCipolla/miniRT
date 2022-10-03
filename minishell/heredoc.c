@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:33:53 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/28 14:51:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:01:39 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	here_doc(char *limiter, int *end)
 {
 	char	*buff;
 	char	*ret;
-	
+
 	ret = NULL;
-	while(1)
+	while (1)
 	{
 		buff = readline("heredoc> ");
 		if (strcmp(buff, limiter) == 0)
@@ -61,7 +61,7 @@ int	here_doc_pipes(char	**args)
 	if (limiter == NULL)
 		return (-1);
 	ret = NULL;
-	while(1)
+	while (1)
 	{
 		buff = readline("heredoc> ");
 		if (strcmp(buff, limiter) == 0)

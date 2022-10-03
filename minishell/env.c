@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 13:06:45 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:44:53 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,16 @@ int	my_unset(char **str, char **envp)
 		{
 			if (strncmp(str[c], envp[i], ft_strlen(str[c])) == 0
 				&& envp[i][ft_strlen(str[c])] == '=')
+			{
+				i -= 1;
+				while (envp[i + 1] != NULL)
 				{
-					envp[i][0] = '\0';
-					i -= 1;
-					while(envp[++i])
-						envp[i] = envp[i + 1];
-					i--;
+					envp[i] = envp[i + 1];
+					i++;
 				}
+				i--;
+				envp[i] = NULL;
+			}
 			i++;
 		}
 	}
@@ -42,7 +45,7 @@ int	my_unset(char **str, char **envp)
 void	remove_env(char **env, char *search)
 {
 	int		i;
-	
+
 	i = -1;
 	while (env[++i])
 	{

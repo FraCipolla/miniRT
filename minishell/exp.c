@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 19:09:30 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:13:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	until_ugual(char *s1, char *s2)
 {
 	int	i;
 	int	c;
-	
+
 	i = 0;
 	while (s1[i] && s1[i] != '=')
 		i++;

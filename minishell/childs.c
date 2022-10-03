@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 14:47:34 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:05:53 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ char	**cut_heredoc(char **args)
 
 void	child_1(int **end, int i, char **cmd, int pid)
 {
-	char	**mypath = NULL;
-	int		heredoc;
+	char		**mypath;
+	int			heredoc;
 	extern char	**environ;
 
 	mypath = get_path();

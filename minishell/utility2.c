@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 20:51:14 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:40:36 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	skip_chars(char c)
 
 void	add_char(char **toret, char a)
 {
-	char aux[2];
+	char	aux[2];
 
 	aux[0] = a;
 	aux[1] = 0;
@@ -51,7 +51,7 @@ void	ft_increase_shlvl(void)
 	}
 }
 
-void	msg_exit()
+void	msg_exit(void)
 {
 	printf ("\e[A\e[K");
 	printf("minishell: exit\n");
@@ -66,7 +66,7 @@ char	**cpy_matrix(char **matrix, int offset)
 	i = 0;
 	while (matrix[i])
 		i++;
-	ret = (char **)malloc(sizeof(char *) * (i - offset) + 1);
+	ret = (char **)malloc(sizeof(char *) * (i - offset));
 	i = 0;
 	while (matrix[i])
 	{
@@ -74,6 +74,5 @@ char	**cpy_matrix(char **matrix, int offset)
 		i++;
 	}
 	ret[i] = NULL;
-	// my_free(matrix);
 	return (ret);
 }
