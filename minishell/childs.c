@@ -6,43 +6,43 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 20:33:47 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 14:47:34 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// char	**cut_heredoc(char **args)
-// {
-// 	int		i;
-// 	int		n;
-// 	char	**ret;
+char	**cut_heredoc(char **args)
+{
+	int		i;
+	int		n;
+	char	**ret;
 
-// 	i = -1;
-// 	n = 0;
-// 	while (args[++i])
-// 	{
-// 		if (strcmp(args[i], "<<") == 0)
-// 			n += 2;
-// 	}
-// 	ret = malloc(sizeof(char *) * i - (n) + 1);
-// 	i = 0;
-// 	n = 0;
-// 	while (args[i])
-// 	{
-// 		if (strcmp(args[i], "<<") == 0)
-// 			i += 2;
-// 		else
-// 		{
-// 			ret[n] = ft_strdup(args[i]);
-// 			n++;
-// 			i++;
-// 		}
-// 	}
-// 	ret[n] = NULL;
-// 	my_free(args);
-// 	return (ret);
-// }
+	i = -1;
+	n = 0;
+	while (args[++i])
+	{
+		if (strcmp(args[i], "<<") == 0)
+			n += 2;
+	}
+	ret = malloc(sizeof(char *) * i - (n) + 1);
+	i = 0;
+	n = 0;
+	while (args[i])
+	{
+		if (strcmp(args[i], "<<") == 0)
+			i += 2;
+		else
+		{
+			ret[n] = ft_strdup(args[i]);
+			n++;
+			i++;
+		}
+	}
+	ret[n] = NULL;
+	my_free(args);
+	return (ret);
+}
 
 void	child_1(int **end, int i, char **cmd, int pid)
 {
@@ -50,7 +50,7 @@ void	child_1(int **end, int i, char **cmd, int pid)
 	int		heredoc;
 	extern char	**environ;
 
-	mypath = get_path(mypath);
+	mypath = get_path();
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
@@ -76,7 +76,7 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 	int		heredoc;
 	extern char	**environ;
 	
-	mypath = get_path(mypath);
+	mypath = get_path();
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();
 	if (pid == 0)
@@ -106,7 +106,7 @@ void	child_last(int **end, int i, char **cmd, int pid)
 	int		heredoc;
 	extern char	**environ;
 
-	mypath = get_path(mypath);
+	mypath = get_path();
 	stdout_cpy = dup(1);
 	heredoc = here_doc_pipes(cmd);
 	pid = fork();

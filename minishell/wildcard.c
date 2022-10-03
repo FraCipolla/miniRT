@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 17:25:45 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/25 19:41:02 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:32:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ int	parse_wild(char *wild_str, char *str)
 		str++;
 	}
 	if (!splitted[i])
+	{
+		my_free(splitted);
 		return (1);
+	}
+	my_free(splitted);
 	return (0);
 }
 
@@ -66,18 +70,24 @@ char	**check_wild(char **args)
 	int		i;
 	char	**ret;
 	char	*tmp;
+	char	*aux;
 
 	i = -1;
 	tmp = NULL;
 	while (args[++i])
 	{
 		if (strchr(args[i], '*') != NULL)
-			tmp = ft_strjoin(tmp, parse_files(args[i]));
+		{
+			aux = parse_files(args[i]);
+			tmp = ft_strjoin(tmp, aux);
+			free(aux);
+		}
 		else
 			tmp = ft_strjoin(tmp, args[i]);
 		tmp = ft_strjoin(tmp, " ");
 	}
 	ret = ft_split(tmp, ' ');
 	free(tmp);
+	my_free(args);
 	return (ret);
 }

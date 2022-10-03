@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 20:33:26 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:53:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	split_exec(char **mypath, char **cmd, char **envp)
 
 	if (between_parentheses(cmd[0]) == 0)
 	{
-		exec_subshell(cmd);
+		exec_subshell(cmd, envp);
 		return ;
 	}
 	set_fd(&stdin_cpy, &stdout_cpy, 0);
@@ -164,6 +164,7 @@ void	start_parsing(char *buff, char **mypath, char **envp)
 	while (args[i])
 	{
 		args2 = ft_split(args[i], ' ');
+		args2 = check_wild(args2);
 		if (args2 == NULL)
 			return ;
 		if (logical_operator(args[i], mypath, NULL, envp) == 1)
@@ -183,7 +184,7 @@ int	main(int argc, char *argv[], char **envp)
 	mypath = NULL;
 	while (1)
 	{
-		mypath = get_path(mypath);
+		mypath = get_path();
 		if (argc > 1)
 			buff = argv[1];
 		else
@@ -196,7 +197,8 @@ int	main(int argc, char *argv[], char **envp)
 		if (argc > 1)
 			exit(0);
 		free(buff);
-		my_free(mypath);
+		if (mypath)
+			my_free(mypath);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/02 20:04:44 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 14:59:47 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void			remove_env(char **env, char *search);
 void			clt_echo(char *str);
 void			make_fork(char **mypath, char **cmd);
 void			init(void);
-char			**get_path(char **ret);
+char			**get_path();
 void			action(int sig);
 void			exec_builtin(char **cmd, char **envp);
 void			split_exec(char **mypath, char **cmd, char **envp);
@@ -130,7 +130,7 @@ char			*check_empty_logical(char *buff);
 
 char			*check_empty_parentheses(char *buff);
 int				between_parentheses(char *str);
-void			exec_subshell(char **args);
+void			exec_subshell(char **args, char **envp);
 
 /* SIGNAL */
 

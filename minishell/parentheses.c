@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 21:24:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/01 16:20:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:52:24 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ char	*remove_parentheses(char *str)
 	return (ret);
 }
 
-void	exec_subshell(char **args)
+void	exec_subshell(char **args, char **envp)
 {
 	char		**cmd;
-	extern char	**environ;
 	int			pid;
 
 	cmd = (char **)malloc(sizeof(char *) * 3);
@@ -55,11 +54,14 @@ void	exec_subshell(char **args)
 	if (pid == 0)
 	{
 		ft_increase_shlvl();
-		execve(cmd[0], cmd, environ);
+		execve(cmd[0], cmd, envp);
 	}
 	else
+	{
 		waitpid(pid, NULL, 0);
-	my_free(cmd);
+		my_free(cmd);
+		free(args);
+	}
 }
 
 int	between_parentheses(char *str)
