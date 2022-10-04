@@ -6,11 +6,23 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 19:08:05 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:33:49 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	close_pipes(int **end, int pipes)
+{
+	int	i;
+
+	i = -1;
+	while (++i < pipes)
+	{
+		close(end[i][0]);
+		close(end[i][1]);
+	}
+}
 
 char	**cut_heredoc(char **args)
 {
@@ -63,6 +75,7 @@ void	child_1(int **end, int i, char **cmd, int pid)
 		exit(0);
 	}
 	my_free(mypath);
+	close(end[i][0]);
 	close(end[i][1]);
 }
 
@@ -83,6 +96,7 @@ void	child_mid(int **end, int i, char **cmd, int pid)
 			cmd = cut_heredoc(cmd);
 			dup2(heredoc, STDIN_FILENO);
 		}
+		dup2(end[i - 1][0], STDIN_FILENO);
 		dup2(end[i][1], STDOUT_FILENO);
 		close(end[i - 1][0]);
 		close(end[i][1]);
@@ -120,7 +134,10 @@ void	child_last(int **end, int i, char **cmd, int pid)
 		exit(0);
 	}
 	my_free(mypath);
+	close(stdout_cpy);
+	close(end[i -1][1]);
 	close(end[i - 1][0]);
+	close_pipes(end, i);
 }
 
 void	pipex(int **end, char **pipes, int n_pipes)
@@ -149,4 +166,6 @@ void	pipex(int **end, char **pipes, int n_pipes)
 	while (pid[++i] <= n_pipes)
 		waitpid(pid[i], NULL, 0);
 	free(pid);
+	close_pipes(end, n_pipes);
+	close(stdcpy);
 }

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 18:00:14 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:36:28 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,20 +82,20 @@ void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)
 
 void	split_exec(char **mypath, char **cmd, char **envp)
 {
-	int	stdout_cpy;
-	int	stdin_cpy;
+	// int	stdout_cpy;
+	// int	stdin_cpy;
 
 	if (between_parentheses(cmd[0]) == 0)
 	{
 		exec_subshell(cmd, envp);
 		return ;
 	}
-	set_fd(&stdin_cpy, &stdout_cpy, 0);
+	// set_fd(&stdin_cpy, &stdout_cpy, 0);
 	if (check_builtin(cmd[0]) == 0)
 		exec_builtin(cmd, envp);
 	else
 		my_exec(mypath, envp, cmd);
-	set_fd(&stdin_cpy, &stdout_cpy, 1);
+	// set_fd(&stdin_cpy, &stdout_cpy, 1);
 }
 
 void	check_pipes(char *str, char **mypath, char **args, char **envp)
@@ -112,17 +112,18 @@ void	check_pipes(char *str, char **mypath, char **args, char **envp)
 		matrix_size++;
 	n_pipes = matrix_size - 1;
 	if (matrix_size > 1)
-	{
-		end = (int **)malloc(sizeof(int *) * matrix_size - 1);
-		matrix_size = -1;
-		while (++matrix_size < n_pipes)
-		{
-			end[matrix_size] = malloc(sizeof(int) * 2);
-			pipe(end[matrix_size]);
-		}
-	}
-	if (end)
-		pipex(end, pipes, n_pipes);
+		pipex2(pipes, n_pipes, envp);
+	// {
+	// 	end = (int **)malloc(sizeof(int *) * n_pipes);
+	// 	matrix_size = -1;
+	// 	while (++matrix_size < n_pipes)
+	// 	{
+	// 		end[matrix_size] = malloc(sizeof(int) * 2);
+	// 		pipe(end[matrix_size]);
+	// 	}
+	// }
+	// if (end)
+		// pipex(end, pipes, n_pipes);
 	else
 		split_exec(mypath, args, envp);
 	my_free(pipes);

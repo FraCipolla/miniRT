@@ -6,18 +6,20 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:33:53 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 16:01:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:23:45 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	here_doc(char *limiter, int *end)
+void	here_doc(char *limiter)
 {
 	char	*buff;
 	char	*ret;
+	int		end[2];
 
 	ret = NULL;
+	pipe(end);
 	while (1)
 	{
 		buff = readline("heredoc> ");
@@ -30,6 +32,7 @@ void	here_doc(char *limiter, int *end)
 	write (end[1], ret, ft_strlen(ret));
 	close(end[1]);
 	dup2(end[0], 0);
+	close(end[0]);
 	free(buff);
 }
 
@@ -57,9 +60,9 @@ int	here_doc_pipes(char	**args)
 	char	*ret;
 
 	limiter = get_limiter(args);
-	pipe(end);
 	if (limiter == NULL)
 		return (-1);
+	pipe(end);
 	ret = NULL;
 	while (1)
 	{

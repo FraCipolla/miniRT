@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 19:12:44 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:23:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ int	check_redir(char **args)
 {
 	int		fd;
 	int		i;
-	int		end[2];
 
 	i = -1;
 	fd = 1;
-	pipe(end);
 	while (args[++i])
 	{
 		if (strcmp(args[i], ">") == 0)
@@ -35,7 +33,7 @@ int	check_redir(char **args)
 			dup2(fd, 0);
 		}
 		if (strcmp(args[i], "<<") == 0)
-			here_doc(args[i + 1], end);
+			here_doc(args[i + 1]);
 	}
 	return (fd);
 }
