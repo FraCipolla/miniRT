@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:28:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/09/28 19:47:04 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:40:36 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ char	**remove_quotes(char **args)
 {
 	int		i;
 	char	**ret;
+	char	*tmp;
 	int		j;
 
 	j = 0;
@@ -160,8 +161,11 @@ char	**remove_quotes(char **args)
 	ret = (char **)malloc(sizeof(char *) * i + 1);
 	i = -1;
 	while (args[++i])
-		if(resolve_env(args[i]))
-			ret[j++] = resolve_env(args[i]);
+	{
+		tmp = resolve_env(args[i]);
+		if(tmp)
+			ret[j++] = tmp;
+	}
 	ret[j] = NULL;
 	return (ret);
 }

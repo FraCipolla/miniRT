@@ -6,18 +6,14 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:30:43 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 19:09:20 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:32:41 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_builtin(char **cmd, char **envp)
+void	exec_builtin(char **cmd, char **envp, int fd)
 {
-	int	fd;
-
-	fd = check_redir(cmd);
-	cmd = cut_red(cmd);
 	if (strcmp(cmd[0], "cd") == 0)
 		g_exit = my_cd(cmd);
 	else if (strcmp(cmd[0], "export") == 0)

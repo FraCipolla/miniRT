@@ -6,23 +6,48 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/04 15:04:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:20:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	do_pipe(int stdcpy, char **cmd, char **envp)
+char	**cut_heredoc(char **args)
 {
-	char	**mypath;
+	int		i;
+	int		n;
+	char	**ret;
+
+	i = -1;
+	n = 0;
+	while (args[++i])
+	{
+		if (strcmp(args[i], "<<") == 0)
+			n += 2;
+	}
+	ret = malloc(sizeof(char *) * i - (n) + 1);
+	i = 0;
+	n = 0;
+	while (args[i])
+	{
+		if (strcmp(args[i], "<<") == 0)
+			i += 2;
+		else
+			ret[n++] = ft_strdup(args[i++]);
+	}
+	ret[n] = NULL;
+	my_free(args);
+	return (ret);
+}
+
+void	do_pipe(int stdcpy, char **cmd, char **mypath, char **envp)
+{
 	int		heredoc;
 	int		end[2];
 	int		pid;
 
-	mypath = NULL;
 	pipe(end);
 	pid = fork();
-	mypath = get_path();
 	heredoc = here_doc_pipes(cmd);
 	if (pid == 0)
 	{
@@ -33,49 +58,40 @@ void	do_pipe(int stdcpy, char **cmd, char **envp)
 			dup2(heredoc, STDIN_FILENO);
 		}
 		if (stdcpy != 0)
-		{
-			close(end[1]);
 			dup2(stdcpy, STDOUT_FILENO);
-		}
 		else
 			dup2(end[1], STDOUT_FILENO);
-		close(end[1]);
 		split_exec(mypath, cmd, envp);
 		exit(0);
 	}
-	if (pid > 0)
-	{
-		// waitpid(pid, 0, 0);
-		dup2(end[0], 0);
-		close(end[0]);
-		close(end[1]);
-	}
+	dup2(end[0], 0);
+	close(end[0]);
+	close(end[1]);
 }
 
-void	pipex2(char **pipes, int n_pipes, char **envp)
+void	pipex(char **pipes, int n_pipes, char **mypath, char **envp)
 {
 	int		i;
 	char	**args;
-	// int		end[n_pipes * 2];
-	int		stdin_cpy;
-	int		stdout_cpy;
+	int		std_cpy[2];
+	int		*pid;
 
 	i = -1;
-	stdout_cpy = dup(1);
-	stdin_cpy = dup(0);
-	int	*pid = malloc(sizeof(int) * n_pipes + 1);
+	std_cpy[1] = dup(1);
+	std_cpy[0] = dup(0);
+	pid = malloc(sizeof(int) * n_pipes + 1);
 	while (++i <= n_pipes)
 	{
 		args = ft_split(pipes[i], ' ');
 		if (i == n_pipes)
-			do_pipe(stdout_cpy, args, envp);
+			do_pipe(std_cpy[1], args, mypath, envp);
 		else
-			do_pipe(0, args, envp);
+			do_pipe(0, args, mypath, envp);
 		free(args);
 	}
-	dup2(stdin_cpy, 0);
-	close(stdin_cpy);
-	close(stdout_cpy);
+	dup2(std_cpy[0], 0);
+	close(std_cpy[0]);
+	close(std_cpy[1]);
 	i = -1;
 	while (pid[++i] <= n_pipes)
 		waitpid(pid[i], NULL, 0);

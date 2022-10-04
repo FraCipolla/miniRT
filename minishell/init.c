@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 15:15:07 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 16:03:29 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 16:33:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	**get_path(void)
 
 void	init(void)
 {
+	// clt_echo("-ctlecho");
 	signal(SIGINT, action);
 	signal(SIGQUIT, SIG_IGN);
 }

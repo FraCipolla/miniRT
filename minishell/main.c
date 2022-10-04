@@ -6,97 +6,11 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/04 14:36:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/04 16:33:51 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**cmd_path(char **args)
-{
-	int		i;
-	char	*tmp;
-
-	if (args[0][0] == '/')
-	{
-		i = ft_strlen(args[0]);
-		while (args[0][i] != '/')
-			i--;
-		tmp = ft_strdup(args[0] + i);
-		free(args[0]);
-		args[0] = tmp;
-	}
-	return (args);
-}
-
-void	my_exec(char **mypath, char **environ, char **cmd)
-{
-	char	*tmp;
-	int		pid;
-	int		status;
-
-	check_redir(cmd);
-	cmd = cut_red(cmd);
-	if (cmd[0] == NULL)
-		return ;
-	cmd = cmd_path(cmd);
-	pid = fork();
-	signal(SIGINT, action_in_process);
-	if (pid == 0)
-	{
-		if (check_dot(cmd, environ) == -1)
-		{
-			while (mypath && *mypath)
-			{
-				tmp = ft_strjoin(*mypath, cmd[0]);
-				if (access(tmp, R_OK) == 0)
-					execve(tmp, cmd, environ);
-				mypath++;
-				free(tmp);
-			}
-			printf("%s: command not found\n", cmd[0]);
-		}
-		exit(127);
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-		set_global(status);
-		my_free(cmd);
-	}
-}
-
-void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)
-{
-	if (flag == 0)
-	{
-		*stdin_cpy = dup(0);
-		*stdout_cpy = dup(1);
-	}
-	else
-	{
-		dup2(*stdin_cpy, 0);
-		dup2(*stdout_cpy, 1);
-	}
-}
-
-void	split_exec(char **mypath, char **cmd, char **envp)
-{
-	// int	stdout_cpy;
-	// int	stdin_cpy;
-
-	if (between_parentheses(cmd[0]) == 0)
-	{
-		exec_subshell(cmd, envp);
-		return ;
-	}
-	// set_fd(&stdin_cpy, &stdout_cpy, 0);
-	if (check_builtin(cmd[0]) == 0)
-		exec_builtin(cmd, envp);
-	else
-		my_exec(mypath, envp, cmd);
-	// set_fd(&stdin_cpy, &stdout_cpy, 1);
-}
 
 void	check_pipes(char *str, char **mypath, char **args, char **envp)
 {
@@ -112,18 +26,7 @@ void	check_pipes(char *str, char **mypath, char **args, char **envp)
 		matrix_size++;
 	n_pipes = matrix_size - 1;
 	if (matrix_size > 1)
-		pipex2(pipes, n_pipes, envp);
-	// {
-	// 	end = (int **)malloc(sizeof(int *) * n_pipes);
-	// 	matrix_size = -1;
-	// 	while (++matrix_size < n_pipes)
-	// 	{
-	// 		end[matrix_size] = malloc(sizeof(int) * 2);
-	// 		pipe(end[matrix_size]);
-	// 	}
-	// }
-	// if (end)
-		// pipex(end, pipes, n_pipes);
+		pipex(pipes, n_pipes, mypath, envp);
 	else
 		split_exec(mypath, args, envp);
 	my_free(pipes);
@@ -180,10 +83,11 @@ int	main(int argc, char *argv[], char **envp)
 	char	*buff;
 	char	**mypath;
 
-	init();
 	mypath = NULL;
 	while (1)
 	{
+		clt_echo("-ctlecho");
+		init();
 		mypath = get_path();
 		if (argc > 1)
 			buff = argv[1];
@@ -200,5 +104,5 @@ int	main(int argc, char *argv[], char **envp)
 		if (mypath)
 			my_free(mypath);
 	}
-	return (0);
+	return (g_exit);
 }
