@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/04 16:32:01 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/06 18:27:38 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char		*ft_itoa(int n);
 char		*ft_malloc_strcpy(const char *s, int n);
 void		*ft_calloc(size_t count, size_t size);
 char		**cpy_matrix(char **matrix, int offset);
-char		**cpy_env(char **matrix);
+// void		cpy_env(char **m2);
 int			ft_strrchr(const char *s, char c);
 char		*get_next_line(int fd);
 int			uote_str(const char *s);
@@ -86,7 +86,7 @@ int			skip_chars(char c);
 /* PIPES/HEREDOC/REDIRECTION */
 
 // void			pipex(int **end, char **pipes, int n_pipes);
-void		pipex(char **pipes, int n_pipes, char **mypath, char **envp);
+void		pipex(char **pipes, int n_pipes, char **envp);
 int			here_doc_pipes(char	**args);
 void		here_doc(char *limiter);
 char		**cut_red(char **args);

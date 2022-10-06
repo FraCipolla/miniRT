@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/04 16:33:51 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/06 19:18:10 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,15 @@ void	check_pipes(char *str, char **mypath, char **args, char **envp)
 {
 	char	**pipes;
 	int		matrix_size;
-	int		**end;
 	int		n_pipes;
 
-	end = NULL;
 	matrix_size = 0;
 	pipes = ft_split(str, '|');
 	while (pipes[matrix_size])
 		matrix_size++;
 	n_pipes = matrix_size - 1;
 	if (matrix_size > 1)
-		pipex(pipes, n_pipes, mypath, envp);
+		pipex(pipes, n_pipes, envp);
 	else
 		split_exec(mypath, args, envp);
 	my_free(pipes);
@@ -61,12 +59,22 @@ void	start_parsing(char *buff, char **mypath, char **envp)
 	char	**args;
 	char	**args2;
 	int		i;
+	int		c;
 
-	args = ft_split(buff, ';');
 	i = 0;
+	args = ft_split(buff, ';');
 	while (args[i])
 	{
 		args2 = ft_split(args[i], ' ');
+		c = -1;
+		while (args2[++c])
+		{
+			if (args2[c][0] == '$')
+			{
+				free(args2[c]);
+				args2[c] = ft_strdup(getenv(&args2[c][1]));
+			}
+		}
 		args2 = check_wild(args2);
 		if (args2 == NULL)
 			return ;
@@ -80,14 +88,16 @@ void	start_parsing(char *buff, char **mypath, char **envp)
 
 int	main(int argc, char *argv[], char **envp)
 {
-	char	*buff;
-	char	**mypath;
+	char		*buff;
+	char		**mypath;
+	extern char	**environ;
 
+	// clt_echo("-ctlecho");
 	mypath = NULL;
 	while (1)
 	{
-		clt_echo("-ctlecho");
 		init();
+		environ = envp;
 		mypath = get_path();
 		if (argc > 1)
 			buff = argv[1];

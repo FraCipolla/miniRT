@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 15:36:59 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/04 16:34:52 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:03:32 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 	int		status;
 
 	pid = fork();
-	signal(SIGINT, action_in_process);
-	clt_echo("ctlecho");
+	// clt_echo("ctlecho");
 	if (pid == 0)
 	{
+		signal(SIGINT, action_in_process);
 		if (check_dot(cmd, environ) == -1)
 		{
 			while (mypath && *mypath)
 			{
 				tmp = ft_strjoin(*mypath, cmd[0]);
-				if (access(tmp, R_OK) == 0 && access(tmp, X_OK) == 0)
+				if (access(tmp, R_OK) == 0)
 					execve(tmp, cmd, environ);
 				mypath++;
 				free(tmp);
@@ -54,9 +54,12 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 		}
 		exit(127);
 	}
-	waitpid(pid, &status, 0);
-	set_global(status);
-	my_free(cmd);
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		set_global(status);
+		my_free(cmd);
+	}
 }
 
 void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)

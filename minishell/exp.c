@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 18:13:38 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/06 18:57:25 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ int	my_exp(char **tmp, char **envp)
 	char		*aux;
 
 	i = 0;
-	while (tmp[++i] != NULL)
-		add_env(tmp[i], envp);
+	if (tmp[1] != NULL)
+		while (tmp[++i] != NULL)
+			add_env(tmp[i], &envp[0]);
 	if (tmp[1] != NULL)
 		return (0);
-	i = -1;
-	export = cpy_matrix(envp, 0);
+	export = cpy_matrix(envp, -1);
 	export = sort_env(export);
+	i = -1;
 	while (export[++i])
 	{
 		if (check_empty_env(export[i]) == -2)
@@ -113,13 +114,13 @@ int	until_ugual(char *s1, char *s2)
 void	add_env(char *str, char **envp)
 {
 	int			i;
-
+	
 	i = -1;
 	while (envp[++i])
 	{
 		if (until_ugual(str, envp[i]) == 0)
 		{
-			envp[i] = str;
+			envp[i] = ft_strdup(str);
 			return ;
 		}
 		if (strncmp(str, envp[i], ft_strlen(str)) == 0)

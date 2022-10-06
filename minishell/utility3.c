@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 10:28:05 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/04 15:40:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/09/28 19:47:04 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,114 +33,74 @@ char	*get_env(char *str)
 	return (ret);
 }
 
-int	check_dollar(char *str, char **ret, int i)
+int	manage_dollar(char *str, char **ret)
+{
+	char	*aux;
+	int		i;
+
+	i = 0;
+	if (str[++i] == '?')
+	{
+		aux = ft_itoa(g_exit);
+		*ret = ft_strjoin(*ret, aux);
+		free(aux);
+		i++;
+	}
+	else
+	{
+		aux = get_env(&str[i]);
+		if (getenv(aux))
+			*ret = ft_strjoin(*ret, getenv(aux));
+		free(aux);
+		while (str[i] && str[i] != ' ' && str[i] != '"'
+			&& str[i] != '$' && str[i] != '\'' && str[i] != '\n')
+			i++;
+	}
+	return (i);
+}
+
+int	manage_dq(char *str, char **ret, int i)
 {
 	int		c;
-	char	tmp[1024];
-	char	*env;
-	char 	*aux;
+
 	c = 0;
 	while (str[i] != '"')
 	{
 		if (str[i] == '$')
-		{
-			if (str[++i] == '?')
-			{
-				env = ft_itoa(g_exit);
-				aux = env;
-				free(aux);
-			}
-			else
-			{
-				aux = get_env(str + i);
-				env = getenv(aux);
-				free(aux);
-			}
-			while (str[i] && str[i] != ' ' && str[i] != '"'
-				&& str[i] != '$' && str[i] != '\'' && str[i] != '\n')
-				i++;
-			while (env && *env)
-				tmp[c++] = *env++;
-		}
+			i += manage_dollar(&str[i], ret);
 		else if (str[i])
-			tmp[c++] = str[i++];
+			add_char(ret, str[i++]);
 	}
-	tmp[c] = '\0';
-	*ret = ft_strjoin(*ret, tmp);
 	return (i + 1);
 }
 
-int	manage_sq(char *str, char **ret)
+int	manage_sq(char *first, char **toret)
 {
-	int		i;
-	int		c;
-	char	*tmp;
+	char	*next;
 	char	*aux;
-	i = 1;
-	while (str[i] != '\'')
-		i++;
-	tmp = malloc(sizeof(char) * i - 1);
-	tmp[i - 1] = '\0';
-	i = 1;
-	c = 0;
-	while (str[i] != '\'')
-	{
-		tmp[c] = str[i];
-		i++;
-		c++;
-	}
-	aux = ft_strdup(*ret);
-	//free(*ret);
-	*ret = ft_strjoin(*ret, tmp);
-	//free(tmp);
-	return (i + 1);
+
+	next = strstr(first, "'");
+	if (*(first) == '\'')
+		return (2);
+	aux = ft_malloc_strcpy(first, next - first);
+	*toret = ft_strjoin(*toret, aux);
+	free(aux);
+	return (next - first + 2);
 }
-
-// int manage_sq(char *first, char **toret)
-// {
-// 	char *next;
-// 	char *aux;
-
-// 	next = strstr(first, "'");
-// 	if((next - first) == 1)
-// 		return (1);
-// 	aux = ft_malloc_strcpy(first, next - first);
-// 	*toret = ft_strjoin(*toret,aux);
-// 	free(aux);
-// 	return(next - first + 2);
-// }
 
 char	*resolve_env(char *str)
 {
 	char	*ret;
-	char	*aux;
 
 	ret = NULL;
 	while (*str && str)
 	{
 		if (*str == '\'')
-			str += manage_sq(str, &ret);
+			str += manage_sq(str + 1, &ret);
 		else if (*str == '"')
-			str += check_dollar(str, &ret, 1);
+			str += manage_dq(str, &ret, 1);
 		else if (*str == '$')
-		{
-			if (*(++str) == '?')
-			{
-				aux = ft_itoa(g_exit);
-				ret = ft_strjoin(ret, aux);
-				free(aux);
-				str++;
-			}
-			else
-			{
-				aux = get_env(str);
-				ret = ft_strjoin(ret, getenv(aux));
-				free(aux);
-				while (*str && *str != ' ' && *str != '"'
-					&& *str != '$' && *str != '\'' && *str != '\n')
-					str++;
-			}
-		}
+			str += manage_dollar(str, &ret);
 		else
 			add_char(&ret, *(str++));
 	}
@@ -151,8 +111,8 @@ char	**remove_quotes(char **args)
 {
 	int		i;
 	char	**ret;
-	char	*tmp;
 	int		j;
+	char	*aux;
 
 	j = 0;
 	i = 0;
@@ -162,9 +122,9 @@ char	**remove_quotes(char **args)
 	i = -1;
 	while (args[++i])
 	{
-		tmp = resolve_env(args[i]);
-		if(tmp)
-			ret[j++] = tmp;
+		aux = resolve_env(args[i]);
+		if (aux)
+			ret[j++] = aux;
 	}
 	ret[j] = NULL;
 	return (ret);

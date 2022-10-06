@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:23:37 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/03 15:56:39 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/05 18:54:23 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	set_global(int status)
 
 void	action_in_process(int sig)
 {
+	if (sig == SIGINT)
+		printf("ˆC");
 	printf("\n");
 	(void)sig;
 }
