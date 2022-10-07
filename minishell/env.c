@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/06 18:38:36 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 16:49:34 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ int	my_unset(char **str, char **envp)
 					envp[i] = envp[i + 1];
 					i++;
 				}
+				envp[i - 1][0] = '\0';
 			}
 			i++;
 		}
-		envp[i - 1][0] = '\0';
 	}
 	g_exit = 0;
 	return (g_exit);
