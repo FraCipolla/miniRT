@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 16:11:12 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 16:13:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,9 @@ void	do_pipe(int stdout_cpy, char **cmd,char **envp)
 	{
 		close(end[0]);
 		if (stdout_cpy != 0)
-		{
 			dup2(stdout_cpy, STDOUT_FILENO);
-			close(end[1]);
-		}
 		else
-		{
 			dup2(end[1], STDOUT_FILENO);
-			close(end[1]);
-		}
 		split_exec(mypath, cmd, envp);
 		exit(0);
 	}
