@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:33:53 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/06 19:59:55 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:31:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	here_doc(char *limiter)
 		ret = ft_strjoin(ret, "\n");
 		free(buff);
 	}
-	// ret = resolve_env(ret);
 	if (ret)
 	{
 		write (end[1], ret, ft_strlen(ret));
@@ -78,7 +77,6 @@ int	here_doc_pipes(char	**args)
 		ret = ft_strjoin(ret, "\n");
 		free(buff);
 	}
-	// ret = resolve_env(ret);
 	write (end[1], ret, ft_strlen(ret));
 	close(end[1]);
 	free(buff);
