@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 15:36:59 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 09:37:05 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 10:08:33 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 
 	pid = fork();
 	// clt_echo("ctlecho");
-	printf("cmd %s\n", cmd[0]);
 	if (pid == 0)
 	{
 		signal(SIGINT, action_in_process);

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:33:53 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 09:31:59 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:41:03 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	here_doc(char *limiter)
 	pipe(end);
 	while (1)
 	{
-		buff = readline("heredoc> ");
+		buff = readline("> ");
 		if (strcmp(buff, limiter) == 0)
 			break ;
 		ret = ft_strjoin(ret, buff);
@@ -70,16 +70,21 @@ int	here_doc_pipes(char	**args)
 	ret = NULL;
 	while (1)
 	{
-		buff = readline("heredoc> ");
+		buff = readline("> ");
 		if (strcmp(buff, limiter) == 0)
 			break ;
 		ret = ft_strjoin(ret, buff);
 		ret = ft_strjoin(ret, "\n");
 		free(buff);
 	}
-	write (end[1], ret, ft_strlen(ret));
-	close(end[1]);
 	free(buff);
+	if (ret)
+	{
+		close(end[1]);
+		write (end[0], ret, ft_strlen(ret));
+		free(ret);
+		return (end[0]);
+	}
 	free(ret);
-	return (end[0]);
+	return (-1);
 }
