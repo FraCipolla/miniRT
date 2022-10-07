@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 15:36:59 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 10:08:33 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 14:55:26 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 
 	pid = fork();
 	// clt_echo("ctlecho");
+	signal(SIGINT, action_in_process);
 	if (pid == 0)
 	{
-		signal(SIGINT, action_in_process);
 		if (check_dot(cmd, environ) == -1)
 		{
 			while (mypath && *mypath)
@@ -100,7 +100,7 @@ void	split_exec(char **mypath, char **cmd, char **envp)
 	cmd = cut_red(cmd);
 	if (cmd[0] == NULL)
 		free(cmd);
-	else if (check_builtin(cmd[0]) == 0)
+	if (check_builtin(cmd[0]) == 0)
 		exec_builtin(cmd, envp, fd);
 	else
 		my_exec(mypath, envp, cmd);

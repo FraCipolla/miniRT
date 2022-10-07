@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 11:14:43 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 14:47:34 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,12 @@ int			skip_chars(char c);
 
 // void			pipex(int **end, char **pipes, int n_pipes);
 void		pipex(char **pipes, int n_pipes, char **envp);
-int			here_doc_pipes(char	**args);
+void			here_doc_pipes(char	**args, int **end);
 void		here_doc(char *limiter);
 char		**cut_red(char **args);
 char		*infile(char **args);
 char		**cut_heredoc(char **args);
+void		set_fd(int *stdin_cpy, int *stdout_cpy, int flag);
 
 /* STRINGS OPERATIONS */
 

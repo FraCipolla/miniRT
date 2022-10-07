@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:33:53 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 11:41:03 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 16:04:28 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	here_doc(char *limiter)
 	int		end[2];
 
 	ret = NULL;
+	buff = NULL;
 	pipe(end);
 	while (1)
 	{
@@ -29,14 +30,11 @@ void	here_doc(char *limiter)
 		ret = ft_strjoin(ret, "\n");
 		free(buff);
 	}
-	if (ret)
-	{
-		write (end[1], ret, ft_strlen(ret));
-		dup2(end[0], 0);
-	}
+	dup2(end[0], 0);
+	write (end[1], ret, ft_strlen(ret));
 	close(end[1]);
-	free(ret);
 	close(end[0]);
+	free(ret);
 	free(buff);
 }
 
@@ -56,18 +54,21 @@ char	*get_limiter(char **args)
 	return (ret);
 }
 
-int	here_doc_pipes(char	**args)
+void	here_doc_pipes(char	**args, int **end)
 {
 	char	*limiter;
-	int		end[2];
+	// int		end[2];
 	char	*buff;
 	char	*ret;
 
 	limiter = get_limiter(args);
 	if (limiter == NULL)
-		return (-1);
-	pipe(end);
+		return ;
+	printf("entra\n");
 	ret = NULL;
+	buff = NULL;
+	// close(*end[0]);
+	// close(*end[1]);
 	while (1)
 	{
 		buff = readline("> ");
@@ -79,12 +80,6 @@ int	here_doc_pipes(char	**args)
 	}
 	free(buff);
 	if (ret)
-	{
-		close(end[1]);
-		write (end[0], ret, ft_strlen(ret));
-		free(ret);
-		return (end[0]);
-	}
+		write (*end[1], ret, ft_strlen(ret));
 	free(ret);
-	return (-1);
 }

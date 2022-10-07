@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:51:30 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 11:39:29 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 16:11:12 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,11 @@ char	**cut_heredoc(char **args)
 			ret[n++] = ft_strdup(args[i++]);
 	}
 	ret[n] = NULL;
-	my_free(args);
 	return (ret);
 }
 
-void	do_pipe(int stdcpy, char **cmd, char **envp)
+void	do_pipe(int stdout_cpy, char **cmd,char **envp)
 {
-	int		heredoc;
 	int		end[2];
 	int		pid;
 	char	**mypath;
@@ -53,14 +51,11 @@ void	do_pipe(int stdcpy, char **cmd, char **envp)
 	if (pid == 0)
 	{
 		close(end[0]);
-		heredoc = here_doc_pipes(cmd);
-		if (heredoc != -1)
+		if (stdout_cpy != 0)
 		{
-			cmd = cut_heredoc(cmd);
-			end[0] = heredoc;
+			dup2(stdout_cpy, STDOUT_FILENO);
+			close(end[1]);
 		}
-		if (stdcpy != 0)
-			dup2(stdcpy, STDOUT_FILENO);
 		else
 		{
 			dup2(end[1], STDOUT_FILENO);
@@ -69,13 +64,10 @@ void	do_pipe(int stdcpy, char **cmd, char **envp)
 		split_exec(mypath, cmd, envp);
 		exit(0);
 	}
-	if (pid > 0)
-	{
-		close(end[1]);
-		dup2(end[0], STDIN_FILENO);
-		close(end[0]);
-		my_free(mypath);
-	}
+	close(end[1]);
+	dup2(end[0], STDIN_FILENO);
+	close(end[0]);
+	my_free(mypath);
 }
 
 void	pipex(char **pipes, int n_pipes, char **envp)
@@ -85,8 +77,7 @@ void	pipex(char **pipes, int n_pipes, char **envp)
 	int		std_cpy[2];
 
 	i = -1;
-	std_cpy[1] = dup(1);
-	std_cpy[0] = dup(0);
+	set_fd(&std_cpy[0], &std_cpy[1], 0);
 	while (++i <= n_pipes)
 	{
 		args = ft_split(pipes[i], ' ');
@@ -94,13 +85,12 @@ void	pipex(char **pipes, int n_pipes, char **envp)
 			do_pipe(std_cpy[1], args, envp);
 		else
 			do_pipe(0, args, envp);
-		free(args);
-		// dup2(std_cpy[1], STDOUT_FILENO);
+		my_free(args);
 	}
-	dup2(std_cpy[0], STDIN_FILENO);
-	close(std_cpy[0]);
-	close(std_cpy[1]);
 	i = -1;
 	while (++i <= n_pipes)
 		waitpid(-1, NULL, 0);
+	dup2(std_cpy[0], STDIN_FILENO);
+	set_fd(&std_cpy[0], &std_cpy[1], 1);
+	set_fd(&std_cpy[0], &std_cpy[1], 2);
 }

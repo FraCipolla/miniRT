@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/06 19:18:10 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:37:11 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	check_pipes(char *str, char **mypath, char **args, char **envp)
 		matrix_size++;
 	n_pipes = matrix_size - 1;
 	if (matrix_size > 1)
+	{
 		pipex(pipes, n_pipes, envp);
+		my_free(args);
+	}
 	else
 		split_exec(mypath, args, envp);
 	my_free(pipes);
