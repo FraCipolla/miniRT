@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 19:28:12 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/06 18:57:25 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/08 16:56:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	my_exp(char **tmp, char **envp)
 			aux = ft_strjoin(export[i], "=''");
 		else
 			aux = ft_strdup(export[i]);
-		printf("%s\n", aux);
+		printf("declare -x %s\n", aux);
 		free(aux);
 	}
 	my_free(export);
@@ -114,13 +114,18 @@ int	until_ugual(char *s1, char *s2)
 void	add_env(char *str, char **envp)
 {
 	int			i;
+	int			c;
 	
 	i = -1;
 	while (envp[++i])
 	{
 		if (until_ugual(str, envp[i]) == 0)
 		{
-			envp[i] = ft_strdup(str);
+			c = 0;
+			while (envp[i][c] != '=')
+				c++;
+			while (str[++c])
+				envp[i][c] = str[c];
 			return ;
 		}
 		if (strncmp(str, envp[i], ft_strlen(str)) == 0)
