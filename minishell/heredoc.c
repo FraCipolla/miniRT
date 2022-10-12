@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:33:53 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 16:04:28 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/12 16:14:20 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ void	here_doc(char *limiter)
 	int		end[2];
 
 	ret = NULL;
-	buff = NULL;
-	pipe(end);
 	while (1)
 	{
 		buff = readline("> ");
-		if (strcmp(buff, limiter) == 0)
+		if (ft_strcmp(buff, limiter) == 0)
 			break ;
 		ret = ft_strjoin(ret, buff);
 		ret = ft_strjoin(ret, "\n");
 		free(buff);
 	}
+	pipe(end);
 	dup2(end[0], 0);
 	write (end[1], ret, ft_strlen(ret));
 	close(end[1]);
@@ -44,6 +43,8 @@ char	*get_limiter(char **args)
 	char	*ret;
 
 	i = 0;
+	if (args == NULL)
+		return (NULL);
 	ret = NULL;
 	while (args[i])
 	{
@@ -54,32 +55,39 @@ char	*get_limiter(char **args)
 	return (ret);
 }
 
-void	here_doc_pipes(char	**args, int **end)
+int	write_heredoc(int end[2], char *ret, char *buff)
 {
-	char	*limiter;
-	// int		end[2];
+	write (end[1], ret, ft_strlen(ret));
+	dup2(end[0], 0);
+	close(end[1]);
+	free(ret);
+	free(buff);
+	return (0);
+}
+
+int	here_doc_pipes(char **args)
+{
 	char	*buff;
 	char	*ret;
+	char	*limiter;
+	int		end[2];
 
+	ret = NULL;
 	limiter = get_limiter(args);
 	if (limiter == NULL)
-		return ;
-	printf("entra\n");
-	ret = NULL;
-	buff = NULL;
-	// close(*end[0]);
-	// close(*end[1]);
+		return (1);
+	pipe(end);
 	while (1)
 	{
 		buff = readline("> ");
-		if (strcmp(buff, limiter) == 0)
+		if (ft_strcmp(buff, limiter) == 0)
 			break ;
 		ret = ft_strjoin(ret, buff);
 		ret = ft_strjoin(ret, "\n");
 		free(buff);
 	}
-	free(buff);
 	if (ret)
-		write (*end[1], ret, ft_strlen(ret));
-	free(ret);
+		return (write_heredoc(end, ret, buff));
+	free(buff);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 17:36:01 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 14:47:34 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/12 16:05:43 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		rl_redisplay(void);
 int			my_pwd(char **tmp);
 int			my_echo(char **args, int fd);
 int			my_env(char **tmp, char **envp);
-int			my_exp(char **tmp, char **envp);
+int			my_exp(char **tmp, char **envp, int i);
 int			my_unset(char **str, char **envp);
 int			my_cd(char **tmp);
 
@@ -50,7 +50,7 @@ char		**sort_env(char **env);
 void		add_env(char *str, char **envp);
 int			check_empty_env(char *str);
 int			check_pwd(char *str);
-void		ft_increase_shlvl(void);
+void		ft_increase_shlvl(char **environ);
 
 /* CHECKS */
 
@@ -62,6 +62,7 @@ int			check_dot(char **cmd, char **environ);
 int			check_builtin(char *str);
 void		check_pipes(char *str, char **mypath, char **args, char **envp);
 int			check_emptyline(char *str);
+char		*check_empty_pipes(char *buff);
 
 /* UTILITY */
 
@@ -76,18 +77,19 @@ char		*ft_itoa(int n);
 char		*ft_malloc_strcpy(const char *s, int n);
 void		*ft_calloc(size_t count, size_t size);
 char		**cpy_matrix(char **matrix, int offset);
-// void		cpy_env(char **m2);
 int			ft_strrchr(const char *s, char c);
 char		*get_next_line(int fd);
 int			uote_str(const char *s);
 void		add_char(char **toret, char a);
 int			skip_chars(char c);
+int			ft_atoi(char *str);
+char		*ft_strstr(char *str, char *to_find);
 
 /* PIPES/HEREDOC/REDIRECTION */
 
-// void			pipex(int **end, char **pipes, int n_pipes);
+void		check_pipes(char *str, char **mypath, char **args, char **envp);
 void		pipex(char **pipes, int n_pipes, char **envp);
-void			here_doc_pipes(char	**args, int **end);
+int			here_doc_pipes(char	**args);
 void		here_doc(char *limiter);
 char		**cut_red(char **args);
 char		*infile(char **args);
@@ -97,12 +99,14 @@ void		set_fd(int *stdin_cpy, int *stdout_cpy, int flag);
 /* STRINGS OPERATIONS */
 
 char		*ft_addspaces(char *str);
+char		*unclose_quote(char *buff);
 int			check_env_path(char *str, char **environ);
 char		**remove_quotes(char **args);
 char		*resolve_env(char *str);
 char		*get_env(char *str);
 char		*rem_char(char *str, int r);
 void		remove_env(char **env, char *search);
+char		*ft_strchr(char *s, char c);
 
 /* PROGRAM BEHAVIOUR */
 
@@ -122,12 +126,13 @@ void		msg_exit(void);
 /* WILDCARD */
 
 char		*parse_files(char *wild);
-char		**check_wild(char **args);
+char		**check_wild(char **args, int i);
 
 /* LOGICAL OPERATOR */
 
 int			logical_operator(char *buff, char **mypath, char *log, char **envp);
 char		*check_empty_logical(char *buff);
+int			check_logical(char *str);
 
 /* PARENTHESES */
 

@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 14:23:37 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 12:57:57 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/12 16:03:31 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ void	set_global(int status)
 	{
 		g_exit = WEXITSTATUS(status);
 	}
-	else if (WIFSIGNALED(status) != 0 && WIFSIGNALED(status) == 1)
+	else if (WTERMSIG(status) == 2)
 		g_exit = 130;
+	else if (WTERMSIG(status) == 3)
+		g_exit = 131;
 	else
 		g_exit = 0;
 }
@@ -28,12 +30,16 @@ void	action_in_process(int sig)
 {
 	if (sig == SIGINT)
 		printf("^C");
+	else if (sig == SIGQUIT)
+		printf("^\\Quit: 3");
 	printf("\n");
 	(void)sig;
 }
 
 void	action(int sig)
 {
+	if (sig == SIGINT)
+		g_exit = 1;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);

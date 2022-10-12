@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 18:32:21 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 09:29:47 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:09:59 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,22 @@ void	add_char(char **toret, char a)
 	*toret = ft_strjoin(*toret, aux);
 }
 
-void	ft_increase_shlvl(void)
+void	ft_increase_shlvl(char **environ)
 {
-	extern char	**environ;
 	char		*nb;
 	int			tmp;
 	char		*cpy;
+	int			aux;
 
 	tmp = -1;
 	nb = NULL;
 	cpy = ft_strdup("SHLVL=");
 	while (environ[++tmp])
 	{
-		if (strncmp(environ[tmp], "SHLVL", 5) == 0)
+		if (ft_strncmp(environ[tmp], "SHLVL", 5) == 0)
 		{
-			tmp = atoi(environ[tmp] + 6) + 1;
-			nb = ft_itoa(tmp);
+			aux = ft_atoi(environ[tmp] + 6) + 1;
+			nb = ft_itoa(aux);
 			environ[tmp] = ft_strjoin(cpy, nb);
 			break ;
 		}

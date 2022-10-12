@@ -6,31 +6,22 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 19:08:41 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 15:37:11 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/12 16:05:14 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	check_pipes(char *str, char **mypath, char **args, char **envp)
+char	*check_empty(char *buff)
 {
-	char	**pipes;
-	int		matrix_size;
-	int		n_pipes;
-
-	matrix_size = 0;
-	pipes = ft_split(str, '|');
-	while (pipes[matrix_size])
-		matrix_size++;
-	n_pipes = matrix_size - 1;
-	if (matrix_size > 1)
+	buff = check_empty_logical(check_empty_parentheses(buff));
+	if (!(ft_strchr(buff, '(')) && ft_strchr(buff, ')'))
 	{
-		pipex(pipes, n_pipes, envp);
-		my_free(args);
+		printf("syntax error: near unexpected token `)'\n");
+		buff = NULL;
 	}
-	else
-		split_exec(mypath, args, envp);
-	my_free(pipes);
+	buff = check_empty_pipes(buff);
+	return (buff);
 }
 
 char	*first_check(char *buff)
@@ -42,19 +33,34 @@ char	*first_check(char *buff)
 	if (buff[0] == '\0')
 		return (buff);
 	tmp = buff;
-	buff = check_empty_parentheses(buff);
+	buff = check_empty(buff);
 	if (buff == NULL)
 		add_history(tmp);
 	else
 		add_history(buff);
-	buff = check_empty_logical(buff);
 	buff = ft_addspaces(buff);
+	buff = unclose_quote(buff);
 	if (buff == NULL)
 	{
 		buff = ft_strdup("");
 		g_exit = 258;
 	}
 	return (buff);
+}
+
+void	ft_start_parsing_aux(char **args2, int c)
+{
+	char	*aux;
+	char	*aux1;
+
+	aux1 = get_env(args2[c]);
+	aux = getenv(aux1);
+	free(aux1);
+	if (args2[c][0] == '$' && aux && args2[c][1] != ' ')
+	{
+		free(args2[c]);
+		args2[c] = aux;
+	}
 }
 
 void	start_parsing(char *buff, char **mypath, char **envp)
@@ -72,13 +78,9 @@ void	start_parsing(char *buff, char **mypath, char **envp)
 		c = -1;
 		while (args2[++c])
 		{
-			if (args2[c][0] == '$')
-			{
-				free(args2[c]);
-				args2[c] = ft_strdup(getenv(&args2[c][1]));
-			}
+			ft_start_parsing_aux(args2, c);
 		}
-		args2 = check_wild(args2);
+		args2 = check_wild(args2, -1);
 		if (args2 == NULL)
 			return ;
 		if (logical_operator(args[i], mypath, NULL, envp) == 1)
@@ -95,8 +97,7 @@ int	main(int argc, char *argv[], char **envp)
 	char		**mypath;
 	extern char	**environ;
 
-	// clt_echo("-ctlecho");
-	mypath = NULL;
+	clt_echo("-ctlecho");
 	while (1)
 	{
 		init();
@@ -105,10 +106,7 @@ int	main(int argc, char *argv[], char **envp)
 		if (argc > 1)
 			buff = argv[1];
 		else
-		{
-			buff = readline("minishell: ");
-			buff = first_check(buff);
-		}
+			buff = first_check(readline("minishell: "));
 		if (buff[0] != '\0')
 			start_parsing(buff, mypath, envp);
 		if (argc > 1)

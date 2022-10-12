@@ -34,6 +34,22 @@ int	ft_find_new_size(char	*str)
 	return (i + size);
 }
 
+int	ft_addspaces_aux(char *str, int *i, int *c, char *ret)
+{
+	if (str[*i + 2] == '<' || str[*i + 2] == '>')
+	{
+		free(ret);
+		free(str);
+		return (1);
+	}
+	else if (str[*i + 2] != ' ')
+	{
+		ret[++*c] = str[++*i];
+		ret[++*c] = ' ';
+	}
+	return (0);
+}
+
 char	*ft_addspaces(char *str)
 {
 	int		i;
@@ -51,20 +67,10 @@ char	*ft_addspaces(char *str)
 		if ((str[i] == '>' || str[i] == '<') && str[i + 1]
 			!= ' ' && str[i + 1] != '>' && str[i + 1] != '<')
 			ret[++c] = ' ';
-		else if (ft_strncmp(str + i, ">>", 2) == 0 || ft_strncmp(str + i, "<<", 2) == 0)
+		else if (!ft_strncmp(str + i, ">>", 2) || !ft_strncmp(str + i, "<<", 2))
 		{
-			if (str[i + 2] == '<' || str[i + 2] == '>')
-			{
+			if (ft_addspaces_aux(str, &i, &c, ret))
 				printf("syntax error near unexpected token '%c'\n", str[i + 2]);
-				free(ret);
-				free(str);
-				return (NULL);
-			}
-			else if (str[i + 2] != ' ')
-			{
-				ret[++c] = str[++i];
-				ret[++c] = ' ';
-			}
 		}
 		c++;
 	}
@@ -82,11 +88,9 @@ char	**cut_red(char **args)
 	i = -1;
 	n = 0;
 	while (args[++i])
-	{
-		if (strcmp(args[i], ">>") == 0 || args[i][0]
-			== '>' || args[i][0] == '<' || strcmp(args[i], "<<") == 0)
+		if (!strcmp(args[i], ">>") || args[i][0] == '>'
+			|| args[i][0] == '<' || !strcmp(args[i], "<<"))
 			n += 2;
-	}
 	ret = malloc(sizeof(char *) * i - (n) + 1);
 	i = 0;
 	n = 0;

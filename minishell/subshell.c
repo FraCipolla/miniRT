@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 16:27:10 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/04 16:30:45 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/12 14:52:58 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ void	exec_subshell(char **args, char **envp)
 	cmd[2] = NULL;
 	pid = fork();
 	if (pid == 0)
-	{
-		ft_increase_shlvl();
 		execve(cmd[0], cmd, envp);
-	}
 	else
 	{
 		waitpid(pid, &status, 0);

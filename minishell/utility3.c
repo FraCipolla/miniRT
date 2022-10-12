@@ -66,7 +66,8 @@ int	manage_dq(char *str, char **ret, int i)
 	c = 0;
 	while (str[i] != '"')
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && str[i + 1] != ' '
+			&& str[i + 1] && str[i + 1] != '"')
 			i += manage_dollar(&str[i], ret);
 		else if (str[i])
 			add_char(ret, str[i++]);
@@ -79,7 +80,7 @@ int	manage_sq(char *first, char **toret)
 	char	*next;
 	char	*aux;
 
-	next = strstr(first, "'");
+	next = ft_strstr(first, "'");
 	if (*(first) == '\'')
 		return (2);
 	aux = ft_malloc_strcpy(first, next - first);
@@ -99,33 +100,10 @@ char	*resolve_env(char *str)
 			str += manage_sq(str + 1, &ret);
 		else if (*str == '"')
 			str += manage_dq(str, &ret, 1);
-		else if (*str == '$')
+		else if (*str == '$' && *(str + 1) != ' ' && *(str + 1))
 			str += manage_dollar(str, &ret);
 		else
 			add_char(&ret, *(str++));
 	}
-	return (ret);
-}
-
-char	**remove_quotes(char **args)
-{
-	int		i;
-	char	**ret;
-	int		j;
-	char	*aux;
-
-	j = 0;
-	i = 0;
-	while (args[i])
-		i++;
-	ret = (char **)malloc(sizeof(char *) * i + 1);
-	i = -1;
-	while (args[++i])
-	{
-		aux = resolve_env(args[i]);
-		if (aux)
-			ret[j++] = aux;
-	}
-	ret[j] = NULL;
 	return (ret);
 }

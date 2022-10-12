@@ -12,12 +12,61 @@
 
 #include "minishell.h"
 
+int	ft_atoi(char *str)
+{
+	int	neg;
+	int	num;
+	int	i;
+
+	i = 0;
+	neg = 1;
+	num = 0;
+	while (str[i] <= ' ')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			neg *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		num = num * 10 + (str[i] - 48);
+		i++;
+	}
+	return (num * neg);
+}
+
+void	my_exit(char **cmd)
+{
+	int	i;
+
+	i = -1;
+	if (cmd[1])
+	{
+		while (cmd[1][++i])
+		{
+			if (!(cmd[1][i] >= '0' && cmd[1][i] <= '9'))
+			{
+				printf("exit\n exit: %s: numeric argument required", cmd[1]);
+				exit(255);
+			}
+		}
+		printf("exit\n");
+		i = ft_atoi(cmd[1]);
+		while (i < 0 || i > 255)
+			i -= 256;
+		exit(i);
+	}
+	exit (0);
+}
+
 void	exec_builtin(char **cmd, char **envp, int fd)
 {
 	if (strcmp(cmd[0], "cd") == 0)
 		g_exit = my_cd(cmd);
 	else if (strcmp(cmd[0], "export") == 0)
-		g_exit = my_exp(cmd, envp);
+		g_exit = my_exp(cmd, envp, 0);
 	else if (strcmp(cmd[0], "unset") == 0)
 		g_exit = my_unset(cmd, envp);
 	else if (strcmp(cmd[0], "echo") == 0)
@@ -27,10 +76,7 @@ void	exec_builtin(char **cmd, char **envp, int fd)
 	else if (strcmp(cmd[0], "env") == 0)
 		g_exit = my_env(cmd, envp);
 	else if (strcmp(cmd[0], "exit") == 0)
-	{
-		write(1, "exit\n", 5);
-		exit (0);
-	}
+		my_exit(cmd);
 	else
 		printf("%s: command not found\n", cmd[0]);
 	my_free(cmd);

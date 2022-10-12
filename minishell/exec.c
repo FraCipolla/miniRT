@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 15:36:59 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/07 14:55:26 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:31:16 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	**cmd_path(char **args)
 		i = ft_strlen(args[0]);
 		while (args[0][i] != '/')
 			i--;
+		if (args[0][i - 1] == '.')
+			i--;
 		tmp = ft_strdup(args[0] + i);
 		free(args[0]);
 		args[0] = tmp;
@@ -36,30 +38,26 @@ void	my_exec(char **mypath, char **environ, char **cmd)
 	int		status;
 
 	pid = fork();
-	// clt_echo("ctlecho");
 	signal(SIGINT, action_in_process);
+	signal(SIGQUIT, action_in_process);
 	if (pid == 0)
 	{
 		if (check_dot(cmd, environ) == -1)
 		{
 			while (mypath && *mypath)
 			{
-				tmp = ft_strjoin(*mypath, cmd[0]);
+				tmp = ft_strjoin(*mypath++, cmd[0]);
 				if (access(tmp, R_OK) == 0)
 					execve(tmp, cmd, environ);
-				mypath++;
 				free(tmp);
 			}
 			printf("%s: command not found\n", cmd[0]);
 		}
 		exit(127);
 	}
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-		set_global(status);
-		my_free(cmd);
-	}
+	waitpid(pid, &status, 0);
+	set_global(status);
+	my_free(cmd);
 }
 
 void	set_fd(int *stdin_cpy, int *stdout_cpy, int flag)
@@ -88,6 +86,7 @@ void	split_exec(char **mypath, char **cmd, char **envp)
 	int	fd;
 
 	cmd = cmd_path(cmd);
+	set_fd(&stdin_cpy, &stdout_cpy, 0);
 	if (cmd[0] == NULL)
 		return ;
 	if (between_parentheses(cmd[0]) == 0)
@@ -95,12 +94,11 @@ void	split_exec(char **mypath, char **cmd, char **envp)
 		exec_subshell(cmd, envp);
 		return ;
 	}
-	set_fd(&stdin_cpy, &stdout_cpy, 0);
 	fd = check_redir(cmd);
 	cmd = cut_red(cmd);
 	if (cmd[0] == NULL)
 		free(cmd);
-	if (check_builtin(cmd[0]) == 0)
+	else if (check_builtin(cmd[0]) == 0)
 		exec_builtin(cmd, envp, fd);
 	else
 		my_exec(mypath, envp, cmd);

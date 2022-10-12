@@ -12,22 +12,42 @@
 
 #include "minishell.h"
 
-int	parse_wild(char *wild_str, char *str)
+char	*ft_strstr(char *str, char *to_find)
 {
-	char	**splitted;
+	int	i;
+	int	j;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		j = 0;
+		while (to_find[j] == str[i + j])
+		{
+			if (to_find[j + 1] == '\0')
+				return (str + i);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	parse_wild(char *wild_str, char *str, char **splitted)
+{
 	int		i;
 	int		size;
 
 	i = 0;
-	splitted = ft_split(wild_str, '*');
 	size = strlen(wild_str);
-	if (wild_str[0] != '*' && str[0] != wild_str[0])
+	if ((wild_str[0] != '*' && str[0] != wild_str[0]) || (wild_str[size]
+			!= '*' && str[strlen(str) - 1] != wild_str[size - 1]))
+	{
+		my_free(splitted);
 		return (0);
-	if (wild_str[size] != '*' && str[strlen(str)] != wild_str[size])
-		return (0);
+	}
 	while (*str && splitted[i])
 	{
-		if (*str == splitted[i][0] && strstr(str, splitted[i]) == str)
+		if (*str == splitted[i][0] && ft_strstr(str, splitted[i]) == str)
 			i++;
 		str++;
 	}
@@ -53,7 +73,7 @@ char	*parse_files(char *wild)
 		dir = readdir(d);
 		while (dir != NULL)
 		{
-			if (parse_wild(wild, dir->d_name) == 1)
+			if (parse_wild(wild, dir->d_name, ft_split(wild, '*')) == 1)
 			{
 				ret = ft_strjoin(ret, dir->d_name);
 				ret = ft_strjoin(ret, " ");
@@ -65,9 +85,8 @@ char	*parse_files(char *wild)
 	return (ret);
 }
 
-char	**check_wild(char **args)
+char	**check_wild(char **args, int i)
 {
-	int		i;
 	char	**ret;
 	char	*tmp;
 	char	*aux;
@@ -76,10 +95,13 @@ char	**check_wild(char **args)
 	tmp = NULL;
 	while (args[++i])
 	{
-		if (strchr(args[i], '*') != NULL)
+		if (ft_strchr(args[i], '*') != NULL)
 		{
 			aux = parse_files(args[i]);
-			tmp = ft_strjoin(tmp, aux);
+			if (aux)
+				tmp = ft_strjoin(tmp, aux);
+			else
+				tmp = ft_strjoin(tmp, args[i]);
 			free(aux);
 		}
 		else

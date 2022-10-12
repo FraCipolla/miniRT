@@ -6,7 +6,7 @@
 /*   By: mcipolla <mcipolla@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 20:07:25 by mcipolla          #+#    #+#             */
-/*   Updated: 2022/10/04 14:23:20 by mcipolla         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:07:40 by mcipolla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ int	check_dot(char **cmd, char **environ)
 	i = 0;
 	while (tmp[i])
 	{
-		if (strncmp(tmp + i, "./", 2) == 0)
+		if (ft_strncmp(tmp + i, "./", 2) == 0)
 		{
 			if (access(cmd[0], R_OK) == 0)
 			{
-				if (strncmp(tmp + i, "./minishell", 11) == 0)
-					ft_increase_shlvl();
+				if (ft_strncmp(tmp + i, "./minishell", 11) == 0)
+					ft_increase_shlvl(environ);
 				execve(cmd[0], cmd, environ);
 			}
 			g_exit = 127;
@@ -94,4 +94,27 @@ int	check_dot(char **cmd, char **environ)
 		i++;
 	}
 	return (-1);
+}
+
+char	**remove_quotes(char **args)
+{
+	int		i;
+	char	**ret;
+	int		j;
+	char	*aux;
+
+	j = 0;
+	i = 0;
+	while (args[i])
+		i++;
+	ret = (char **)malloc(sizeof(char *) * i + 1);
+	i = -1;
+	while (args[++i])
+	{
+		aux = resolve_env(args[i]);
+		if (aux)
+			ret[j++] = aux;
+	}
+	ret[j] = NULL;
+	return (ret);
 }
